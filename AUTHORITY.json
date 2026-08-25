@@ -1,0 +1,15 @@
+{
+  "accepted_source_commit": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+  "accepted_tree": "f5e7750af772946181e42cdf1f5354219f8abfa8",
+  "package": "R13 public static-authority relay for GLM heavy prebuild",
+  "parser_contract_hash": "613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1",
+  "parser_verification": "tests/test_fo10_parser_contract.py: 13 passed in isolated local test run",
+  "post_accepted_handoff_commit": "d7681bfe47ee36b53f0c527bc18896fe397c3525",
+  "post_accepted_handoff_parent": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+  "public_sanitization": [
+    "No credentials, token-bearing URLs, private absolute paths, or free-form internal provenance are included.",
+    "Exact hostname is redacted; the R3 local OT must bind and verify it at CP00 from private authority.",
+    "No volatile runtime output is included; every runtime value remains NOT_YET_OBSERVED until a local run."
+  ],
+  "scope": "STATIC_ONLY; no runtime, canary, registry, tag, or model-load authority"
+}

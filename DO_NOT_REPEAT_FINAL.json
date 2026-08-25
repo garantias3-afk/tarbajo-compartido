@@ -1,0 +1,62 @@
+{
+  "also_do_not_resume_preserved": [
+    {
+      "item": "Dots deterministic partial analysis",
+      "reason": "INCOMPLETE, authority ZERO"
+    }
+  ],
+  "artifact": "DO_NOT_REPEAT_FINAL",
+  "gap_fill_vs_OX6_matrix": [
+    "FO10 TS01 repair audit",
+    "FO10 FM08 investigation",
+    "post-FO10 global deterministic analysis"
+  ],
+  "items": [
+    {
+      "item": "generic wiring audit",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "GHR01 audit",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "GHR03 audit",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "GHR06 audit",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "GPTOSS source audit",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "FO10 source audit",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "FO10 TS01 repair audit",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "FO10 FM08 investigation",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "post-FO10 global deterministic analysis",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "Qwen historical failure investigation",
+      "state": "DO_NOT_REPEAT"
+    },
+    {
+      "item": "model-quality research",
+      "state": "DO_NOT_REPEAT"
+    }
+  ],
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-POST-FO10-ECCD8E9-STATIC-ADMISSION-QWEN-REFRESH-MATERIALIZER-R1",
+  "reopened_only_if": "contradictory evidence from a TRUE TERMINAL authority appears"
+}

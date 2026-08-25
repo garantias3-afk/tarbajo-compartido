@@ -1,0 +1,10 @@
+{
+  "accepted_source_commit": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+  "accepted_tree": "f5e7750af772946181e42cdf1f5354219f8abfa8",
+  "closure_preservation": "S16 PASS; FO10 touched only allowed five-path scope",
+  "fo10_closure_executor": "Grok 4.6",
+  "fo10_source_state": "ACCEPTED_CLOSED",
+  "limitations": "Static closure does not grant runtime, model-generation, registry, tag, or human authorization.",
+  "parser_contract_hash": "613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1",
+  "state": "POST_FO10_STATIC_ADMISSION_READY"
+}

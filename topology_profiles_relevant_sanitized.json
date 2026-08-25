@@ -1,0 +1,160 @@
+{
+  "candidate_binding_resolution": "No topology profile directly binds QWEN_3_8_27B_DENSE_Q5, GEMMA_4_26B_A4B_QAT_Q4, GLM_4_7_FLASH_Q5, ORNITH_Q6_SINGLE, or ORNITH_Q5_MULTI in accepted config. GPTOSS_SINGLE_N1 exists but is disabled.",
+  "profiles": [
+    {
+      "co_residence": false,
+      "condition": null,
+      "enabled": false,
+      "execution_profile_ids": [
+        "GPTOSS_TOOLLESS_V1"
+      ],
+      "families": [
+        "GPT_OSS"
+      ],
+      "logical_agents": 1,
+      "physical_parallel": 1,
+      "residence_policy": "SINGLE_RESIDENT",
+      "topology_profile_id": "GPTOSS_SINGLE_N1"
+    },
+    {
+      "co_residence": false,
+      "condition": "CONDITIONAL_AFTER_O0_O3_PASS",
+      "enabled": false,
+      "execution_profile_ids": [
+        "ORNITH_TOOLLESS_V1"
+      ],
+      "families": [
+        "ORNITH"
+      ],
+      "logical_agents": 2,
+      "physical_parallel": 2,
+      "residence_policy": "SINGLE_RESIDENT",
+      "topology_profile_id": "ORNITH_N2_CONDITIONAL"
+    },
+    {
+      "co_residence": false,
+      "condition": "CONDITIONAL_AFTER_O0_O3_PASS",
+      "enabled": false,
+      "execution_profile_ids": [
+        "ORNITH_TOOLLESS_V1"
+      ],
+      "families": [
+        "ORNITH"
+      ],
+      "logical_agents": 3,
+      "physical_parallel": 3,
+      "residence_policy": "SINGLE_RESIDENT",
+      "topology_profile_id": "ORNITH_N3_CONDITIONAL"
+    },
+    {
+      "co_residence": false,
+      "condition": null,
+      "enabled": true,
+      "execution_profile_ids": [
+        "ORNITH_TOOLLESS_V1"
+      ],
+      "families": [
+        "ORNITH"
+      ],
+      "logical_agents": 1,
+      "physical_parallel": 1,
+      "residence_policy": "SINGLE_RESIDENT",
+      "topology_profile_id": "ORNITH_SINGLE_N1"
+    },
+    {
+      "co_residence": false,
+      "condition": null,
+      "enabled": true,
+      "execution_profile_ids": [
+        "QWEN_TOOLLESS_V1"
+      ],
+      "families": [
+        "QWEN"
+      ],
+      "logical_agents": 1,
+      "physical_parallel": 1,
+      "residence_policy": "SINGLE_RESIDENT",
+      "topology_profile_id": "SINGLE_N1"
+    },
+    {
+      "co_residence": false,
+      "condition": null,
+      "enabled": true,
+      "execution_profile_ids": [
+        "QWEN_TOOLLESS_V1"
+      ],
+      "families": [
+        "QWEN"
+      ],
+      "logical_agents": 2,
+      "physical_parallel": 2,
+      "residence_policy": "SINGLE_RESIDENT",
+      "topology_profile_id": "SINGLE_N2"
+    },
+    {
+      "co_residence": false,
+      "condition": null,
+      "enabled": true,
+      "execution_profile_ids": [
+        "QWEN_TOOLLESS_V1"
+      ],
+      "families": [
+        "QWEN"
+      ],
+      "logical_agents": 3,
+      "physical_parallel": 3,
+      "residence_policy": "SINGLE_RESIDENT",
+      "topology_profile_id": "SINGLE_N3"
+    },
+    {
+      "co_residence": false,
+      "condition": null,
+      "enabled": true,
+      "execution_profile_ids": [
+        "QWEN_TOOLLESS_V1"
+      ],
+      "families": [
+        "QWEN"
+      ],
+      "logical_agents": 6,
+      "physical_parallel": 6,
+      "residence_policy": "SINGLE_RESIDENT",
+      "topology_profile_id": "SINGLE_N6"
+    },
+    {
+      "co_residence": true,
+      "condition": "REQUIRES_MEMORY_PASS_BOTH_FAMILIES_AND_CORESIDENCE_PROOF",
+      "enabled": false,
+      "execution_profile_ids": [
+        "QWEN_TOOLLESS_V1",
+        "ORNITH_TOOLLESS_V1"
+      ],
+      "families": [
+        "QWEN",
+        "ORNITH"
+      ],
+      "logical_agents": 2,
+      "physical_parallel": 2,
+      "residence_policy": "CO_RESIDENT",
+      "topology_profile_id": "TWO_FAMILY_CORESIDENT_DISABLED"
+    },
+    {
+      "co_residence": false,
+      "condition": null,
+      "enabled": true,
+      "execution_profile_ids": [
+        "QWEN_TOOLLESS_V1",
+        "ORNITH_TOOLLESS_V1"
+      ],
+      "families": [
+        "QWEN",
+        "ORNITH"
+      ],
+      "logical_agents": 2,
+      "physical_parallel": 1,
+      "residence_policy": "SEQUENTIAL_DRAIN",
+      "topology_profile_id": "TWO_FAMILY_SEQUENTIAL_DRAIN"
+    }
+  ],
+  "schema_version": "1.0"
+}

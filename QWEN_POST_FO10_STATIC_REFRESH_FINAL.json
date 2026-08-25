@@ -1,0 +1,69 @@
+{
+  "bound_source": {
+    "commit": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+    "tree": "f5e7750af772946181e42cdf1f5354219f8abfa8"
+  },
+  "captured_utc": "2026-08-24T20:40:00Z",
+  "checks": [
+    {
+      "check_id": "R-SLOT04-membership",
+      "description": "exact_SLOT04_membership: QWEN_3_8_27B_DENSE_Q5 in epoch-01 slots, fast_path_eligible=true, contract_provenance=PROVEN_K3",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R-receipt-triple-match",
+      "description": "receipt 42fd4f42... matches candidate set + provisioning authority + qualification ledger records",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R-profile",
+      "description": "registry enabled/READY; no exec-profile field exists for qwen_3_8_27b_dense_q5 (unchanged condition, factual)",
+      "result": "PASS_WITH_SOURCE_NOTE"
+    },
+    {
+      "check_id": "R-topology",
+      "description": "SINGLE_N* enabled but bound to legacy chain; no direct topology binding for SLOT04 (unchanged condition, factual)",
+      "result": "PASS_WITH_SOURCE_NOTE"
+    },
+    {
+      "check_id": "R-parser-static-admission-consistency",
+      "description": "producer==mirror==schema-required==613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1 recomputed at eccd8e9",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R-source-preservation",
+      "description": "diff 284dd423..eccd8e9 confined to FO10 repair scope; Qwen admission path gained only fail-closed gates; GHR06/GPTOSS suites green at closure (110/110, 37/37)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R-candidate-set-contract-compatibility",
+      "description": "epoch-01 sixpack intact at eccd8e9; response_contract=completion unchanged",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R-source-chain-resolution",
+      "description": "accepted head resolved from remote accepted/* ref (not guessed); ancestry through GHR03->GHR06->GPTOSS->FO10 verified via merge-base checks",
+      "result": "PASS"
+    }
+  ],
+  "document": "QWEN_POST_FO10_STATIC_REFRESH_FINAL",
+  "explicitly_not_claimed": [
+    "RUNTIME_QUALIFIED",
+    "PREFLIGHT_READY",
+    "CANARY_READY"
+  ],
+  "historical_staleness_resolution": "old third-canary preflight was STALE_REQUIRES_REFRESH due to pre-GHR03 source binding; staleness now RESOLVED by rebinding checks to accepted eccd8e9 (not by rerunning it)",
+  "no_qwen_specific_source_regression": true,
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-POST-FO10-ECCD8E9-STATIC-ADMISSION-QWEN-REFRESH-MATERIALIZER-R1",
+  "previous_authority_chain_consumed": [
+    "previous Qwen authority (MIMO provisioning/runtime identity)",
+    "GHR03",
+    "GHR06",
+    "GPTOSS",
+    "FO10 accepted eccd8e9"
+  ],
+  "qwen_static_result": "QWEN_STATIC_REFRESH_READY_FOR_LOCAL_RUNTIME",
+  "qwen_static_state": "READY_FOR_LOCAL_RUNTIME_QUALIFICATION",
+  "refresh_scope": "MINIMAL_REFRESH_ONLY; historical repairs NOT rerun; provisioning research NOT rerun",
+  "third_real_canary_authorization": "NOT_GRANTED (prior two CONSUMED; no carry-forward; human gate pending)"
+}

@@ -1,0 +1,94 @@
+{
+  "basis": "instantiated from GLM prebuild self-check machinery; S-check set per materializer OT section 14",
+  "captured_utc": "2026-08-24T20:40:00Z",
+  "checks": [
+    {
+      "check_id": "S01",
+      "description": "accepted ref exact eccd8e9",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S02",
+      "description": "accepted tree exact f5e7750af772946181e42cdf1f5354219f8abfa8",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S03",
+      "description": "ancestry exact 951d1db -> 284dd423 -> eccd8e9",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S04",
+      "description": "candidate set exact six (r13-epoch-01, count=6, STAGED, SYNTHETIC_ONLY)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S05",
+      "description": "candidate membership exact (slots SLOT_01..SLOT_06 verified from epoch-01 bytes)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S06",
+      "description": "model-profile bindings exact (six model_profile_ids resolve in config/model_registry.v3.json)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S07",
+      "description": "execution-profile bindings exact as shipped (only GPTOSS_TOOLLESS_V1 binds SLOT_06, enabled=false; no exec profile binds SLOT_04/SLOT_05 - factual accepted state recorded)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S08",
+      "description": "topology bindings exact as shipped (GPTOSS_SINGLE_N1 enabled=false; SINGLE_N* bind legacy qwen_abliterated chain - factual accepted state recorded)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S09",
+      "description": "qualification receipts exact (six receipts present in epoch-01.json; SLOT04=42fd4f42...)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S10",
+      "description": "actual parser hash recomputed from accepted bytes = 613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S11",
+      "description": "producer/mirror equality (r5 producer == launcher EXPECTED_PARSER_CONTRACT_HASH == independent recomputation)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S12",
+      "description": "receipt schema requires parser_contract_hash (execution_receipt.schema.json required[] + 64hex pattern)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S13",
+      "description": "digest namespaces explicit (DIGEST_NAMESPACE_MATRIX_FINAL emitted; SOURCE!=BLOB!=MANIFEST!=SERVED)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S14",
+      "description": "no runtime value invented (live digest/run state all NOT_YET_OBSERVED placeholders)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S15",
+      "description": "no run/human authority invented (run_id/run candidate-set sha/authorization remain structured placeholders)",
+      "result": "PASS"
+    },
+    {
+      "check_id": "S16",
+      "description": "closed GHR06/GPTOSS invariants preserved structurally (closure preservation suites PASS; FO10 touched only allowed five-path scope)",
+      "result": "PASS"
+    }
+  ],
+  "document": "STATIC_ADMISSION_SELF_CHECK",
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-POST-FO10-ECCD8E9-STATIC-ADMISSION-QWEN-REFRESH-MATERIALIZER-R1",
+  "post_fo10_static_admission_state": "STATIC_ADMISSION_READY",
+  "summary": {
+    "FAIL": 0,
+    "PASS": 16
+  },
+  "verdict_16_of_16": true
+}

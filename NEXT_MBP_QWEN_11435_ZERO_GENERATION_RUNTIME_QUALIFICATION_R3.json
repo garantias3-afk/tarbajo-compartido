@@ -1,0 +1,127 @@
+{
+  "binds_actual_accepted_source": {
+    "commit": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+    "parser_contract_hash": "613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1",
+    "tree": "f5e7750af772946181e42cdf1f5354219f8abfa8"
+  },
+  "current_state_fields_all": {
+    "11435_running": "NOT_YET_OBSERVED",
+    "digest_currently_served": "NOT_YET_OBSERVED",
+    "historical_pid_alive": "NOT_YET_OBSERVED",
+    "memory_available": "NOT_YET_OBSERVED",
+    "qwen_loaded": "NOT_YET_OBSERVED",
+    "runtime_preflight_green": "NOT_YET_OBSERVED",
+    "tag_exists_now": "NOT_YET_OBSERVED"
+  },
+  "explicit_non_claims": [
+    "no model generation before human authorization",
+    "this packet grants zero runtime authority beyond its phases"
+  ],
+  "forbidden": [
+    "any /api/generate call",
+    "any 11434 contact",
+    "model loads outside isolated store",
+    "treating this packet as authorization"
+  ],
+  "identity_constants_frozen": {
+    "endpoint_binding": "127.0.0.1:11435 exactly",
+    "expected_runtime_digest_OLLAMA_BLOB_DIGEST": "681e723ab3f26b823555f231b04c83a1e4a047dd23228e8408ce006674b5f5d0",
+    "expected_tag": "openclaw-qwen-3-8-27b-dense-q5:c8",
+    "parser_contract_hash_expected": "613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1",
+    "qualification_receipt_sha256": "42fd4f421316aee9b61a56d3ab82f3635f56905545f396f2cb1931229ec09ace",
+    "source_gguf_SOURCE_SHA256": "2de73110cb254cbf09b54b717578dadff12ef1194e7271527e68202f39ba4bfd"
+  },
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-POST-FO10-ECCD8E9-STATIC-ADMISSION-QWEN-REFRESH-MATERIALIZER-R1",
+  "packet": "NEXT_MBP_QWEN_11435_ZERO_GENERATION_RUNTIME_QUALIFICATION_R3",
+  "phases": [
+    {
+      "id": "R00",
+      "name": "verify Mac17,9 / hostname",
+      "rule": "hostname==REDACTED_HOSTNAME AND hw.model==Mac17,9 else HOST_EXECUTION_MISMATCH stop"
+    },
+    {
+      "id": "R01",
+      "name": "canonical shared Intercambio + bridge",
+      "rule": "use <LOCAL_INTERCAMBIO_ROOT> (SMB-visible canonical) only; verify bridge route 10.0.0.2 TCP445 reachability if applicable; no mount repair"
+    },
+    {
+      "id": "R02",
+      "name": "11434 untouched/sacred",
+      "rule": "ZERO contact with port 11434 for entire OT lifetime; observe-only process listing permitted without querying; any contact = FAIL_PORT_ISOLATION_VIOLATED"
+    },
+    {
+      "id": "R03",
+      "name": "inspect current volatile 11435 state",
+      "rule": "fresh lsof/probe of isolated port; DO NOT presume historical PID 6138 or any recorded listener alive (VOLATILE)"
+    },
+    {
+      "id": "R04",
+      "name": "verify exact Qwen tag availability",
+      "rule": "isolated store must contain openclaw-qwen-3-8-27b-dense-q5:c8; do not pull/re-provision if present with matching digest"
+    },
+    {
+      "id": "R05",
+      "name": "establish isolated 11435 if required",
+      "rule": "only if R04/R05 fail; reuse METHOD_1 EXACT_EXISTING_RUNTIME_OBJECT_REUSE from sealed provisioning authority before any download"
+    },
+    {
+      "id": "R06",
+      "name": "verify runtime process bound only as authorized",
+      "rule": "capture listen sockets; exactly one expected isolated process; record PID+start command (no secrets); never touch primary 11434 process"
+    },
+    {
+      "id": "R07",
+      "name": "zero-generation health check",
+      "rule": "health/version endpoints only; GENERATIONS=0 enforced; forbidden shapes: /api/generate, /api/chat, embeddings, any streaming completion"
+    },
+    {
+      "id": "R08",
+      "name": "exact live identity / served tag / digest evidence",
+      "rule": "/api/show (or MI01-equivalent identity source): record raw evidence under run dir"
+    },
+    {
+      "id": "R09",
+      "name": "compare live identity vs static admission",
+      "rule": "live tag == openclaw-qwen-3-8-27b-dense-q5:c8 AND live digest == 681e723ab3f26b823555f231b04c83a1e4a047dd23228e8408ce006674b5f5d0 in OLLAMA_BLOB_DIGEST namespace; mismatch = RUNTIME_IDENTITY_MISMATCH fail-closed; SOURCE_SHA256 2de73110... must NEVER satisfy this slot"
+    },
+    {
+      "id": "R10",
+      "name": "verify parser-contract/source binding",
+      "rule": "at accepted eccd8e9: r5 PARSER_CONTRACT_HASH == launcher mirror == 613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1; receipt schema requires parser_contract_hash; Ornith gate constants byte-exact"
+    },
+    {
+      "id": "R11",
+      "name": "zero-generation canary preflight",
+      "rule": "launcher preflight with real-mode DISABLED (no --authorize-real-canaries); FAIL_HARNESS-family zero-generation outcome acceptable; generations must remain 0"
+    },
+    {
+      "id": "R12",
+      "name": "seal runtime qualification receipt",
+      "rule": "structured receipt: ot_id, tag_observed, digest_observed, digest_match, residency/startup metadata optional, generation_count==0, 11434_untouched=true, VERDICT"
+    },
+    {
+      "id": "R13",
+      "name": "STOP",
+      "rule": "stop before any further action; terminal below"
+    }
+  ],
+  "preconditions": [
+    "accepted/r13-source-eccd8e9 still exact at execution time",
+    "POST_FO10_STATIC_ADMISSION_STATE=STATIC_ADMISSION_READY (this export)",
+    "QWEN_STATIC_STATE=READY_FOR_LOCAL_RUNTIME_QUALIFICATION (this export)"
+  ],
+  "preferred_host": {
+    "hostname": "REDACTED_PUBLIC_RELAY; verify exact hostname locally at CP00",
+    "hw_model": "Mac17,9",
+    "on_mismatch": "HOST_EXECUTION_MISMATCH stop"
+  },
+  "required_terminal_on_success": "HUMAN_AUTH_REQUIRED",
+  "version_basis": "successor of OX6 NEXT_QWEN_LOCAL_11435_RUNTIME_QUALIFICATION_PACKET_R2; rebound from preview basis 284dd423 to ACCEPTED eccd8e9",
+  "volatile_state_must_recheck": [
+    "sidecar PID (historical 6138 stale)",
+    "mount state",
+    "11435 listener",
+    "loaded model (/api/ps historically empty)",
+    "memory residency"
+  ]
+}

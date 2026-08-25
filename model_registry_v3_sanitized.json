@@ -1,0 +1,128 @@
+{
+  "included_profile_ids": [
+    "gemma_4_26b_a4b_qat_q4",
+    "glm_4_7_flash_q5",
+    "gpt_oss_20b_mxfp4",
+    "ornith_q5_multi",
+    "ornith_q6_single",
+    "qwen_3_8_27b_dense_q5"
+  ],
+  "model_profiles": [
+    {
+      "architecture": "gemma4",
+      "backend": "OLLAMA",
+      "digest": "4cf2df7d0243e1f4a32675b2d4b21d695c1e2ac2442487d0d766443319f864c8",
+      "enabled": true,
+      "family": "GEMMA_MOE",
+      "host_constraints": {
+        "host_pin": "REDACTED_PUBLIC_RELAY; verify exact hostname locally at CP00",
+        "min_unified_memory_gib": 32
+      },
+      "model_id": "openclaw-gemma-4-26b-a4b-qat-q4",
+      "model_profile_id": "gemma_4_26b_a4b_qat_q4",
+      "quant": "Q4_0",
+      "readiness_status": "READY",
+      "schema_version": "3.0",
+      "served_model_id": "openclaw-gemma-4-26b-a4b-qat-q4:c8",
+      "tested_context_tokens": 16384,
+      "weight_bytes": 14439363584
+    },
+    {
+      "architecture": "deepseek2",
+      "backend": "OLLAMA",
+      "digest": "0c9bc4ebcb8da2a38bfaa6d9f72239c11e996897d427cdad554112efc11c9d92",
+      "enabled": true,
+      "family": "GLM",
+      "host_constraints": {
+        "host_pin": "REDACTED_PUBLIC_RELAY; verify exact hostname locally at CP00",
+        "min_unified_memory_gib": 32
+      },
+      "model_id": "openclaw-glm-4-7-flash-q5",
+      "model_profile_id": "glm_4_7_flash_q5",
+      "quant": "Q5_K_M",
+      "readiness_status": "READY",
+      "schema_version": "3.0",
+      "served_model_id": "openclaw-glm-4-7-flash-q5:c8",
+      "tested_context_tokens": 16384,
+      "weight_bytes": 21408850272
+    },
+    {
+      "architecture": "gpt-oss",
+      "backend": "OLLAMA",
+      "digest": "abdc8224d1d28befa9066b5de8c98b4baf2d38df43a0c38d72015e2f7eb926a9",
+      "enabled": true,
+      "family": "GPT_OSS",
+      "host_constraints": {
+        "host_pin": "REDACTED_PUBLIC_RELAY; verify exact hostname locally at CP00",
+        "min_unified_memory_gib": 32
+      },
+      "model_id": "openclaw-gpt-oss-20b-mxfp4",
+      "model_profile_id": "gpt_oss_20b_mxfp4",
+      "quant": "MXFP4_MOE",
+      "readiness_status": "READY",
+      "schema_version": "3.0",
+      "served_model_id": "openclaw-gpt-oss-20b-mxfp4:c8",
+      "tested_context_tokens": 16384,
+      "weight_bytes": 12109566624
+    },
+    {
+      "architecture": "qwen35moe",
+      "backend": "OLLAMA",
+      "digest": "cb96f5f716492db294fc576179770774be229b1e0d36a67a7ca88b8f73550132",
+      "enabled": true,
+      "family": "ORNITH",
+      "host_constraints": {
+        "host_pin": "REDACTED_PUBLIC_RELAY; verify exact hostname locally at CP00",
+        "min_unified_memory_gib": 32
+      },
+      "model_id": "openclaw-ornith-q5-multi",
+      "model_profile_id": "ornith_q5_multi",
+      "quant": "Q5_K_M",
+      "readiness_status": "READY",
+      "schema_version": "3.0",
+      "served_model_id": "openclaw-ornith-q5-multi:c8",
+      "tested_context_tokens": 16384,
+      "weight_bytes": 24729130848
+    },
+    {
+      "architecture": "qwen35moe",
+      "backend": "OLLAMA",
+      "digest": "53ad42f13f0c7475444cabf5ec5fdaa6794aefa1af690079aa01ccc371cf56ed",
+      "enabled": true,
+      "family": "ORNITH",
+      "host_constraints": {
+        "host_pin": "REDACTED_PUBLIC_RELAY; verify exact hostname locally at CP00",
+        "min_unified_memory_gib": 32
+      },
+      "model_id": "openclaw-ornith-q6-single",
+      "model_profile_id": "ornith_q6_single",
+      "quant": "Q6_K",
+      "readiness_status": "READY",
+      "schema_version": "3.0",
+      "served_model_id": "openclaw-ornith-q6-single:c8",
+      "tested_context_tokens": 16384,
+      "weight_bytes": 28514152288
+    },
+    {
+      "architecture": "qwen35",
+      "backend": "OLLAMA",
+      "digest": "681e723ab3f26b823555f231b04c83a1e4a047dd23228e8408ce006674b5f5d0",
+      "enabled": true,
+      "family": "QWEN",
+      "host_constraints": {
+        "host_pin": "REDACTED_PUBLIC_RELAY; verify exact hostname locally at CP00",
+        "min_unified_memory_gib": 32
+      },
+      "model_id": "openclaw-qwen-3-8-27b-dense-q5",
+      "model_profile_id": "qwen_3_8_27b_dense_q5",
+      "quant": "Q5_K_M",
+      "readiness_status": "READY",
+      "schema_version": "3.0",
+      "served_model_id": "openclaw-qwen-3-8-27b-dense-q5:c8",
+      "tested_context_tokens": 16384,
+      "weight_bytes": 19771509854
+    }
+  ],
+  "ornith_1_5_registry_entry": "ABSENT_FROM_ACCEPTED_MODEL_REGISTRY_V3; static authority is included in MODEL_AUTHORITY_MATRIX.json",
+  "schema_version": "3.0"
+}

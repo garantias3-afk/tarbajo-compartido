@@ -1,0 +1,79 @@
+{
+  "activation_state": "STAGED",
+  "candidate_count": 6,
+  "candidate_set_epoch": 1,
+  "candidate_set_id": "r13-epoch-01",
+  "created_at": "2026-08-22T12:00:00Z",
+  "created_from_epoch": null,
+  "execution_authority": "SYNTHETIC_ONLY",
+  "protocol_version": "c8-canary-v6",
+  "schema_version": "1.0",
+  "slots": [
+    {
+      "architecture": "qwen35moe",
+      "candidate_id": "ORNITH_Q6_SINGLE",
+      "contract_provenance": "PROVEN_R11",
+      "fast_path_eligible": true,
+      "model_profile_id": "ornith_q6_single",
+      "qualification_receipt_sha256": "776da25c82ae747a00118e74726b114c6336e87501d2427642beb1eaaff24d80",
+      "response_contract": "completion",
+      "slot_id": "SLOT_01",
+      "template_contract": "qwen35_with_thinking_and_tools"
+    },
+    {
+      "architecture": "qwen35moe",
+      "candidate_id": "ORNITH_Q5_MULTI",
+      "contract_provenance": "PROVEN_R11",
+      "fast_path_eligible": true,
+      "model_profile_id": "ornith_q5_multi",
+      "qualification_receipt_sha256": "def7a4833851ef2f8143a78e1568a22e50df6c07d148592488d6085cf45f919e",
+      "response_contract": "completion",
+      "slot_id": "SLOT_02",
+      "template_contract": "qwen35_with_thinking_and_tools"
+    },
+    {
+      "architecture": "deepseek2",
+      "candidate_id": "GLM_4_7_FLASH_Q5",
+      "contract_provenance": "UNPROVEN",
+      "fast_path_eligible": false,
+      "model_profile_id": "glm_4_7_flash_q5",
+      "qualification_receipt_sha256": "ae93035f524651327b460d7acec7253eb7da2257e2075e889114b66ca6656fe3",
+      "response_contract": "NO_CONSTA",
+      "slot_id": "SLOT_03",
+      "template_contract": "DERIVED_FROM_CONFIG (GLM4 Jinja2-style with tool calling)"
+    },
+    {
+      "architecture": "qwen35",
+      "candidate_id": "QWEN_3_8_27B_DENSE_Q5",
+      "contract_provenance": "PROVEN_K3",
+      "fast_path_eligible": true,
+      "model_profile_id": "qwen_3_8_27b_dense_q5",
+      "qualification_receipt_sha256": "42fd4f421316aee9b61a56d3ab82f3635f56905545f396f2cb1931229ec09ace",
+      "response_contract": "completion",
+      "slot_id": "SLOT_04",
+      "template_contract": "qwen35_with_thinking_and_tools"
+    },
+    {
+      "architecture": "gemma4",
+      "candidate_id": "GEMMA_4_26B_A4B_QAT_Q4",
+      "contract_provenance": "UNPROVEN",
+      "fast_path_eligible": false,
+      "model_profile_id": "gemma_4_26b_a4b_qat_q4",
+      "qualification_receipt_sha256": "0526d3c8f0cf34f91f7447788e0a03e562ff9cfac0f96ab3516553875a045c8b",
+      "response_contract": "NO_CONSTA",
+      "slot_id": "SLOT_05",
+      "template_contract": "DERIVED_FROM_CONFIG (Gemma4 minimal with renderer/parser)"
+    },
+    {
+      "architecture": "gpt-oss",
+      "candidate_id": "GPT_OSS_20B_MXFP4",
+      "contract_provenance": "UNPROVEN",
+      "fast_path_eligible": false,
+      "model_profile_id": "gpt_oss_20b_mxfp4",
+      "qualification_receipt_sha256": "37e331d2d8bcef2a9e60248a017bf8cff538a431418b0186d9fcc1e54dbe56f0",
+      "response_contract": "NO_CONSTA",
+      "slot_id": "SLOT_06",
+      "template_contract": "DERIVED_FROM_CONFIG (GPT-OSS channel-based template)"
+    }
+  ]
+}

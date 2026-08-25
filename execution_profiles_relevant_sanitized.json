@@ -1,0 +1,111 @@
+{
+  "candidate_binding_resolution": {
+    "GEMMA_4_26B_A4B_QAT_Q4": "NO_DIRECT_ACCEPTED_EXECUTION_PROFILE",
+    "GLM_4_7_FLASH_Q5": "NO_DIRECT_ACCEPTED_EXECUTION_PROFILE",
+    "GPT_OSS_20B_MXFP4": "GPTOSS_TOOLLESS_V1 exists but enabled=false",
+    "ORNITH_Q5_MULTI": "NO_DIRECT_ACCEPTED_EXECUTION_PROFILE; legacy Ornith profiles bind ornith_1_0_35b_q4km",
+    "ORNITH_Q6_SINGLE": "NO_DIRECT_ACCEPTED_EXECUTION_PROFILE; legacy Ornith profiles bind ornith_1_0_35b_q4km",
+    "QWEN_3_8_27B_DENSE_Q5": "NO_DIRECT_ACCEPTED_EXECUTION_PROFILE; legacy QWEN_TOOLLESS_V1 binds qwen_abliterated_q4km_64k"
+  },
+  "profiles": [
+    {
+      "context_target_tokens": 8192,
+      "enabled": false,
+      "execution_profile_id": "GPTOSS_TOOLLESS_V1",
+      "mode": "TOOLLESS_SCANNER",
+      "model_profile_id": "gpt_oss_20b_mxfp4",
+      "reasoning_parser": "harmony",
+      "sandbox_policy": {
+        "enabled": true,
+        "network": false,
+        "writable_paths": []
+      },
+      "stop_policy_id": "STOP_GATES_V3",
+      "tool_parser": null,
+      "tools_policy": {
+        "allowlist": [],
+        "forbid_categories": [
+          "all"
+        ],
+        "mode": "FORBIDDEN"
+      }
+    },
+    {
+      "context_target_tokens": 8192,
+      "enabled": false,
+      "execution_profile_id": "ORNITH_ITERATIVE_V1",
+      "mode": "ITERATIVE_AGENT",
+      "model_profile_id": "ornith_1_0_35b_q4km",
+      "reasoning_parser": "qwen3",
+      "sandbox_policy": {
+        "enabled": true,
+        "network": false,
+        "writable_paths": []
+      },
+      "stop_policy_id": "STOP_GATES_V3",
+      "tool_parser": "qwen3_xml",
+      "tools_policy": {
+        "allowlist": [
+          "read_file",
+          "grep_search",
+          "list_dir",
+          "probe_context",
+          "probe_tool_error"
+        ],
+        "forbid_categories": [
+          "apply",
+          "writer",
+          "network",
+          "shell_exec",
+          "self_review"
+        ],
+        "mode": "ALLOWLIST"
+      }
+    },
+    {
+      "context_target_tokens": 8192,
+      "enabled": false,
+      "execution_profile_id": "ORNITH_TOOLLESS_V1",
+      "mode": "TOOLLESS_SCANNER",
+      "model_profile_id": "ornith_1_0_35b_q4km",
+      "reasoning_parser": "qwen3",
+      "sandbox_policy": {
+        "enabled": true,
+        "network": false,
+        "writable_paths": []
+      },
+      "stop_policy_id": "STOP_GATES_V3",
+      "tool_parser": null,
+      "tools_policy": {
+        "allowlist": [],
+        "forbid_categories": [
+          "all"
+        ],
+        "mode": "FORBIDDEN"
+      }
+    },
+    {
+      "context_target_tokens": 8192,
+      "enabled": true,
+      "execution_profile_id": "QWEN_TOOLLESS_V1",
+      "mode": "TOOLLESS_SCANNER",
+      "model_profile_id": "qwen_abliterated_q4km_64k",
+      "reasoning_parser": null,
+      "sandbox_policy": {
+        "enabled": true,
+        "network": false,
+        "writable_paths": []
+      },
+      "stop_policy_id": "STOP_GATES_V3",
+      "tool_parser": null,
+      "tools_policy": {
+        "allowlist": [],
+        "forbid_categories": [
+          "all"
+        ],
+        "mode": "FORBIDDEN"
+      }
+    }
+  ],
+  "schema_version": "1.0"
+}

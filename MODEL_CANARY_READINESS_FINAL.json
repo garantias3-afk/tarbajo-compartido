@@ -1,0 +1,50 @@
+{
+  "FIRST_CANARY_IF_EQUAL_READINESS": "QWEN_3_8_27B_DENSE_Q5",
+  "artifact": "MODEL_CANARY_READINESS_FINAL",
+  "engineering_readiness_overrides_waiting_order": true,
+  "fallback_trigger_rule_preserved": true,
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-POST-FO10-ECCD8E9-STATIC-ADMISSION-QWEN-REFRESH-MATERIALIZER-R1",
+  "rows": [
+    {
+      "ASSET_READY": "YES (blob resident per sealed inventory; VOLATILE recheck in runtime OT)",
+      "HUMAN_AUTHORIZED": "NO",
+      "PREFLIGHT_READY": "PACKET_R3_READY_NOT_EXECUTED",
+      "QUALITY_PRIORITY": 1,
+      "QWEN_STATIC_STATE": "READY_FOR_LOCAL_RUNTIME_QUALIFICATION",
+      "RUNTIME_QUALIFIED": "NO (NOT_YET_OBSERVED)",
+      "SOURCE_READY": "YES",
+      "STATIC_ADMISSION_READY": "READY (S01-S16 16/16 actual)",
+      "candidate": "QWEN_3_8_27B_DENSE_Q5"
+    },
+    {
+      "ASSET_READY": "BYTES_SHA_VERIFIED_RECIPE_COMPLETE (provisioning execution outstanding)",
+      "HUMAN_AUTHORIZED": "NO",
+      "QUALITY_PRIORITY": 2,
+      "RUNTIME_QUALIFIED": "NO",
+      "SOURCE_READY": "YES",
+      "STATIC_ADMISSION_READY": "READY",
+      "candidate": "GEMMA_4_26B_A4B_QAT_Q4"
+    },
+    {
+      "ASSET_READY": "YES (12.11 GiB measured local)",
+      "DO_NOT_AUTO_ENABLE": true,
+      "HUMAN_AUTHORIZED": "NO",
+      "PROFILES_ENABLED": false,
+      "QUALITY_PRIORITY": 3,
+      "RUNTIME_QUALIFIED": "NO",
+      "SOURCE_READY": "ACCEPTED_CLOSED",
+      "STATIC_ADMISSION_READY": "READY (execution gates separately disabled)",
+      "candidate": "GPT_OSS_20B_MXFP4"
+    },
+    {
+      "ASSET_READY": "YES (25.35 GiB blob resident, VOLATILE recheck)",
+      "HUMAN_AUTHORIZED": "NO",
+      "QUALITY_PRIORITY": "WAVE2_LEAPFROG=YES",
+      "RUNTIME_QUALIFIED": "NO",
+      "STATIC_ADMISSION_READY": "PRESERVED_PRIORITY_ONLY",
+      "candidate": "ORNITH_1_5_35B_Q5_K_M"
+    }
+  ],
+  "rule_preserved": "first real-canary candidate = highest value among engineering-ready candidates; tie -> Qwen; never wait indefinitely on blocked Qwen",
+  "supersedes": "MODEL_CANARY_READINESS_R2 (preview basis)"
+}

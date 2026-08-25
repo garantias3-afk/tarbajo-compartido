@@ -1,0 +1,73 @@
+{
+  "content_hash_algorithm": "SHA-256",
+  "files": [
+    {
+      "bytes": 1011,
+      "path": "AUTHORITY.json",
+      "sha256": "be6ed969050b05d09100d20cd4c69888797e368e460db539db9e6da1a4ec96e5"
+    },
+    {
+      "bytes": 1459,
+      "path": "DO_NOT_REPEAT_FINAL.json",
+      "sha256": "06a523095fc7c1ae998232a27ceb93bcd7d6d170fd2e2b468507118e772c1662"
+    },
+    {
+      "bytes": 557,
+      "path": "FO10_CLOSURE_SUMMARY.json",
+      "sha256": "a0b21d829284ef49650acedd9acda1f0a348632b214088965055acfb41628f45"
+    },
+    {
+      "bytes": 5043,
+      "path": "MODEL_AUTHORITY_MATRIX.json",
+      "sha256": "97872b715ef188ce9b51ebfdc602f0fe651fda12b2a70e4f27ae30830731a1a2"
+    },
+    {
+      "bytes": 2041,
+      "path": "MODEL_CANARY_READINESS_FINAL.json",
+      "sha256": "b47ce27c5ee7b6dfe3d5f2726be0395a5f7efa4b75f8619a0f579a3afa07892d"
+    },
+    {
+      "bytes": 5847,
+      "path": "NEXT_MBP_QWEN_11435_ZERO_GENERATION_RUNTIME_QUALIFICATION_R3.json",
+      "sha256": "81df895489851a6fccf6122e96bf90f36c4d002daee6f40daeee965d083bf8a9"
+    },
+    {
+      "bytes": 3372,
+      "path": "POST_FO10_STATIC_ADMISSION_16_OF_16.json",
+      "sha256": "5aa7f1ec12638c2b142780365319c14fcae84c3251bdec8ba31ba9f2141b29e5"
+    },
+    {
+      "bytes": 3066,
+      "path": "QWEN_POST_FO10_STATIC_REFRESH_FINAL.json",
+      "sha256": "f1917133b83eec7d9dfd1a2f619ee486e42bf467e35e59e871fee878bfd6f920"
+    },
+    {
+      "bytes": 592,
+      "path": "README.md",
+      "sha256": "f496843f7c8b0bed73c1d72e5e8d5dc3ccf9c63e614814fc9a6d58290d245be3"
+    },
+    {
+      "bytes": 3091,
+      "path": "candidate_set_epoch-01.json",
+      "sha256": "62b8d6cd4dcd2f665233288de008740b5ee07af64ffe3d3017afd722a77433c9"
+    },
+    {
+      "bytes": 3161,
+      "path": "execution_profiles_relevant_sanitized.json",
+      "sha256": "077a2e2612d922c6c192eb3bc400373c3b7e0557ab374c3e34a428c5933e34cb"
+    },
+    {
+      "bytes": 4474,
+      "path": "model_registry_v3_sanitized.json",
+      "sha256": "88a3d08a9310214643b28be291784ef09d80a8458a08f03461068b5ce55d15cc"
+    },
+    {
+      "bytes": 4041,
+      "path": "topology_profiles_relevant_sanitized.json",
+      "sha256": "ac7a5e5eb1b6590dcdac7ea764ad4c7982f76d1646a66b81b9eca93e24216ace"
+    }
+  ],
+  "package": "R13 sanitized static-authority relay",
+  "schema_version": "1.0",
+  "self_hash_policy": "MANIFEST.json and SHA256SUMS are excluded from their own content set to avoid recursive hashes."
+}

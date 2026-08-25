@@ -1,0 +1,102 @@
+{
+  "accepted_commit": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+  "models": [
+    {
+      "architecture": "qwen35moe",
+      "candidate_id": "ORNITH_Q6_SINGLE",
+      "contract_provenance": "PROVEN_R11",
+      "model_profile_id": "ornith_q6_single",
+      "quantization": "Q6_K",
+      "response_contract": "completion",
+      "runtime_digest": "53ad42f13f0c7475444cabf5ec5fdaa6794aefa1af690079aa01ccc371cf56ed",
+      "runtime_digest_namespace": "OLLAMA_BLOB_DIGEST unless otherwise noted by the corresponding static admission artifact",
+      "runtime_state": "NOT_YET_OBSERVED",
+      "served_tag": "openclaw-ornith-q6-single:c8",
+      "source_bytes": 28514152288,
+      "source_gguf_sha256": "b3da60c3643af02e7979eb47267c3046dc3f6e3a5c88b6790db12208c051116c"
+    },
+    {
+      "architecture": "qwen35moe",
+      "candidate_id": "ORNITH_Q5_MULTI",
+      "contract_provenance": "PROVEN_R11",
+      "model_profile_id": "ornith_q5_multi",
+      "quantization": "Q5_K_M",
+      "response_contract": "completion",
+      "runtime_digest": "cb96f5f716492db294fc576179770774be229b1e0d36a67a7ca88b8f73550132",
+      "runtime_digest_namespace": "OLLAMA_BLOB_DIGEST unless otherwise noted by the corresponding static admission artifact",
+      "runtime_state": "NOT_YET_OBSERVED",
+      "served_tag": "openclaw-ornith-q5-multi:c8",
+      "source_bytes": 24729130848,
+      "source_gguf_sha256": "325b351fc30a4114af5bb21dc2ba7f666ccc90c8f26e6bb36909255d5a449469"
+    },
+    {
+      "architecture": "deepseek2",
+      "candidate_id": "GLM_4_7_FLASH_Q5",
+      "contract_provenance": "UNPROVEN",
+      "model_profile_id": "glm_4_7_flash_q5",
+      "quantization": "Q5_K_M",
+      "response_contract": "NO_CONSTA",
+      "runtime_digest": "0c9bc4ebcb8da2a38bfaa6d9f72239c11e996897d427cdad554112efc11c9d92",
+      "runtime_digest_namespace": "OLLAMA_BLOB_DIGEST unless otherwise noted by the corresponding static admission artifact",
+      "runtime_state": "NOT_YET_OBSERVED",
+      "served_tag": "openclaw-glm-4-7-flash-q5:c8",
+      "source_bytes": 21408850272,
+      "source_gguf_sha256": "167848c4b460887d7a52c44c378d3996a0d38b3302ac2045494dc8b50869a893"
+    },
+    {
+      "architecture": "qwen35",
+      "candidate_id": "QWEN_3_8_27B_DENSE_Q5",
+      "contract_provenance": "PROVEN_K3",
+      "model_profile_id": "qwen_3_8_27b_dense_q5",
+      "quantization": "Q5_K_M",
+      "response_contract": "completion",
+      "runtime_digest": "681e723ab3f26b823555f231b04c83a1e4a047dd23228e8408ce006674b5f5d0",
+      "runtime_digest_namespace": "OLLAMA_BLOB_DIGEST unless otherwise noted by the corresponding static admission artifact",
+      "runtime_state": "NOT_YET_OBSERVED",
+      "served_tag": "openclaw-qwen-3-8-27b-dense-q5:c8",
+      "source_bytes": 19771509664,
+      "source_gguf_sha256": "2de73110cb254cbf09b54b717578dadff12ef1194e7271527e68202f39ba4bfd"
+    },
+    {
+      "architecture": "gemma4",
+      "candidate_id": "GEMMA_4_26B_A4B_QAT_Q4",
+      "contract_provenance": "UNPROVEN",
+      "model_profile_id": "gemma_4_26b_a4b_qat_q4",
+      "quantization": "Q4_0",
+      "response_contract": "NO_CONSTA",
+      "runtime_digest": "4cf2df7d0243e1f4a32675b2d4b21d695c1e2ac2442487d0d766443319f864c8",
+      "runtime_digest_namespace": "OLLAMA_BLOB_DIGEST unless otherwise noted by the corresponding static admission artifact",
+      "runtime_state": "NOT_YET_OBSERVED",
+      "served_tag": "openclaw-gemma-4-26b-a4b-qat-q4:c8",
+      "source_bytes": 14439363584,
+      "source_gguf_sha256": "3eca3b8f6d7baf218a7dd6bba5fb59a56ee25fe2d567b6f5f589b4f697eca51d"
+    },
+    {
+      "architecture": "gpt-oss",
+      "candidate_id": "GPT_OSS_20B_MXFP4",
+      "contract_provenance": "UNPROVEN",
+      "model_profile_id": "gpt_oss_20b_mxfp4",
+      "quantization": "MXFP4_MOE",
+      "response_contract": "NO_CONSTA",
+      "runtime_digest": "abdc8224d1d28befa9066b5de8c98b4baf2d38df43a0c38d72015e2f7eb926a9",
+      "runtime_digest_namespace": "OLLAMA_BLOB_DIGEST unless otherwise noted by the corresponding static admission artifact",
+      "runtime_state": "NOT_YET_OBSERVED",
+      "served_tag": "openclaw-gpt-oss-20b-mxfp4:c8",
+      "source_bytes": 12109566624,
+      "source_gguf_sha256": "27cd6c432c7672cb812a92f611cf3ba7bbc35928262bb1e1253ff4ee6ae35901"
+    },
+    {
+      "architecture": "qwen35moe",
+      "authority_basis": "FO10 parser-contract static test authority; Wave 2 preserved priority only; no registry entry",
+      "candidate_id": "ORNITH_1_5_35B_Q5_K_M",
+      "manifest_digest_not_interchangeable": "c51d9fb0db2e395f33973925456e5695d1a1b2acb91924a08872e98a40c56d35",
+      "model_profile_id": "ABSENT_FROM_ACCEPTED_MODEL_REGISTRY_V3",
+      "quantization": "Q5_K_M",
+      "runtime_digest": "08afe748b4ffe1a8e99def228cafeca970340b800ad9fcac6d2c700c688a25b6",
+      "runtime_digest_namespace": "OLLAMA_BLOB_DIGEST",
+      "runtime_state": "NOT_YET_OBSERVED",
+      "served_tag": "r13-qual-ornith-1-5-35b-q5-k-m:c8",
+      "source_gguf_sha256": "2ac3a45979ffbdff1c7a6f3334e6d4c347274adbc33531d23bde6fa1dfdcb994"
+    }
+  ]
+}
