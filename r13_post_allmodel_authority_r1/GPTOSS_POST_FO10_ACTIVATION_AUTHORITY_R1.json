@@ -1,0 +1,46 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "GPTOSS_POST_FO10_ACTIVATION_AUTHORITY_R1",
+  "checkpoint": "CP07",
+  "candidate_id": "GPT_OSS_20B_MXFP4",
+  "slot": "SLOT_06",
+  "fo10_closure_preserved": true,
+  "reconciliation": {
+    "harmony_response_parser": {
+      "status": "MATERIALLY_PRESENT",
+      "evidence": [
+        "harness/canary_launcher.py _RESPONSE_FORMATS=('plain_json','harmony_channel_json'); channel grammar engaged on marker presence or declared harmony format",
+        "src/executor_local/model_registry_v3.py EXPECTED_PARSERS ('GPT_OSS','TOOLLESS_SCANNER')->{'reasoning_parser':'harmony','tool_parser':None}; RESPONSE_FORMATS includes harmony_channel_json"
+      ]
+    },
+    "fo10_parser_binding": {
+      "status": "INTACT",
+      "detail": "FO10 CanaryParsers contract (hash 613da1b7...) is the sealed model-agnostic harness layer; not reopened; GPTOSS normalizer sits above it in launcher"
+    },
+    "response_contract_tests": {
+      "status": "PRESENT",
+      "detail": "tests/test_gptoss_response_contract.py: 37 offline tests, synthetic shapes fixtures (plain/fenced/channel-marked-final positives; negatives N01-N09; mutation killers GP-M01..GP-M04); binding resolution tested ok=true while non-executable until provisioning gates"
+    },
+    "template": {
+      "status": "VALID_NULL_BY_DESIGN",
+      "detail": "execution profile chat_template_id=null passes check_template_binding() (returns None for null id -> engine-side template); local gpt-oss GGUF header carries no embedded tokenizer.chat_template in first 8MB; no local template bytes exist; null is accepted by validators, so NOT a blocker"
+    },
+    "candidate_exact_identity": {
+      "status": "SEALED",
+      "detail": "launcher CANDIDATE_STATIC_IDENTITY + registry row READY digest-pinned; receipt 37e331d2... pinned in r13ctl REQUIRED_RECEIPT_SHA256 enforcement"
+    },
+    "parser_contract_hash": "613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1",
+    "execution_profile_row": "GPTOSS_TOOLLESS_V1 complete (prompt_sha256 pinned, sampling, sandbox network=false, scanner_output_v1, STOP_GATES_V3) with enabled=false",
+    "topology_row": "GPTOSS_SINGLE_N1 complete with enabled=false"
+  },
+  "residual_gates_beyond_two_booleans": {
+    "static_missing_contracts": [],
+    "runtime_gate_before_real_qualification": "zerogen observation mandatory per handoff discipline (zerogen_runtime_qualified=false; do_not_silently_enable)"
+  },
+  "conclusion": "DATA_ONLY_ENABLEMENT_SUFFICIENT",
+  "conclusion_scope_note": "Contract-wise nothing static is missing beyond the two disabled booleans. Enablement write must still be an explicit non-silent OT decision, and zerogen runtime evidence remains mandatory before any real qualification or canary eligibility.",
+  "verdict_fields": {
+    "additional_static_contract_required": false,
+    "runtime_evidence_required_for_qualification": true
+  }
+}

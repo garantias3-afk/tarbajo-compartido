@@ -1,0 +1,65 @@
+{
+  "artifact": "QUALITY_CANDIDATE_DIFF_SUMMARY",
+  "base_commit": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+  "candidate_commit": "00c418f58cdc3d4ed0aecad3e325ba508d5f4215",
+  "tree": "95f6f72a70db07fbafec3c6da55e1ee510aa1a96",
+  "total_files_changed": 10,
+  "all_status_added": true,
+  "insertions_total": 7307,
+  "files": [
+    {
+      "path": ".github/workflows/r13-quality-ci.yml",
+      "bytes": 2241,
+      "sha256": "b732cefb53339fb0cc2ef537231a9655825129b7fb38a9368aa6b28b06d453d7"
+    },
+    {
+      "path": "tools/r13_quality/ci_contract.py",
+      "bytes": 10907,
+      "sha256": "ec9991a2b3dbaae4b25c26730429711e1b7abf39749be447b99c1b4c811ab950"
+    },
+    {
+      "path": "tools/r13_quality/test_collection_guard.py",
+      "bytes": 4185,
+      "sha256": "b2d5995df60b1d3f922de680b0e2035473ee7e97408b2e99a989490792bb5e05"
+    },
+    {
+      "path": "tools/r13_quality/smoke_gate.py",
+      "bytes": 3536,
+      "sha256": "08392b18a6040a4e8600720f5f7780d2462e02b224aa5108b0ce0443578c2e6c"
+    },
+    {
+      "path": "tools/r13_quality/mutation_runner.py",
+      "bytes": 41055,
+      "sha256": "2195b8a96c627d81dee2dca873f5aaf132751483784594bf7235d47dab750300"
+    },
+    {
+      "path": "tools/r13_quality/mutation_specs.v1.json",
+      "bytes": 202052,
+      "sha256": "f81594595bf2448ee50057fe7ce7084909a739295d2c82a7e6fec22f876bde02"
+    },
+    {
+      "path": "tools/r13_quality/secret_scan.py",
+      "bytes": 5842,
+      "sha256": "b34133aa58d021563c31186eebdc6df358cb476d75bc9339ad5b4d56f89f8e19"
+    },
+    {
+      "path": "tests/test_r13_mutation_runner.py",
+      "bytes": 33060,
+      "sha256": "cadbf01150ac95de278e501c428da56c5dd4784fd8fbb0d7be8a3f2570e560ff"
+    },
+    {
+      "path": "tests/test_r13_script_quality.py",
+      "bytes": 26429,
+      "sha256": "156ca980cf09673c0bacfc775991e6e341ba0c825fe7773c3e4ab192ddc22215"
+    },
+    {
+      "path": "tests/test_r13_ci_contract.py",
+      "bytes": 25501,
+      "sha256": "e7b43e0d2dbc0de76e754820d478abb36205cf61fc1a5d83184a976237c58ce7"
+    }
+  ],
+  "production_config_candidate_set_deltas": "NONE",
+  "qi01": "mutation-engine framework-error handling: HARNESS_ERROR must never be counted as a kill (enforced in smoke gate counts and meta-tests)",
+  "qi02": "fail-closed CI contract: required tools/tests actually invoked on run lines, no silent skips, zero-collection guard wired, curated smoke group enforced",
+  "auditor_note_specs_divergence": "mutation_specs.v1.json contains dormant 'all' array diverging from authoritative 'mutants' array at 27 indices (load_specs prefers 'mutants'; 'all' is fallback only) - flagged for independent audit attention"
+}

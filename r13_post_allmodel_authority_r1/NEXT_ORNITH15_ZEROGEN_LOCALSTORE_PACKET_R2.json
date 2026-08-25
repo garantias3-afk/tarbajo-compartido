@@ -1,0 +1,28 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "NEXT_ORNITH15_ZEROGEN_LOCALSTORE_PACKET_R2",
+  "checkpoint": "CP10",
+  "status": "PREPARED_NOT_EXECUTED",
+  "successor_preservation": {
+    "candidate": "ORNITH_1_5_35B_Q5_K_M",
+    "tag": "r13-qual-ornith-1-5-35b-q5-k-m:c8",
+    "source_sha256": "2ac3a45979ffbdff1c7a6f3334e6d4c347274adbc33531d23bde6fa1dfdcb994",
+    "ollama_blob_digest": "08afe748b4ffe1a8e99def228cafeca970340b800ad9fcac6d2c700c688a25b6",
+    "ollama_manifest_digest_namespace_test_vector": "c51d9fb0db2e395f33973925456e5695d1a1b2acb91924a08872e98a40c56d35",
+    "sixpack_membership": "NO (unchanged across all three R1 packets)"
+  },
+  "r2_packet_contents_to_produce_when_run": {
+    "carry_forward_identity_block_namespaces_disjoint": true,
+    "flip_observation_flag": "11435_zerogen NOT_YET_OBSERVED -> observed record with tags digest prefix + blob verification from isolated local store + manifest namespace rederivation",
+    "verdict_field_vs_pinned_constants": "match/no-match for SOURCE/BLOB/MANIFEST",
+    "checkpoint_stamp_and_apply_now_disposition": true,
+    "human_auth_acknowledgment_before_any_sixpack_application": true
+  },
+  "preconditions": [
+    "11435 SMB/store recovery consumed first",
+    "isolated local store only",
+    "11434 untouched",
+    "zero real generations - zerogen probes only"
+  ],
+  "explicit_non_authority": "successful R2 observation does NOT admit Ornith1.5 to sixpack; replacement still requires separate explicit decision/write OT"
+}

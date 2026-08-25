@@ -1,0 +1,89 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "R13_BLOCKER_LEDGER_POST_ALLMODEL_R1",
+  "checkpoint": "CP11",
+  "global_constraints": {
+    "common_static_admission": "PASS",
+    "zerogen_qualified_models": [],
+    "next_global": "consume 11435 SMB/store recovery first; HUMAN cannot yet select a real canary"
+  },
+  "entries": [
+    {
+      "model": "Qwen QWEN_3_8_27B_DENSE_Q5",
+      "current_state": "STATIC_READY",
+      "blocking_gate": "zerogen /api/tags observation on recovered 11435; Q1/Q2 resolved PROVEN_NON_BLOCKING this OT",
+      "authority": "ALL_MODEL matrix + QWEN_READINESS + OT reconciliations",
+      "nature": "static complete; runtime pending",
+      "source_or_config_write_needed": "false_for_observation__rebinding_only_if_decided_later",
+      "real_generation_needed": false,
+      "minimal_next_action": "after 11435 recovery observe served tag+digest vs pins 681e723a...",
+      "can_work_in_parallel": "static YES; 11435 NO"
+    },
+    {
+      "model": "Gemma GEMMA_4_26B_A4B_QAT_Q4",
+      "current_state": "STATIC_BLOCKED_CONTRACT",
+      "blocking_gate": "no execution profile/topology rows; response framing + output mode lack real-output evidence; forbidden alias must stay unused",
+      "authority": "GEMMA_READINESS + local asset/receipt seals verified",
+      "nature": "local static + writer stage ready",
+      "source_or_config_write_needed": "true_writer_stage_1",
+      "real_generation_needed": "later_not_next",
+      "minimal_next_action": "execute NEXT_GEMMA writer STAGE_1 (skeleton rows enabled=false)",
+      "can_work_in_parallel": "YES offline"
+    },
+    {
+      "model": "GPTOSS GPT_OSS_20B_MXFP4",
+      "current_state": "PROFILE_DISABLED",
+      "blocking_gate": "only two disabled booleans statically; zerogen evidence mandatory after enablement before qualification",
+      "authority": "GPTOSS_POST_FO10_ACTIVATION_AUTHORITY_R1",
+      "nature": "data-only write + runtime evidence",
+      "source_or_config_write_needed": "true_two_booleans_explicit_ot",
+      "real_generation_needed": "false_now",
+      "minimal_next_action": "execute NEXT_GPTOSS activation packet as explicit decision OT then zerogen",
+      "can_work_in_parallel": "write YES offline; runtime NO"
+    },
+    {
+      "model": "GLM47 GLM_4_7_FLASH_Q5",
+      "current_state": "STATIC_BLOCKED_CONTRACT",
+      "blocking_gate": "template UNRESOLVED (no bytes anywhere), reasoning_parser UNRESOLVED, response conformance unobserved; profile/topology rows absent but cloneable patterns exist locally",
+      "authority": "GLM47 sealed receipt ae93035f + asset byte-exact + GGUF header inspection",
+      "nature": "deepest static gap; needs vendor-spec template decision + zerogen",
+      "source_or_config_write_needed": "true_after_template_authority",
+      "real_generation_needed": "false_zerogen_first",
+      "minimal_next_action": "acquire template authority via NEXT_GLM47_AUTHORITY_ACQUISITION_R2",
+      "can_work_in_parallel": "YES offline acquisition"
+    },
+    {
+      "model": "Ornith legacy ORNITH_Q6_SINGLE",
+      "current_state": "PROFILE_DISABLED_intentional_safety_gate",
+      "blocking_gate": "fallback wave designation + 11435 recovery + host pin MBP vs iMac + human auth",
+      "authority": "ORNITH_LEGACY_ENABLEMENT_AUTHORITY_R1",
+      "nature": "intentional gate; no stale flip",
+      "source_or_config_write_needed": "only_via_dedicated_OT",
+      "real_generation_needed": false,
+      "minimal_next_action": "hold as fallback; preconditions enumerated in authority file",
+      "can_work_in_parallel": "runtime NO"
+    },
+    {
+      "model": "Ornith legacy ORNITH_Q5_MULTI",
+      "current_state": "PROFILE_DISABLED_intentional_safety_gate",
+      "blocking_gate": "same as Q6 with digest cb96f5f7...",
+      "authority": "same",
+      "nature": "same",
+      "source_or_config_write_needed": "only_via_dedicated_OT",
+      "real_generation_needed": false,
+      "minimal_next_action": "same as Q6",
+      "can_work_in_parallel": "runtime NO"
+    },
+    {
+      "model": "Ornith1.5 ORNITH_1_5_35B_Q5_K_M",
+      "current_state": "SUCCESSOR_ONLY_NOT_SIXPACK",
+      "blocking_gate": "not sixpack member; 11435_zerogen NOT_YET_OBSERVED; separate sixpack decision OT required for any replacement",
+      "authority": "three ORNITH15 R1 packets, identity constants verified byte-for-byte",
+      "nature": "successor preservation; observational next",
+      "source_or_config_write_needed": "false_now",
+      "real_generation_needed": false,
+      "minimal_next_action": "after 11435 recovery run prepared NEXT_ORNITH15_ZEROGEN_LOCALSTORE_PACKET_R2",
+      "can_work_in_parallel": "read-only YES; store mutation NO"
+    }
+  ]
+}

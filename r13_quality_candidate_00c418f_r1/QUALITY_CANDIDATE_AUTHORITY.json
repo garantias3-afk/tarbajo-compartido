@@ -1,0 +1,25 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "QUALITY_CANDIDATE_AUTHORITY",
+  "checkpoint": "CP12_QUALITY_CANDIDATE_AUTHENTICATION",
+  "self_audit_prohibition": "OX Alpha authored 00c418f; therefore OX did NOT and MUST NOT issue final quality ACCEPT/REJECT. This OT only authenticates and packages.",
+  "commit": "00c418f58cdc3d4ed0aecad3e325ba508d5f4215",
+  "parent": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+  "tree": "95f6f72a70db07fbafec3c6da55e1ee510aa1a96",
+  "historical_predecessor": "dc681c0bffc270cbf5f92bfcd12feed248b6e30a",
+  "post_fo10_writer": "OX Alpha",
+  "historical_candidate_executor": "Muse Spark 1.2",
+  "changed_paths_confined_verified": [
+    "git diff --name-status parent..candidate = exactly 10 added paths, all within allowed set; zero production/config/candidate-set deltas"
+  ],
+  "required_contents_presence_static": {
+    "QI01_fixed": true,
+    "QI02_fixed": true,
+    "zero_collection_fail_closed_guard": true,
+    "curated_smoke_group_16_mutants": true,
+    "smoke_gate_framework_errors_not_kills": true,
+    "mutation_engine_self_mutant_specs_track_A1_count_12_bound_to_meta_tests": true,
+    "secret_scanner_hardening_patterns_and_allowlists_fail_closed": true
+  },
+  "state_set": "READY_FOR_INDEPENDENT_CLOUD_AUDIT"
+}

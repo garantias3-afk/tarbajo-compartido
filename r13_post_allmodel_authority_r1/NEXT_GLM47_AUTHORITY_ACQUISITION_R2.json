@@ -1,0 +1,32 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "NEXT_GLM47_AUTHORITY_ACQUISITION_R2",
+  "checkpoint": "CP09",
+  "purpose": "acquire EXACT authority for the surfaces still unresolved after local harvest",
+  "acquisitions": [
+    {
+      "surface": "template",
+      "needed_artifact": "official GLM-4.7 chat template primary bytes (vendor repo snapshot hash-pinned) OR explicit human decision to author candidate template",
+      "forbidden_source": "family defaults / arch-derived guesses",
+      "post_condition": "template bytes sealed + sha256 recorded before any writer binding"
+    },
+    {
+      "surface": "reasoning_parser",
+      "needed_artifact": "zerogen observation of raw response on isolated local store after 11435 SMB recovery (does thinking appear? channel markers? plain JSON?)",
+      "forbidden": "assuming qwen3-style think tags",
+      "post_condition": "observed shape receipt"
+    },
+    {
+      "surface": "response_parser_conformance",
+      "needed_artifact": "same zerogen observation parsed through harness CanaryParsers to record parseable/has_identity outcome"
+    },
+    {
+      "surface": "execution_profile+topology values",
+      "needed_artifact": "NONE beyond existing local patterns - already sufficient for skeleton authoring"
+    }
+  ],
+  "runtime_discipline": "isolated/local store only; zero generations beyond zerogen probes; 11434 untouched; no SMB walks while degraded",
+  "blocked_pending": [
+    "11435 store recovery per FINAL_CRITICAL_PATH"
+  ]
+}

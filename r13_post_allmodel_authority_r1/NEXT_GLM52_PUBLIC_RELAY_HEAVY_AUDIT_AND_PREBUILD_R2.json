@@ -1,0 +1,70 @@
+{
+  "packet": "NEXT_GLM52_PUBLIC_RELAY_HEAVY_AUDIT_AND_PREBUILD_R2",
+  "assignee": "GLM 5.2",
+  "mode": "NEW_TASK_FRESH_READ_ONLY_CLOUD",
+  "source_of_truth": "public relay repository ONLY: https://github.com/garantias3-afk/tarbajo-compartido.git (directories r13_post_allmodel_authority_r1/ and r13_quality_candidate_00c418f_r1/)",
+  "constraints": [
+    "use NO token and NO private access of any kind",
+    "perform NO writes anywhere; this is a read-only audit task",
+    "NO runtime contact: no Ollama, no ports 11434/11435, no model loads, no generations, no canaries",
+    "do NOT treat OX writer claims as accepted facts - every number labeled WRITER_REPORTED_PENDING_INDEPENDENT_AUDIT is a claim to verify or flag",
+    "do NOT reopen FO10 (parser contract hash 613da1b7... is closed)",
+    "do NOT invent missing runtime evidence; if evidence is absent say so"
+  ],
+  "job_a_quality_narrow_audit": {
+    "target": "quality candidate 00c418f58cdc3d4ed0aecad3e325ba508d5f4215 published in r13_quality_candidate_00c418f_r1/",
+    "verify": [
+      "parent eccd8e9 identity",
+      "quality-only diff confinement",
+      "QI01 framework-errors-never-kills",
+      "QI02 fail-closed CI contract",
+      "zero-collection fail-closed guard",
+      "16-mutant curated smoke semantics",
+      "framework errors not counted as kills",
+      "secret scan logic soundness",
+      "CI contract consistency",
+      "fresh public-file self consistency"
+    ],
+    "excluded": [
+      "no 96-mutant rerun"
+    ],
+    "checklist_file": "r13_quality_candidate_00c418f_r1/QUALITY_AUDIT_CHECKLIST_R1.json"
+  },
+  "job_b_heavy_static_cross_audit": {
+    "challenge_each_claim": {
+      "qwen": [
+        "Q1 verdict PROVEN_NON_BLOCKING (legacy indirection never reaches runtime identity)",
+        "Q2 verdict PROVEN_NON_BLOCKING (190 = config blob 154 + params blob 36)"
+      ],
+      "gemma": [
+        "missing-contract classification per field in GEMMA_CONTRACT_AUTHORITY_MATRIX_R1",
+        "writer STAGE_1 executability without invented values"
+      ],
+      "gptoss": [
+        "DATA_ONLY_ENABLEMENT_SUFFICIENT contract-wise",
+        "zerogen still mandatory post-enablement",
+        "chat_template_id null passes check_template_binding by design"
+      ],
+      "glm47": [
+        "template UNRESOLVED given GGUF lacks chat_template AND tag manifest has no template layer",
+        "six-surface classifications",
+        "family defaults not authority"
+      ],
+      "ornith_legacy": [
+        "INTENTIONAL_SAFETY_GATE determination vs stale progression"
+      ],
+      "ornith15": [
+        "SUCCESSOR_ONLY_NOT_SIXPACK boundary preservation"
+      ]
+    },
+    "verdict_vocabulary_per_claim": [
+      "ACCEPT",
+      "REJECT",
+      "NEEDS_LOCAL_EVIDENCE"
+    ],
+    "forbidden_fourth_category": true,
+    "deliverable_also": "prioritized ordering of next source writers (gemma stage_1, gptoss activation OT, glm47 acquisition, qwen zerogen after store recovery)"
+  },
+  "output_contract": "structured audit report with per-item verdict + citation into the published files; no new files required from auditor side beyond the report itself returned to the operator",
+  "boundary": "any local runtime recovery (e.g., MBP Qwen local-store) remains an independent execution lane and MUST NOT consume unaccepted cloud conclusions as runtime authority"
+}

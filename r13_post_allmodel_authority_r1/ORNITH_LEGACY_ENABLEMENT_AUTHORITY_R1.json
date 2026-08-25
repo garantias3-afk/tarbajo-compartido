@@ -1,0 +1,25 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "ORNITH_LEGACY_ENABLEMENT_AUTHORITY_R1",
+  "checkpoint": "CP10",
+  "candidates": [
+    "ORNITH_Q6_SINGLE",
+    "ORNITH_Q5_MULTI"
+  ],
+  "determination": "INTENTIONAL_SAFETY_GATE",
+  "key_evidence": [
+    "disabled object is ExecutionProfile ORNITH_TOOLLESS_V1 bound to legacy ornith_1_0_35b_q4km (itself enabled=false, DISABLED_REQUIRES_LOCAL_PREFLIGHT, host_pin null, CHAT_TEMPLATE_BYTES_NOT_MATERIALIZED documented unmet precondition)",
+    "sixpack model profiles ornith_q6_single/ornith_q5_multi are separately enabled=true READY with contracts PROVEN_R11 and fast_path_eligible=true - their residual blockers are runtime observation, host-pin asymmetry (pinned MacBook-Pro vs this iMac18,3), and human authorization, not config staleness",
+    "ORNITH_TOOLLESS_V1 born enabled=false at creation commit 9e7a676 and never flipped across 639d01d->951d1db->eccd8e9; commit 639d01d simultaneously enabled QWEN_TOOLLESS_V1 and added the ornith slot profiles - per-profile enablement is an active decision",
+    "handoff authority: ORNITH_LEGACY_READINESS purpose fallback-readiness first_wave=false; DO_NOT_REPEAT forbids 'make legacy Ornith first-wave because fast_path_eligible' and 'silently enable disabled profiles/topologies'; CANARY_WAVE_PLAN wave fallback_ornith not_first_wave=true",
+    "catalog_readiness_conflict=true is deliberate fail-closed bookkeeping from build_candidate_catalog.py disagreement detection while 11435 store is unobservable"
+  ],
+  "enablement_preconditions_enumerated_not_executed": [
+    "11435 SMB/store recovery consumed first",
+    "fresh live identity observed matching pinned tags+digests 53ad42f1.../cb96f5f7...",
+    "host reconciliation: execute on pinned host OR authorized registry re-pin write",
+    "external registry enabled_for_canary reconciliation clearing B-READINESS-DISAGREEMENT",
+    "explicit non-silent config write under dedicated OT + explicit human authorization; classification remains fallback wave"
+  ],
+  "anything_enabled_by_this_ot": false
+}

@@ -1,0 +1,38 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "NEXT_GLM47_MINIMAL_EXECUTION_CONTRACT_WRITER_R2",
+  "checkpoint": "CP09",
+  "writer_state": "BLOCKED_PENDING_EXACT_AUTHORITY",
+  "blocked_values_and_why": [
+    {
+      "field": "chat_template_id/chat_template_sha256 in new profile row",
+      "why": "no template bytes exist anywhere locally (GGUF none, tag manifest none, no Modelfile); inventing is forbidden"
+    },
+    {
+      "field": "reasoning_parser value",
+      "why": "GLM4.7 reasoning format has no local primary evidence"
+    },
+    {
+      "field": "any fast_path/contract_provenance promotion",
+      "why": "requires real output evidence"
+    }
+  ],
+  "executable_once_authority_arrives_exact_plan": [
+    {
+      "path": "config/execution_profiles.v1.json",
+      "change": "append GLM_TOOLLESS_V1 row cloned from GPTOSS_TOOLLESS_V1 pattern with: prompt_profile_id H0_SCANNER_PROMPT_V1 + pinned prompt_sha256, tool_parser null + tools FORBIDDEN/max_tool_turns 0, scanner_output_v1, STOP_GATES_V3, sampling/context per accepted pattern, enabled=false; fill chat_template_* and reasoning_parser ONLY from sealed acquired bytes/receipts"
+    },
+    {
+      "path": "config/topology_profiles.v1.json",
+      "change": "append GLM_SINGLE_N1 row cloned from SINGLE_N1 family, enabled=false"
+    },
+    {
+      "tests": [
+        "offline validators green",
+        "test_binding_gates green",
+        "negative: enable attempt without runtime qualification yields executable_blockers"
+      ]
+    }
+  ],
+  "no_speculative_fields_included": true
+}

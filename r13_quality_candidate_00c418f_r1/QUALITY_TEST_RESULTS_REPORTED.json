@@ -1,0 +1,60 @@
+{
+  "artifact": "QUALITY_TEST_RESULTS_REPORTED",
+  "label_global": "WRITER_REPORTED_PENDING_INDEPENDENT_AUDIT",
+  "writer": "OX Alpha (author of candidate - claims are NOT accepted facts)",
+  "results": {
+    "curated_smoke_group": {
+      "mutants_attempted": 16,
+      "killed_semantic": 16,
+      "framework_error_kills": 0,
+      "gate_exit": 0
+    },
+    "mutation_meta_tests": {
+      "passed": 18,
+      "failed": 0
+    },
+    "engine_self_mutants": {
+      "attempted": 10,
+      "killed_semantic": 10,
+      "survivors": 0
+    },
+    "real_script_tests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "ci_contract_tests": {
+      "passed": 46,
+      "failed": 0
+    },
+    "targeted_post_fo10_tests": {
+      "passed": 81,
+      "failed": 0,
+      "files": [
+        "test_model_registry_v3.py",
+        "test_binding_gates.py",
+        "test_fo10_parser_contract.py",
+        "test_gptoss_response_contract.py"
+      ]
+    },
+    "full_regression_imac_ecc_d8e9_base": {
+      "passed": 800,
+      "failed": 26,
+      "errors": 0,
+      "skipped": 2,
+      "baseline_same_host_ecc_d8e9": {
+        "passed": 729,
+        "failed": 26
+      },
+      "failure_set_diff": "IDENTICAL",
+      "delta_attributable_failures": 0
+    },
+    "fresh_remote_proof": {
+      "fresh_clone_head": "00c418f58cdc3d4ed0aecad3e325ba508d5f4215",
+      "production_delta_count": 0,
+      "verdict": "PASS"
+    }
+  },
+  "export_sha256_reported": "9a5a969f0b0ef80b2baa4f0774b67c9b331d2a7c676c7db11a01f2060828554d",
+  "local_attestation_dir": "writer run artifacts exist under canonical AI_RUNS OX6 salvage directory; none of these numbers are committed to git refs",
+  "independent_execution_by_this_ot": false
+}

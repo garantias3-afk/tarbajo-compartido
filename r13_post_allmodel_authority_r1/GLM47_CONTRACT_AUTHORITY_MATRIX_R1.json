@@ -1,0 +1,47 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "GLM47_CONTRACT_AUTHORITY_MATRIX_R1",
+  "checkpoint": "CP09",
+  "candidate_id": "GLM_4_7_FLASH_Q5",
+  "classification_taxonomy": [
+    "RESOLVED_EXACT",
+    "RESOLVED_NONE_REQUIRED",
+    "LOCAL_PRIMARY_EVIDENCE_FOUND",
+    "ZEROGEN_RUNTIME_REQUIRED",
+    "REAL_GENERATION_REQUIRED",
+    "UNRESOLVED"
+  ],
+  "surfaces": {
+    "template": {
+      "class": "UNRESOLVED",
+      "evidence": "GGUF carries no tokenizer.chat_template; served tag manifest contains NO template/config layer (model blob + 18B params only); no Modelfile bytes locally; family defaults forbidden as authority. Requires explicit vendor-spec template authoring decision + materialization before any binding."
+    },
+    "response_parser": {
+      "class": "ZEROGEN_RUNTIME_REQUIRED",
+      "evidence": "harness CanaryParsers (sealed, model-agnostic, JSON-tolerant) is the only parser layer; GLM4.7 actual response shape unobserved under scanner prompts; no glm-specific parser exists or is required statically until shape is observed."
+    },
+    "reasoning_parser": {
+      "class": "UNRESOLVED",
+      "evidence": "no local primary evidence of GLM4.7 thinking/channel format; deepseek2 arch does not license a default."
+    },
+    "tool_parser": {
+      "class": "RESOLVED_NONE_REQUIRED",
+      "evidence": "all authorized canary modes are tool-less; accepted execution-profile pattern sets tools_policy FORBIDDEN, max_tool_turns 0."
+    },
+    "execution_profile": {
+      "class": "LOCAL_PRIMARY_EVIDENCE_FOUND",
+      "evidence": "accepted rows (QWEN_TOOLLESS_V1/GPTOSS_TOOLLESS_V1) provide exact cloneable structure: H0_SCANNER_PROMPT_V1 with pinned prompt_sha256, sampling, sandbox network=false, scanner_output_v1, STOP_GATES_V3; row itself absent and must be authored enabled=false."
+    },
+    "topology": {
+      "class": "LOCAL_PRIMARY_EVIDENCE_FOUND",
+      "evidence": "SINGLE_N1-family patterns exist in accepted topology table (SINGLE_RESIDENT, co_residence false, ISOLATED); GLM row must be authored cloned from family pattern, enabled=false."
+    }
+  },
+  "static_identity": {
+    "status": "NOT_MISSING",
+    "asset_bytes_exact_match": true,
+    "receipt_byte_exact": true
+  },
+  "family_defaults_used_as_authority": false,
+  "overall_state": "STATIC_BLOCKED_CONTRACT_CONFIRMED_DEEPEST_GAP_OF_SIXPACK"
+}

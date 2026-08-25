@@ -1,0 +1,37 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "QWEN_Q2_WEIGHT_BYTES_RECONCILIATION",
+  "checkpoint": "CP04",
+  "candidate_id": "QWEN_3_8_27B_DENSE_Q5",
+  "values": {
+    "registry_weight_bytes": 19771509854,
+    "launcher_expected_bytes": 19771509664,
+    "delta": 190
+  },
+  "semantic_origin": {
+    "registry_value": {
+      "meaning": "Ollama runtime model_size_bytes = sum of ALL manifest layers for tag openclaw-qwen-3-8-27b-dense-q5:c8",
+      "provenance": [
+        "MiMo R2 qualification package transcription cited in config/model_registry.v3.json notes/source_provenance",
+        "QWEN38_AUTHORITATIVE_HANDOFF_VALUES.json QWEN38_EXPECTED_BYTES=19771509854 (ollama-basis per K3 FINAL_REPORT)",
+        "GLM53_R13_QWEN38_THIRD_CANARY_PREFLIGHT_R1 TRACK_B_LIVE_RUNTIME_GATE.json live /api/tags size_bytes=19771509854",
+        "OX_QWEN38_SECOND_REAL_CANARY_R1 CANARY_RUNTIME_EVIDENCE.json artifact_bytes=19771509854 digest_match=true"
+      ],
+      "classification_of_field": "payload_plus_wrapper_runtime_measurement (GGUF blob + config blob 154 B + params blob 36 B)"
+    },
+    "launcher_value": {
+      "meaning": "source GGUF store-file length (artifact sha256 2de73110cb254cbf09b54b717578dadff12ef1194e7271527e68202f39ba4bfd)",
+      "provenance": [
+        "harness/canary_launcher.py CANDIDATE_STATIC_IDENTITY expected_bytes basis decision documented in work/external_registry_v2 CP04_REGISTRY_V2_CONSTRUCTION.json ('expected_bytes_basis_decision: GGUF store file bytes ... ollama model_size_bytes is the runtime-observation basis pinned in the in-repo profile')",
+        "QWEN_PROVISIONING_RESULT.json model blob size=19771509664 with config_blob 154 B and params_blob 36 B",
+        "TRACK_B_EXISTING_QWEN_RUNTIME.json model blob marked byte_identical_to_source_gguf=true",
+        "local stat of staged store blob = exactly 19771509664 bytes (stat only; no hashing performed)"
+      ],
+      "classification_of_field": "gguf_file_length"
+    }
+  },
+  "exact_arithmetic_proof": "19771509664 + 154 + 36 = 19771509854; delta 190 = 154 + 36 = Ollama non-GGUF manifest layers",
+  "cross_comparison_risk": "NONE - no code path compares the two bases; launcher identity gate uses only served_tag+runtime_digest; expected_bytes feeds frozen candidate-set hash and r6_canary_core GGUF stat check (store-file basis)",
+  "stale_value_present": false,
+  "verdict": "PROVEN_NON_BLOCKING"
+}

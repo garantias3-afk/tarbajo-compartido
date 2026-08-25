@@ -1,0 +1,34 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "NEXT_GPTOSS_MINIMAL_ACTIVATION_WRITER_R2",
+  "checkpoint": "CP07",
+  "writer_state": "READY",
+  "precondition": "Write must be executed as an EXPLICIT dedicated decision OT (do-not-silently-enable). This packet provides exact values only; it does not authorize silent flips.",
+  "data_only_changes_exact": [
+    {
+      "path": "config/execution_profiles.v1.json",
+      "json_pointer": "execution_profiles[?execution_profile_id=='GPTOSS_TOOLLESS_V1'].enabled",
+      "old": false,
+      "new": true
+    },
+    {
+      "path": "config/topology_profiles.v1.json",
+      "json_pointer": "topology_profiles[?topology_profile_id=='GPTOSS_SINGLE_N1'].enabled",
+      "old": false,
+      "new": true
+    }
+  ],
+  "no_other_changes_allowed": true,
+  "post_write_required_validation": [
+    "registry/profile validators green offline",
+    "tests/test_gptoss_response_contract.py green (binding resolution remains ok=true/non-executable until runtime gates)",
+    "executable_blockers shrink to runtime-only items (host_pin MBP vs execution host reconciliation, live identity observation)"
+  ],
+  "explicit_non_goals": [
+    "no real generation",
+    "no canary",
+    "no 11434/11435 contact from this packet",
+    "no claim of qualification: zerogen evidence still required after enablement before real eligibility",
+    "host_pin remains <FALLBACK_HOST_PIN> until an authorized re-pin decision OT"
+  ]
+}

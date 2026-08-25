@@ -1,0 +1,11 @@
+{
+  "directory": "r13_post_allmodel_authority_r1",
+  "generated_by_ot": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "sanitization": "automated private-path generalization + secret firewall scan; zero secrets claim enforced pre-commit ; host_pin values generalized to <FALLBACK_HOST_PIN>",
+  "file_count": 14,
+  "sha256_sums_file": "SHA256SUMS",
+  "accepted_source": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+  "all_model_handoff": "05ee6c08786017099e0fd2c5e9c8a64137d281c8",
+  "glm_master_packet": "NEXT_GLM52_PUBLIC_RELAY_HEAVY_AUDIT_AND_PREBUILD_R2.json",
+  "grok_terminal_summary_substitution": "ALL_MODEL matrix published as GROK_ALL_MODEL_TERMINAL_SUMMARY.json (no separate upstream file)"
+}

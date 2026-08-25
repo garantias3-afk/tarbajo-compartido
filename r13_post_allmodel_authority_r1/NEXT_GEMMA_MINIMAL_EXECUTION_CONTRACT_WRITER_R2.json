@@ -1,0 +1,44 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "NEXT_GEMMA_MINIMAL_EXECUTION_CONTRACT_WRITER_R2",
+  "checkpoint": "CP06",
+  "writer_state": "READY",
+  "executability": "STAGE_1 executable today without further global investigation; STAGE_2 hard-gated on runtime evidence. No invented parser/template values.",
+  "stage_1_static_now": {
+    "allowed_paths_count": 3,
+    "changes": [
+      {
+        "path": "config/execution_profiles.v1.json",
+        "change": "append GEMMA_TOOLLESS_V1 execution profile row cloned structurally from GPTOSS_TOOLLESS_V1/QWEN_TOOLLESS_V1 patterns: mode TOOLLESS_SCANNER, prompt_profile_id H0_SCANNER_PROMPT_V1 with its pinned prompt_sha256, chat_template_id null (engine-resolved passthrough per R11 api_show evidence), reasoning_parser null (engine gemma4), tool_parser null, tools_policy FORBIDDEN/max_tool_turns 0, sandbox network=false, max_output_tokens/sampling/context_target_tokens per accepted pattern, output_schema_id scanner_output_v1, loop_detection + STOP_GATES_V3; enabled=false",
+        "authority": "accepted config patterns + R11 api_show primary capture"
+      },
+      {
+        "path": "config/topology_profiles.v1.json",
+        "change": "append GEMMA_SINGLE_N1 topology row cloned from SINGLE_N1 family patterns (SINGLE_RESIDENT, co_residence false, ISOLATED queue policy); enabled=false",
+        "authority": "accepted topology family patterns"
+      },
+      {
+        "path": "config/model_registry.v3.json",
+        "change": "transcribe static identity expectations into gema row notes ONLY IF absent (identity already present): template/renderer/parser/stop as labeled expectations requiring fresh live reproduction; no identity value changes",
+        "authority": "GEMMA_LOCAL_ASSET_AUTHORITY + registry discipline"
+      }
+    ],
+    "tests_required_after_write": [
+      "existing registry/profile validators green",
+      "tests/test_binding_gates.py green",
+      "negative test: enabling GEMMA_TOOLLESS_V1 without runtime qualification must still yield executable_blockers non-empty"
+    ]
+  },
+  "stage_2_runtime_gated_BLOCKED": {
+    "blocked_fields": [
+      "response_framing completion-class claim",
+      "contract_provenance PROVEN_*",
+      "fast_path_eligible true",
+      "prompt/template sha256 live binding",
+      "output_schema conformance instance",
+      "stop ladder behavior under MEMORY_AND_CONTEXT_V1"
+    ],
+    "required_evidence": "zerogen receipts + real scanner-shaped outputs after 11435 SMB/store recovery; manifest regeneration by import then fresh observation vs pinned runtime digest 4cf2df7d...",
+    "forbidden": "promoting UNPROVEN to CANARY_READY because GGUF exists; using alias gemma4:26b-a4b-it-q4_K_M"
+  }
+}

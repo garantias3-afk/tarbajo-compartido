@@ -1,0 +1,34 @@
+{
+  "update": "R13_RELAY_UPDATE_R1",
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "author_model": "OX Alpha",
+  "accepted_source": "eccd8e9a07bcd4acd64eac2e4be50613baa66230 (tree f5e7750af772946181e42cdf1f5354219f8abfa8)",
+  "source_handoff_refs": {
+    "all_model_handoff": "05ee6c08786017099e0fd2c5e9c8a64137d281c8",
+    "parser_contract_hash": "613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1"
+  },
+  "quality_candidate": {
+    "commit": "00c418f58cdc3d4ed0aecad3e325ba508d5f4215",
+    "parent": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+    "tree": "95f6f72a70db07fbafec3c6da55e1ee510aa1a96",
+    "state": "READY_FOR_INDEPENDENT_CLOUD_AUDIT",
+    "results_label": "WRITER_REPORTED_PENDING_INDEPENDENT_AUDIT"
+  },
+  "new_directories": [
+    {"dir": "r13_post_allmodel_authority_r1/", "purpose": "post-all-model static authority harvest, per-model reconciliations/writer packets, blocker ledger, GLM 5.2 master packet"},
+    {"dir": "r13_quality_candidate_00c418f_r1/", "purpose": "sanitized quality-only surfaces for independent narrow cloud audit"}
+  ],
+  "existing_relay_content_untouched": true,
+  "sanitization_policy": "automated private-path generalization (<INTERCAMBIO_ROOT>/<RECEIPTS_ROOT>/<HOME>), secret firewall pattern scan over the entire new delta before commit, no private production source published beyond the ten quality-specific candidate files, MANIFEST.json + SHA256SUMS in each new directory",
+  "zero_secrets_claim": true,
+  "key_verdicts": {
+    "QWEN_Q1": "PROVEN_NON_BLOCKING",
+    "QWEN_Q2": "PROVEN_NON_BLOCKING (190 = config 154 + params 36 manifest layers)",
+    "GEMMA": "STATIC_BLOCKED_CONTRACT confirmed; writer STAGE_1 ready static-only; STAGE_2 runtime-gated",
+    "GPTOSS": "DATA_ONLY_ENABLEMENT_SUFFICIENT contract-wise; zerogen mandatory post-enablement; two-boolean activation packet ready for explicit decision OT",
+    "GLM47": "template+reasoning UNRESOLVED (no bytes anywhere local); tool_parser RESOLVED_NONE_REQUIRED; profile/topology cloneable patterns found locally",
+    "ORNITH_LEGACY": "INTENTIONAL_SAFETY_GATE (fallback wave preserved)",
+    "ORNITH15": "SUCCESSOR_ONLY_NOT_SIXPACK preserved; R2 zerogen packet prepared not executed"
+  },
+  "next_action": "ASSIGN_GLM_5_2_CLOUD_PUBLIC_RELAY_HEAVY_AUDIT_AND_PREBUILD_R2 consuming r13_post_allmodel_authority_r1/NEXT_GLM52_PUBLIC_RELAY_HEAVY_AUDIT_AND_PREBUILD_R2.json"
+}

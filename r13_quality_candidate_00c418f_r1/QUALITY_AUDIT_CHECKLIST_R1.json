@@ -1,0 +1,21 @@
+{
+  "artifact": "QUALITY_AUDIT_CHECKLIST_R1",
+  "auditor": "GLM 5.2 independent cloud audit (public repo copy only)",
+  "scope_narrow": true,
+  "items": [
+    "verify parent == eccd8e9a07bcd4acd64eac2e4be50613baa66230 and diff confined to the 10 quality-only paths",
+    "verify QI01: framework errors (HARNESS_ERROR/HARNESS_TIMEOUT/BASELINE_INVALID/EQUIVALENT_CONFIRMED/SURVIVED_MATERIAL/INVALID_MUTANT) can never satisfy KILLED_SEMANTIC accounting in smoke_gate.py",
+    "verify QI02: ci_contract.py enforces real invocation lines for 3 pytest targets + 4 tools, rejects || true / pipe-to-echo, requires nonzero-exit wiring for zero-collection guard",
+    "verify zero-collection guard is fail-closed (rejects zero counts, checks returncodes)",
+    "recount groups.smoke == exactly 16 full spec dicts and that runner treats unknown/empty groups fail-closed",
+    "verify secret_scan patterns + three allowlist layers + ALLOWLISTED_FAKE_SECRET marker behave as documented",
+    "check CI workflow yaml consistency with ci_contract expectations (triggers, deps, steps order)",
+    "cross-check reported numbers in QUALITY_TEST_RESULTS_REPORTED against any public evidence surfaces - absence of public attestation must be recorded, not assumed",
+    "challenge mutants-vs-all divergence (27 indices) in mutation_specs.v1.json: confirm dormant-by-default and assess risk"
+  ],
+  "explicit_exclusions": [
+    "no 96-mutant rerun",
+    "no acceptance authority transfer",
+    "no FO10 reopening"
+  ]
+}

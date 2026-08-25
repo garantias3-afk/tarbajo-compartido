@@ -1,0 +1,43 @@
+{
+  "ot_id": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "artifact": "QWEN_Q1_EXECUTION_PROFILE_RECONCILIATION",
+  "checkpoint": "CP03",
+  "candidate_id": "QWEN_3_8_27B_DENSE_Q5",
+  "slot": "SLOT_04",
+  "question": "Does qwen_abliterated_q4km_64k ever control actual SLOT04 identity at execution time?",
+  "schema_note": "Field bound_model_profile_id does NOT exist in accepted tree (git grep: zero hits). The real field is ExecutionProfile.model_profile_id. Analysis used the real field.",
+  "traced_runtime_binding_chain": [
+    {
+      "stage": "candidate_id",
+      "evidence": "r13/candidate_set/epoch-01.json SLOT_04 -> QWEN_3_8_27B_DENSE_Q5 -> model_profile_id qwen_3_8_27b_dense_q5; r13/candidate_catalog.json runtime_served_tag openclaw-qwen-3-8-27b-dense-q5:c8, runtime_digest 681e723a..."
+    },
+    {
+      "stage": "model_profile",
+      "evidence": "config/model_registry.v3.json qwen_3_8_27b_dense_q5 row enabled=true READY digest-pinned"
+    },
+    {
+      "stage": "launcher_identity_resolution",
+      "evidence": "harness/canary_launcher.py CANDIDATE_TO_PROFILE_MAP + CANDIDATE_STATIC_IDENTITY (served_tag/gguf_sha256/expected_bytes/runtime_digest); identity gate compares live /api/show served_tag+runtime_digest with exact equality else RUNTIME_IDENTITY_MISMATCH fail-closed"
+    },
+    {
+      "stage": "execution_profile_role",
+      "evidence": "src/executor_local/model_registry_v3.py validate_binding() raises terminal MODEL_EXECUTION_BINDING_MISMATCH when ep.model_profile_id != mp; called ONLY from offline plan builder dynamic_canary_plan.build_plan via offline_plan/manage scripts/validator - no live campaign path"
+    },
+    {
+      "stage": "live_gate",
+      "evidence": "harness/r5_supervisor.py _default_gate resolves profile from candidate_id then real_execution_gate(qwen_3_8_27b_dense_q5, QWEN_TOOLLESS_V1,...); adapter gate checks host_pin, observed identity vs mp pins, all-three-enabled - never dereferences ep.model_profile_id for identity or dispatch"
+    }
+  ],
+  "abliterated_profile_presence_in_chain": "ABSENT - zero occurrences in harness/, src/r13ctl, r13/; only in its own registry row, execution profile declaration, CSV, offline validators/tests, and historical design artifacts",
+  "hypothetical_hijack_barriers": [
+    "config/model_registry.v3.json: qwen_abliterated_q4km_64k enabled=false -> DISABLED_PROFILE_NOT_EXECUTABLE",
+    "pairing it against SLOT04 through build_plan terminates MODEL_EXECUTION_BINDING_MISMATCH (terminal reason)",
+    "runtime dispatch tag has single source: sealed candidate identity served_tag"
+  ],
+  "classification": "A_intentional_generic_legacy_dispatcher_indirection",
+  "hygiene_notes_non_defect": [
+    "stale free-text in disabled abliterated row notes ('QWEN_TOOLLESS_V1 remains disabled') while profile is now enabled=true - no code reads it",
+    "optional mirror of CP04 byte-basis note into qwen_3_8_27b_dense_q5 registry notes for future audits"
+  ],
+  "verdict": "PROVEN_NON_BLOCKING"
+}

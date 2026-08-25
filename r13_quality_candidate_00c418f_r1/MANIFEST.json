@@ -1,0 +1,11 @@
+{
+  "directory": "r13_quality_candidate_00c418f_r1",
+  "generated_by_ot": "OT-C8-R13-OXALPHA-IMAC-5AGENT-LOCAL-AUTHORITY-HARVEST-QWEN-RECONCILE-BLOCKED-MODELS-PUBLIC-RELAY-R1",
+  "sanitization": "automated private-path generalization + secret firewall scan; zero secrets claim enforced pre-commit",
+  "file_count": 14,
+  "sha256_sums_file": "SHA256SUMS",
+  "quality_candidate_commit": "00c418f58cdc3d4ed0aecad3e325ba508d5f4215",
+  "parent": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+  "tree": "95f6f72a70db07fbafec3c6da55e1ee510aa1a96",
+  "status_label": "WRITER_REPORTED_PENDING_INDEPENDENT_AUDIT"
+}

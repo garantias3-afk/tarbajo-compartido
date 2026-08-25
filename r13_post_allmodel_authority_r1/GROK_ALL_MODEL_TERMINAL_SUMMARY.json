@@ -1,0 +1,194 @@
+{
+ "OT_ID": "OT-C8-R13-GROK46-MBP-7AGENT-ECCD8E9-ALL-MODEL-STATIC-RUNTIME-ZEROGEN-FASTFORWARD-R1",
+ "checkpoint": "CP05",
+ "accepted_commit": "eccd8e9a07bcd4acd64eac2e4be50613baa66230",
+ "parser_contract_hash": "613da1b7ab0ee4ad813db115a4ec51164d14fbb63fcbe8875b052ff129879ca1",
+ "candidate_set_id": "r13-epoch-01",
+ "activation_state": "STAGED",
+ "execution_authority": "SYNTHETIC_ONLY",
+ "sixpack_unchanged": true,
+ "models": {
+  "ORNITH_Q6_SINGLE": {
+   "slot_id": "SLOT_01",
+   "candidate_id": "ORNITH_Q6_SINGLE",
+   "model_profile_id": "ornith_q6_single",
+   "model_profile_enabled": true,
+   "served_model_id": "openclaw-ornith-q6-single:c8",
+   "static_digest": "53ad42f13f0c7475444cabf5ec5fdaa6794aefa1af690079aa01ccc371cf56ed",
+   "digest_namespace": "OLLAMA_RUNTIME_DIGEST",
+   "source_sha256": "b3da60c3643af02e7979eb47267c3046dc3f6e3a5c88b6790db12208c051116c",
+   "source_namespace": "SOURCE_SHA256",
+   "quant": "Q6_K",
+   "weight_bytes": 28514152288,
+   "host_pin": "MacBook-Pro-de-Mariano.local",
+   "qualification_receipt_sha256": "776da25c82ae747a00118e74726b114c6336e87501d2427642beb1eaaff24d80",
+   "execution_profile": {
+    "id": "ORNITH_TOOLLESS_V1",
+    "enabled": false,
+    "bound_model_profile_id": "ornith_1_0_35b_q4km"
+   },
+   "topology": {
+    "id": "ORNITH_SINGLE_N1",
+    "enabled": true
+   },
+   "template_contract": "qwen35_with_thinking_and_tools",
+   "response_contract": "completion",
+   "contract_provenance": "PROVEN_R11",
+   "fast_path_eligible": true,
+   "asset_provenance": "launcher CANDIDATE_STATIC_IDENTITY + model_registry.v3.json at eccd8e9",
+   "catalog_readiness_conflict": true
+  },
+  "ORNITH_Q5_MULTI": {
+   "slot_id": "SLOT_02",
+   "candidate_id": "ORNITH_Q5_MULTI",
+   "model_profile_id": "ornith_q5_multi",
+   "model_profile_enabled": true,
+   "served_model_id": "openclaw-ornith-q5-multi:c8",
+   "static_digest": "cb96f5f716492db294fc576179770774be229b1e0d36a67a7ca88b8f73550132",
+   "digest_namespace": "OLLAMA_RUNTIME_DIGEST",
+   "source_sha256": "325b351fc30a4114af5bb21dc2ba7f666ccc90c8f26e6bb36909255d5a449469",
+   "source_namespace": "SOURCE_SHA256",
+   "quant": "Q5_K_M",
+   "weight_bytes": 24729130848,
+   "host_pin": "MacBook-Pro-de-Mariano.local",
+   "qualification_receipt_sha256": "def7a4833851ef2f8143a78e1568a22e50df6c07d148592488d6085cf45f919e",
+   "execution_profile": {
+    "id": "ORNITH_TOOLLESS_V1",
+    "enabled": false,
+    "bound_model_profile_id": "ornith_1_0_35b_q4km"
+   },
+   "topology": {
+    "id": "ORNITH_SINGLE_N1",
+    "enabled": true
+   },
+   "template_contract": "qwen35_with_thinking_and_tools",
+   "response_contract": "completion",
+   "contract_provenance": "PROVEN_R11",
+   "fast_path_eligible": true,
+   "asset_provenance": "launcher CANDIDATE_STATIC_IDENTITY + model_registry.v3.json at eccd8e9",
+   "catalog_readiness_conflict": true
+  },
+  "GLM_4_7_FLASH_Q5": {
+   "slot_id": "SLOT_03",
+   "candidate_id": "GLM_4_7_FLASH_Q5",
+   "model_profile_id": "glm_4_7_flash_q5",
+   "model_profile_enabled": true,
+   "served_model_id": "openclaw-glm-4-7-flash-q5:c8",
+   "static_digest": "0c9bc4ebcb8da2a38bfaa6d9f72239c11e996897d427cdad554112efc11c9d92",
+   "digest_namespace": "OLLAMA_RUNTIME_DIGEST",
+   "source_sha256": "167848c4b460887d7a52c44c378d3996a0d38b3302ac2045494dc8b50869a893",
+   "source_namespace": "SOURCE_SHA256",
+   "quant": "Q5_K_M",
+   "weight_bytes": 21408850272,
+   "host_pin": "MacBook-Pro-de-Mariano.local",
+   "qualification_receipt_sha256": "ae93035f524651327b460d7acec7253eb7da2257e2075e889114b66ca6656fe3",
+   "execution_profile": {
+    "id": null,
+    "enabled": false,
+    "note": "no GLM execution profile exists"
+   },
+   "topology": {
+    "id": null,
+    "enabled": false
+   },
+   "template_contract": "DERIVED_FROM_CONFIG (GLM4 Jinja2-style with tool calling)",
+   "response_contract": "NO_CONSTA",
+   "contract_provenance": "UNPROVEN",
+   "fast_path_eligible": false,
+   "asset_provenance": "launcher CANDIDATE_STATIC_IDENTITY + model_registry.v3.json at eccd8e9",
+   "catalog_readiness_conflict": true
+  },
+  "QWEN_3_8_27B_DENSE_Q5": {
+   "slot_id": "SLOT_04",
+   "candidate_id": "QWEN_3_8_27B_DENSE_Q5",
+   "model_profile_id": "qwen_3_8_27b_dense_q5",
+   "model_profile_enabled": true,
+   "served_model_id": "openclaw-qwen-3-8-27b-dense-q5:c8",
+   "static_digest": "681e723ab3f26b823555f231b04c83a1e4a047dd23228e8408ce006674b5f5d0",
+   "digest_namespace": "OLLAMA_RUNTIME_DIGEST",
+   "source_sha256": "2de73110cb254cbf09b54b717578dadff12ef1194e7271527e68202f39ba4bfd",
+   "source_namespace": "SOURCE_SHA256",
+   "quant": "Q5_K_M",
+   "weight_bytes": 19771509854,
+   "host_pin": "MacBook-Pro-de-Mariano.local",
+   "qualification_receipt_sha256": "42fd4f421316aee9b61a56d3ab82f3635f56905545f396f2cb1931229ec09ace",
+   "execution_profile": {
+    "id": "QWEN_TOOLLESS_V1",
+    "enabled": true,
+    "bound_model_profile_id": "qwen_abliterated_q4km_64k"
+   },
+   "topology": {
+    "id": "SINGLE_N1",
+    "enabled": true
+   },
+   "template_contract": "qwen35_with_thinking_and_tools",
+   "response_contract": "completion",
+   "contract_provenance": "PROVEN_K3",
+   "fast_path_eligible": true,
+   "asset_provenance": "launcher CANDIDATE_STATIC_IDENTITY + model_registry.v3.json at eccd8e9",
+   "catalog_readiness_conflict": true
+  },
+  "GEMMA_4_26B_A4B_QAT_Q4": {
+   "slot_id": "SLOT_05",
+   "candidate_id": "GEMMA_4_26B_A4B_QAT_Q4",
+   "model_profile_id": "gemma_4_26b_a4b_qat_q4",
+   "model_profile_enabled": true,
+   "served_model_id": "openclaw-gemma-4-26b-a4b-qat-q4:c8",
+   "static_digest": "4cf2df7d0243e1f4a32675b2d4b21d695c1e2ac2442487d0d766443319f864c8",
+   "digest_namespace": "OLLAMA_RUNTIME_DIGEST",
+   "source_sha256": "3eca3b8f6d7baf218a7dd6bba5fb59a56ee25fe2d567b6f5f589b4f697eca51d",
+   "source_namespace": "SOURCE_SHA256",
+   "quant": "Q4_0",
+   "weight_bytes": 14439363584,
+   "host_pin": "MacBook-Pro-de-Mariano.local",
+   "qualification_receipt_sha256": "0526d3c8f0cf34f91f7447788e0a03e562ff9cfac0f96ab3516553875a045c8b",
+   "execution_profile": {
+    "id": null,
+    "enabled": false,
+    "note": "no GEMMA execution profile exists"
+   },
+   "topology": {
+    "id": null,
+    "enabled": false
+   },
+   "template_contract": "DERIVED_FROM_CONFIG (Gemma4 minimal with renderer/parser)",
+   "response_contract": "NO_CONSTA",
+   "contract_provenance": "UNPROVEN",
+   "fast_path_eligible": false,
+   "asset_provenance": "launcher CANDIDATE_STATIC_IDENTITY + model_registry.v3.json at eccd8e9",
+   "catalog_readiness_conflict": true
+  },
+  "GPT_OSS_20B_MXFP4": {
+   "slot_id": "SLOT_06",
+   "candidate_id": "GPT_OSS_20B_MXFP4",
+   "model_profile_id": "gpt_oss_20b_mxfp4",
+   "model_profile_enabled": true,
+   "served_model_id": "openclaw-gpt-oss-20b-mxfp4:c8",
+   "static_digest": "abdc8224d1d28befa9066b5de8c98b4baf2d38df43a0c38d72015e2f7eb926a9",
+   "digest_namespace": "OLLAMA_RUNTIME_DIGEST",
+   "source_sha256": "27cd6c432c7672cb812a92f611cf3ba7bbc35928262bb1e1253ff4ee6ae35901",
+   "source_namespace": "SOURCE_SHA256",
+   "quant": "MXFP4_MOE",
+   "weight_bytes": 12109566624,
+   "host_pin": "MacBook-Pro-de-Mariano.local",
+   "qualification_receipt_sha256": "37e331d2d8bcef2a9e60248a017bf8cff538a431418b0186d9fcc1e54dbe56f0",
+   "execution_profile": {
+    "id": "GPTOSS_TOOLLESS_V1",
+    "enabled": false,
+    "bound_model_profile_id": "gpt_oss_20b_mxfp4"
+   },
+   "topology": {
+    "id": "GPTOSS_SINGLE_N1",
+    "enabled": false
+   },
+   "template_contract": "DERIVED_FROM_CONFIG (GPT-OSS channel-based template)",
+   "response_contract": "NO_CONSTA",
+   "contract_provenance": "UNPROVEN",
+   "fast_path_eligible": false,
+   "asset_provenance": "launcher CANDIDATE_STATIC_IDENTITY + model_registry.v3.json at eccd8e9",
+   "catalog_readiness_conflict": true
+  }
+ },
+ "published_as": "GROK_ALL_MODEL_TERMINAL_SUMMARY.json",
+ "upstream_source": "ALL_MODEL_STATIC_AUTHORITY_MATRIX.json @ handoff 05ee6c08786017099e0fd2c5e9c8a64137d281c8 (no separate TERMINAL_SUMMARY file exists upstream)"
+}
