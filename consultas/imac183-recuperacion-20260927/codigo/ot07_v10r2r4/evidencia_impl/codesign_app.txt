@@ -1,0 +1,1 @@
+/var/tmp/ot07_E2R1_candidato.gMdKSX/extraida/Install macOS Sonoma.app: resource envelope is obsolete (custom omit rules)

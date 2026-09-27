@@ -1,0 +1,166 @@
+{
+  "ot": "OT07-I-C5-NATIVO",
+  "revision_id": "v10r2r6",
+  "estado_propio": "CANDIDATO_R6_PENDIENTE_REVISION",
+  "autoaprobacion_H1": false,
+  "h1_presentada": false,
+  "utc_cierre": "2026-09-27T15:06:30Z",
+  "rol": "MIMO",
+  "canal_entrega": "RUN.20260927T131419Z.C5IMAC1/entregas/MIMO/",
+  "producto": "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO",
+  "sustituye_a": {
+    "revision": "v10r2r5",
+    "manifiesto": "2afb2c93fc85d34027630d50f1a867f925ac55c190a47051657ecccf471a7840",
+    "nota": "r5 sellado NO editado; r6 es revisión nueva"
+  },
+
+  "proveedor_observado": {
+    "rol": "MIMO",
+    "requerido": "Xiaomi Token Plan, desde OpenCode o MiMo Desktop",
+    "aplicacion": "MiMo Desktop",
+    "proveedor": "Xiaomi Token Plan",
+    "modelo_efectivo": "MiMo (mimo)",
+    "modalidad": "Token Plan (plan contratado)",
+    "evidencia": "arranque manual PARA_PEGAR_MIMO_R6; sin cambio de proveedor; sin fallback",
+    "estado": "CONFIRMADO_POR_USUARIO",
+    "secretos": "no se registran claves/tokens/headers"
+  },
+
+  "host": {
+    "hostname": "HOST_PREPARACION.local",
+    "sw_vers": "macOS 26.6.2 (25G83)",
+    "arch": "arm64",
+    "uid": 501,
+    "verificado_en_sesion": true
+  },
+
+  "herramientas": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk",
+    "python": "3.9.6",
+    "umask": "077",
+    "RENAME_NOFOLLOW_ANY": "0x10 (sys/stdio.h)"
+  },
+
+  "hashes_entrada": {
+    "REVISION_MAX_R5": "leído desde entregas/MAX/; verificado junto a SHA256SUMS_MAX_R5.txt",
+    "r5_manifiesto": "2afb2c93fc85d34027630d50f1a867f925ac55c190a47051657ecccf471a7840",
+    "r4_manifiesto": "17dafa9390342cc857f5721be8e1604f6c5df7434267b0c5d3f611a1f7cc2b41",
+    "RUN_json": "7c9de39c3edf199b17d59c024b4039fa2e550fc5c3d152a90520f4fd27a2f126",
+    "paquete_R2": "b17c54de0b45b363421283f42acc609b158324dab274f5477640bbb278c8ba59"
+  },
+
+  "bloqueantes_corregidos": [
+    {
+      "id": "H-R5-1",
+      "gravedad": "BLOQUEANTE",
+      "criterio": "N2",
+      "correccion": "Frontera real: mkdir-staging+copy-tree en helper (root:0 0700); create_staging_and_copy como operación única; sin ventana del operador entre crear y copiar",
+      "oraculos": ["N2-04", "N2-05", "N2-06"],
+      "h1": "oráculo N2 fd-sobre-staging añadido a PROCEDIMIENTO_H1.md"
+    },
+    {
+      "id": "H-R5-2",
+      "gravedad": "GRAVE",
+      "criterio": "N6",
+      "correccion": "Re-pin hoja_pin/padre_pin/modo 0700 inmediatamente antes de renamex_np; tautología eliminada; cmd_publish del helper re-pin + valida padre",
+      "oraculos": ["N6-05", "N6-06"]
+    }
+  ],
+  "obligatorios_corregidos": [
+    {"id": "H-R5-3", "correccion": "veredictos por estado para PrivError y excepciones genéricas", "oraculos": ["H-R5-3a", "H-R5-3b"]},
+    {"id": "H-R5-4", "correccion": "c5_ancla.verificar_ancla (origen_autenticado real) + c5_acl.validar_acl cableados", "oraculos": ["H-R5-4a", "H-R5-4b"]},
+    {"id": "H-R5-5", "correccion": "confinamiento helper (prefijo ot07_c5_staging. / C5_AUTH_BASE)", "oraculos": ["H-R5-5a", "H-R5-5b"]}
+  ],
+  "menores_incorporados": [
+    {"id": "H-R5-6.1", "detalle": "rc6→rc2 unificado; documentado en DIFF y SENSIBILIDAD"},
+    {"id": "H-R5-6.2", "detalle": "C5_UID_OPERADOR parametrizable"},
+    {"id": "H-R5-6.3", "detalle": "código muerto eliminado en protect_one"},
+    {"id": "H-R5-6.7", "detalle": "SENSIBILIDAD.json 12 casos con conteo_casos explícito"},
+    {"id": "H-R5-6.8", "detalle": "adaptar_ancla_c1 (lista tree_inventory → dict inventory_tree)"}
+  ],
+
+  "alcance_por_ruta": {
+    "escritura": [
+      "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/**",
+      "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/entregas/MIMO/**"
+    ],
+    "solo_lectura": [
+      "OT07_REVISION_v10r2r5_MIMO/** (sellado)",
+      "OT07_REVISION_v10r2r4/**",
+      "entregas/MAX/** (revisión)",
+      "RUN.json y paquete R2"
+    ],
+    "prohibido_no_tocado": ["sudo/root", "USB", "arranque", "OCLP", "señales ajenos", "Qwen/Opus/GitHub"]
+  },
+
+  "comandos_RC": [
+    {"comando": "clang -O2 -Wall -Wextra -std=c11 -mmacosx-version-min=14.0 -isysroot .../MacOSX26.5.sdk -o build/c5_helper src/c5_helper.c", "rc": 0},
+    {"comando": "./build/c5_helper selfcheck", "rc": 0, "salida": "uid_operador=501 confinamiento=ot07_c5_staging.+C5_AUTH_BASE RENAME_NOFOLLOW_ANY_val=0x10"},
+    {"comando": "./build/c5_helper cleanup /tmp/otro_dir", "rc": 3, "salida": "fuera-de-frontera"},
+    {"comando": "./build/c5_helper mkdir-staging /tmp", "rc": 5, "salida": "requiere H1 + euid 0"},
+    {"comando": "python3 -B tests/harness_r5.py", "rc": 0, "salida": "48/48 OK · 0 FAIL · 0 skips"}
+  ],
+
+  "tests": {
+    "total": 48,
+    "ok": 48,
+    "fail": 0,
+    "skips": 0,
+    "conteos_dinamicos": true,
+    "delta_vs_r5": "+13 oráculos (N2-04/05/06, N6-05/06, H-R5-3a/3b, H-R5-4a/4b, H-R5-5a/5b, H-R5-6.7/6.8)",
+    "evidencia": "evidencia_r6/HARNESS_RESULTADOS.json",
+    "sensibilidad": "evidencia_r5/SENSIBILIDAD.json (12 casos)"
+  },
+
+  "diff_r5_r6": {
+    "resumen": "diff_r5_r6/DIFF_r5_a_r6.md",
+    "por_archivo": [
+      "diff_r5_r6/src_c5_helper.c.diff",
+      "diff_r5_r6/src_c5_orquestador.py.diff",
+      "diff_r5_r6/src_c5_ancla.py.diff",
+      "diff_r5_r6/tests_harness_r5.py.diff",
+      "diff_r5_r6/docs_PROCEDIMIENTO_H1.md.diff",
+      "diff_r5_r6/evidencia_r5_SENSIBILIDAD.json.diff"
+    ]
+  },
+
+  "simulado_vs_nativo": {
+    "simulado": [
+      "chown root:wheel — ledger (chown(2) exige superuser)",
+      "ACL deny-write — ledger",
+      "create_staging_and_copy: crea y retira g+w/o+w antes de retornar (frontera equivalente)"
+    ],
+    "nativo_no_privilegiado": [
+      "chmod go-w real, renamex_np, pins, inventario sha256, umask 077"
+    ],
+    "nativo_privilegiado": "NO EJECUTADO — hasta H1",
+    "propiedad_N2": "En native root:0 0700 hace fallar open(O_WRONLY) del operador. En simulated se verifica go-w y ausencia de ventana crear→copiar. PoC Max (fd entre F4/F6) cerrada por diseño de frontera"
+  },
+
+  "operaciones_reales": [
+    "lectura de REVISION_MAX_R5 y PoC",
+    "copia r5→r6 (r5 sellado intacto: manifiesto 2afb2c93…)",
+    "edición de código/docs en r6",
+    "compilación build/c5_helper",
+    "harness 48/48 sobre fixtures propios",
+    "entrega sellada en entregas/MIMO/"
+  ],
+
+  "residuos_propios": [],
+
+  "pendientes": [
+    "Max: reauditar solo delta r5→r6 + regresiones afectadas",
+    "Flash: batería independiente contra orquestador corregido (adaptador listo)",
+    "H1 se presentará SOLO tras r6 revisada (no en este recibo)",
+    "N0–N8 nativos tras H1"
+  ],
+
+  "transicion_solicitada": "PREPARACION → CANDIDATO_REVISADO (pendiente revisión del delta r6)",
+
+  "prohibido_confirmado": [
+    "sin sudo/root", "sin USB", "sin arranque", "sin OCLP",
+    "sin señales a procesos ajenos", "sin autoaprobación H1",
+    "r5 sellado no editado"
+  ]
+}

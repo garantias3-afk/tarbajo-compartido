@@ -1,0 +1,8 @@
+{
+ "_nota": "Tras revisión r6c. Reemplaza ESTADO_R5.json.",
+ "IMPLEMENTACION_PROBADA": {"estado": "SI (r6b; r6c pendiente del fix R6C-1)"},
+ "C5_NATIVO_VALIDADO": {"estado": "NO", "nota": "requiere r6d (modo de hoja) + H1-bis + re-ejecución A completa"},
+ "INSTALADOR_VALIDADO": {"estado": "PENDIENTE (sección B congelada)"},
+ "h1": {"estado": "APROBADA_A; REEJECUCION_PENDIENTE_R6D_H1BIS"},
+ "h2": {"estado": "NO_SOLICITADA"}, "h3": {"estado": "NO_SOLICITADA"}
+}

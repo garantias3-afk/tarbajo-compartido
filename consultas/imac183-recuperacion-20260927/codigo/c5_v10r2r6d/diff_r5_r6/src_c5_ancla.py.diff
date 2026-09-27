@@ -1,0 +1,75 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r5_MIMO/src/c5_ancla.py	2026-09-27 10:25:28
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/src/c5_ancla.py	2026-09-27 12:02:22
+@@ -81,3 +81,72 @@
+     """En modo root, la ancla DELEGADA no basta (N5)."""
+     if modo == "root" and ancla.get("confianza") != "C-1":
+         raise AnclaError("modo root exige ancla C-1 autenticada; DELEGADA rechazada")
++
++
++# ---------- H-R5-4: origen autenticado real ----------
++
++def acreditar_origen_desde_manifiesto(
++    hash_ancla: str,
++    hashes_sellados: Optional[set] = None,
++) -> bool:
++    """origen_autenticado = el hash del ancla está registrado en un manifiesto
++    sellado (r4/C-1). Archivo+hash del operador NO alcanza.
++    """
++    if not hashes_sellados:
++        return False
++    return hash_ancla.lower() in {h.lower() for h in hashes_sellados}
++
++
++def construir_evidencia_c1(
++    hash_externo: str,
++    hashes_sellados: Optional[set] = None,
++    cadena: str = "C-1",
++) -> dict:
++    origen_ok = acreditar_origen_desde_manifiesto(hash_externo, hashes_sellados)
++    return {
++        "cadena": cadena,
++        "hash_externo": hash_externo,
++        "origen_autenticado": origen_ok,
++        "snapshot_unico": True,
++        "requiere_c1": True,
++    }
++
++
++# ---------- H-R5-6.8: adaptador de formato del ancla C-1 real ----------
++
++def adaptar_ancla_c1(inv_real: dict) -> dict:
++    """Adapta el inventario del ancla C-1 real (`inv_extracted_app.json` /
++    `tree_inventory.py`) al formato de `inventory_tree` de r5.
++
++    Formato C-1 típico (tree_inventory):
++      { "entries": [ {"relpath", "type", "size", "sha256", "target", ...} ],
++        "root": ... }
++    Formato r5 (inventory_tree):
++      { "entries": { rel: {"type","size","sha256","target"} , rel+"/": {"type":"dir"} } }
++
++    Fail-closed: formatos desconocidos lanzan.
++    """
++    if "entries" in inv_real and isinstance(inv_real["entries"], dict):
++        return inv_real  # ya está en formato r5
++    if "entries" in inv_real and isinstance(inv_real["entries"], list):
++        out: dict = {"root": inv_real.get("root"), "entries": {}}
++        for e in inv_real["entries"]:
++            rel = e.get("relpath") or e.get("rel") or e.get("path")
++            if not rel:
++                raise AnclaError(f"entrada sin relpath: {e}")
++            tipo = e.get("type") or e.get("kind") or ""
++            if tipo in ("dir", "directory"):
++                key = rel if rel.endswith("/") else rel + "/"
++                out["entries"][key] = {"type": "dir"}
++            elif tipo in ("symlink", "link"):
++                out["entries"][rel] = {"type": "symlink", "target": e.get("target", "")}
++            elif tipo in ("file", "reg", "regular"):
++                out["entries"][rel] = {
++                    "type": "file",
++                    "size": e.get("size", 0),
++                    "sha256": e.get("sha256") or e.get("hash", ""),
++                }
++            else:
++                raise AnclaError(f"tipo desconocido en ancla C-1: {tipo!r} ({rel})")
++        return out
++    raise AnclaError("formato de ancla C-1 no reconocido")

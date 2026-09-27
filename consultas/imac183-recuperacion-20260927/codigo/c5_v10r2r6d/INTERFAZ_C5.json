@@ -1,0 +1,207 @@
+{
+  "id": "INTERFAZ_C5",
+  "revision": "R5-CONTRATO-1",
+  "utc_emision": "2026-09-27T13:20:00Z",
+  "autor_rol": "MIMO",
+  "estado": "PUBLICADO_TEMPRANO_PARA_FLASH_Y_MAX",
+  "sustituye": null,
+  "proposito": "Contrato mínimo del helper C5 (dirección B: proteger antes de publicar). Flash ensaya contra este contrato; Max adjudica incompatibilidades. No es ejecución privilegiada.",
+  "no_es": [
+    "pseudocomando lchown -R -h (no existe ese binario; ver primitives)",
+    "runner general de shell",
+    "aceptar_usuario como atajo de protección",
+    "autorización H1/H2/H3"
+  ],
+
+  "host_referencia": {
+    "os": "macOS 26.6.2 (25G83)",
+    "arch": "arm64",
+    "sdk": "MacOSX.sdk sys/fcntl.h",
+    "AT_UNIQUE": { "presente": true, "def": "sys/fcntl.h:187", "valor": "0x8000" },
+    "primitivas_usadas": {
+      "lchown": "syscall/función lchown(2) — NO binario",
+      "fchmodat": "fchmodat(2) con AT_SYMLINK_NOFOLLOW cuando aplique",
+      "openat": "openat(2) + O_NOFOLLOW|O_CLOEXEC|AT_UNIQUE en fstatat",
+      "renamex_np": "renamex_np(2) con RENAME_EXCL|RENAME_NOFOLLOW_ANY",
+      "fstatat": "fstatat(2) con AT_SYMLINK_NOFOLLOW|AT_UNIQUE",
+      "acl": "acl_get_file / acl_set_file / acl_delete_entry (libSystem)"
+    },
+    "primitivas_NO_usadas": [
+      "RESOLVE_BENEATH (Linux; NO asumir en macOS)",
+      "lchown como binario",
+      "chown -R -h como shell"
+    ]
+  },
+
+  "autoridad": {
+    "operador_uid": 501,
+    "helper_privilegiado": "solo tras H1 explícita; NO activado en esta entrega",
+    "modos_helper": {
+      "simulated": "ledger de dueños/ACL; chmod go-w real sobre fixtures propios",
+      "native": "requiere H1; rechaza euid!=0 en fábrica y rechaza euid==0 en modo simulated"
+    },
+    "insumos_sellados": "solo lectura; nunca ejecutar in-place",
+    "canales": "escritura solo en carpeta propia exclusiva (umask 077) y entregas/MIMO/"
+  },
+
+  "limites": {
+    "rutas": {
+      "origen": "debe existir, no symlink, dentro de base declarada; hardlinks rechazados",
+      "staging_base": "carpeta propia exclusiva del operador; mkdtemp prefijo ot07_c5_staging.",
+      "destino": "padre debe existir y no ser symlink; destino debe estar AUSENTE (RENAME_EXCL)",
+      "ancla": "hash SHA-256 externo fijo, snapshot único de bytes",
+      "escape": "rechazo si realpath sale de la raíz declarada (commonpath)",
+      "prohibido": ["/dev/*", "/System/*", "/private/var/db/*", "rutas con .. tras canonicalizar", "symlink en cualquier ancestro del destino"]
+    },
+    "bytes": {
+      "fixture_ensayo_H1": "< 1 MiB",
+      "copia": "tamaño origen == tamaño staging por entrada regular",
+      "espacio": "du(origen) + 2 GiB reserva vs statvfs(padre staging); insuficiente ⇒ abort sin staging"
+    },
+    "uid_acl": {
+      "metadata_esperada_tras_F6": {
+        "uid": 0,
+        "gid": 0,
+        "modo_archivo": "sin g+w ni o+w",
+        "modo_dir": "sin g+w ni o+w; r-x de otros conservado si origen 0755",
+        "symlinks": "jamás chown/chmod/ACL (protección la da el directorio contenedor)",
+        "acl": "sin ACE allow-write ajena; deny-write documentada opcional"
+      }
+    }
+  },
+
+  "acciones": {
+    "preparacion": {
+      "id": "PREP",
+      "entradas": ["origen", "staging_base", "destino", "anchor_path", "anchor_sha256_externo", "modo"],
+      "efectos": "cero en destino; valida gate, pins, ancla snapshot, espacio; crea staging 0700 solo si todo OK",
+      "estado_salida": "PREPARADO | ABORTADO_SIN_EFECTOS",
+      "errno_positivos": [],
+      "errno_negativos": ["ENOENT", "EEXIST", "ELOOP", "EINVAL", "ENOSPC"]
+    },
+    "verificacion": {
+      "id": "VERIF",
+      "entradas": ["staging_pin", "anchor_snapshot", "expected_metadata"],
+      "efectos": "inventario staging == ancla (tipo/tamaño/sha256/target); revalida pins",
+      "estado_salida": "VERIFICADO | ABORTADO_STAGING_RETENIDO",
+      "errno_negativos": ["ESTADO_DIVERGENTE", "PIN_ROTO"]
+    },
+    "ensayo": {
+      "id": "ENSAYO",
+      "alcance": "harness no privilegiado + fixtures <1MiB; mutantes en copia propia",
+      "efectos": "solo sobre objetos propios; sin sudo/USB/arranque/OCLP",
+      "estado_salida": "ENSAYO_OK | ENSAYO_FALLIDO",
+      "nota": "N0–N9 de 05_CRITERIOS; conteos dinámicos"
+    },
+    "publicacion": {
+      "id": "PUBLISH",
+      "entradas": ["staging_pin", "destino_ausente", "padre_pin"],
+      "efectos": "renamex_np(RENAME_EXCL|RENAME_NOFOLLOW_ANY) staging→destino; pin destino == pin staging",
+      "estado_salida": "PUBLICADO_VERIFICADO | PUBLICADO_INCONSISTENTE_NO_BORRADO | ABORTADO_STAGING_RETENIDO",
+      "errno_negativos": ["EEXIST", "ELOOP", "EPERM"]
+    },
+    "uso": {
+      "id": "USO",
+      "estado": "NO_ACTIVADO",
+      "requisito": "H1 + time-of-use: tripleta (dev,ino,sha256) verificada en la MISMA sesión privilegiada inmediatamente antes de ejecutar; PATH pineado; DYLD_*/PYTHON* saneados",
+      "prohibido": ["rehash de ruta como vinculación", "exec por ruta reemplazable sin fd/tripleta"]
+    },
+    "limpieza": {
+      "id": "CLEANUP",
+      "efectos": "rmdir del padre staging (la hoja sale con el rename); NO borra destino publicado ni ganador EEXIST",
+      "estado_salida": "LIMPIEZA_OK | LIMPIEZA_INCOMPLETA (RC=3)",
+      "regla": "list-stale para huérfanos propios; jamás glob ni diferencia global; reintento crea staging NUEVO"
+    }
+  },
+
+  "esquema_resultado": {
+    "tipo": "object",
+    "requeridos": ["verdict", "rc", "phases", "events"],
+    "propiedades": {
+      "verdict": {
+        "enum": [
+          "SIN_EFECTOS",
+          "ABORTADO_SIN_EFECTOS",
+          "ABORTADO_STAGING_RETENIDO",
+          "PUBLICADO_VERIFICADO",
+          "PUBLICADO_INCONSISTENTE_NO_BORRADO",
+          "PUBLICADO_VERIFICACION_INCOMPLETA",
+          "OK_CON_LIMPIEZA_INCOMPLETA",
+          "ESTADO_INDETERMINADO",
+          "RECHAZADO_GATE_SIN_EFECTOS",
+          "NO_AUTORIZADO"
+        ]
+      },
+      "rc": { "0": "OK", "1": "gate", "2": "aborto", "3": "OK limpieza incompleta", "4": "publicado inconsistente", "5": "no autorizado", "7": "verificación incompleta", "8": "estado indeterminado" },
+      "phases": { "type": "array", "items": { "type": "object", "requeridos": ["id", "ok", "errno"] } },
+      "published": { "type": "boolean" },
+      "content_ok": { "type": "boolean" },
+      "metadata_ok": { "type": "boolean" },
+      "cleanup_ok": { "type": "boolean" },
+      "priv": {
+        "type": "object",
+        "propiedades": {
+          "modo": { "enum": ["simulated", "native"] },
+          "chmod_go_w_real": { "type": "boolean" },
+          "chown_root": { "enum": ["SIMULADO-ledger", "NATIVO"] },
+          "llamadas": { "type": "array" }
+        }
+      },
+      "effects": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "requeridos": ["op", "path", "errno"],
+          "propiedades": {
+            "op": { "enum": ["mkdir", "copy", "lchown", "chmod", "acl", "rename", "rmdir", "open", "unlink"] },
+            "path": { "type": "string" },
+            "errno": { "type": ["integer", "null"] },
+            "dev": { "type": "integer" },
+            "ino": { "type": "integer" }
+          }
+        }
+      },
+      "events": { "type": "array", "items": { "type": "string" } },
+      "residuos": { "type": "array", "items": { "type": "string" } }
+    }
+  },
+
+  "comportamiento_fallo": {
+    "cualquier_excepcion_previa_a_F8": "ABORTADO_SIN_EFECTOS o ABORTADO_STAGING_RETENIDO (según estado en disco); jamás SIN_EFECTOS si queda staging propio",
+    "excepcion_post_F8": "PUBLICADO_VERIFICACION_INCOMPLETA o ESTADO_INDETERMINADO; jamás borrado del destino",
+    "eexist_destino": "sin anidar, sin borrar ganador; staging retenido",
+    "limpieza_falla": "veredicto OK + rc=3 + limpieza_ok=false; nunca éxito silencioso",
+    "proteccion_insuficiente": "F7 falla cerrada; no publicar",
+    "fd_escritura_previo": "NO mitigado por chmod/chown; dirección B crea inodos finales dentro de frontera controlada por el helper (padres/ACL no permiten al uid operador abrirlos O_WRONLY/O_RDWR)",
+    "ancla_delegada": "archivo+hash del operador NO acredita procedencia; exige cadena C-1 o rótulo DELEGADA",
+    "pin_roto": "abort; el sustituto no se publica ni se ejecuta"
+  },
+
+  "mapa_N": {
+    "N0": "bootstrap: binario/intérprete/dependencias/hash dentro de frontera; sin runner mutable del uid como root",
+    "N1": "raíz e hijos protegidos (dueño/modos/ACL); positivo legible; write/truncate/chmod no autorizado falla",
+    "N2": "ningún fd O_WRONLY/O_RDWR previo altera el inodo final consumido (creación en frontera)",
+    "N3": "ACL allow/herencia/derechos de padre y eliminación explícitos y verificados ±",
+    "N4": "recorrido confinado: symlink/hardlink/swap/especiales; AT_UNIQUE o alternativa demostrada; fail-closed",
+    "N5": "ancla C-1 autenticada / snapshot único; archivo+hash atacantes no acreditan procedencia",
+    "N6": "F8 exclusivo; EEXIST no anida/no borra; estados verdaderos; retry no reutiliza huérfanos",
+    "N7": "verificar→ejecutar vincula objeto+dependencias reales; sustituto nunca corre",
+    "N8": "operación confinada al fixture/bundle aprobado; intento fuera sin efectos",
+    "N9": "regresión r4/P5r, permisos lectura/cleanup, espacio y guards conservados"
+  },
+
+  "consumidores": {
+    "FLASH": "ensayos independientes contra este contrato (fases, estados, errno, límites)",
+    "MAX": "adjudicación de incompatibilidades; no escribe el código que autoaprobará",
+    "MUSE": "preflight instalador y ancla C-1 en paralelo"
+  },
+
+  "cambios_previstos_en_codigo": [
+    "helper C nativo (src/c5_helper.c) con lchown/fchmodat/openat/renamex_np/fstatat+AT_UNIQUE",
+    "orquestador Python (src/c5_orquestador.py) dirección B: F3–F10 con frontera antes de publicar",
+    "ancla C-1 (src/c5_ancla.py): snapshot único + hash externo + evidencia autenticada",
+    "política ACL (src/c5_acl.py): validar/normalizar/rechazar; ± ACE allow-write",
+    "bootstrap H1 (docs/PROCEDIMIENTO_H1.md + src/c5_bootstrap.py): hashes/rutas/fixture/limpieza; NO ejecutado",
+    "harness no privilegiado (tests/): N0–N9 + erratas r4 + regresión r4/P5r; conteos dinámicos"
+  ]
+}

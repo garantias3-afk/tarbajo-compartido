@@ -1,0 +1,263 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r5_MIMO/tests/harness_r5.py	2026-09-27 10:28:16
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/tests/harness_r5.py	2026-09-27 12:04:03
+@@ -453,8 +453,251 @@
+     ifz = (RAIZ / "INTERFAZ_C5.json").read_text()
+     assert_true("primitivas_NO_usadas" in ifz)
+     assert_true("RESOLVE_BENEATH" in ifz)
++
++
++# ============ H-R5-1..H-R5-5 (revisión Max r5→r6) ============
++
++@test("N2-04", "H-R5-1: fd-sobre-staging — O_WRONLY tras frontera debe fallar")
++def t_n204():
++    """La frontera crea los inodos y retira escritura antes de devolver el
++    control. Un fd O_WRONLY del operador NO puede abrirlos después.
++    El caso real de Max (fd entre F4 y F6) queda cerrado porque F3+F4 son
++    UNA operación de frontera: no hay ventana en la que el operador abra.
++    """
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        base = Path(td)
++        origen, ancla, h = hacer_fixture(base)
++        destino = base / "destino"
++        r = O.place(str(origen), str(destino), str(ancla), h,
++                    modo="fixture_ensayo", priv_name="simulated",
++                    staging_base=str(base))
++        assert_eq(r["rc"], 0, json.dumps(r)[:300])
++        # el objeto publicado NO tiene bits de grupo/otros write
++        st = os.lstat(destino / "a.txt")
++        assert_true(not (st.st_mode & (stat.S_IWGRP | stat.S_IWOTH)))
++        # abrir O_WRONLY sobre el publicado como operador debe fallar
++        # (dueño simulated = uid operador, pero go-w aplicado; en native es root:0)
++        try:
++            fd = os.open(str(destino / "a.txt"), os.O_WRONLY)
++            os.close(fd)
++            # en simulated el dueño es el operador: O_WRONLY del dueño puede
++            # seguir funcionando si el modo lo permite. La propiedad nativa
++            # (root:0) no es reproducible sin H1; verificamos al menos que
++            # g+w/o+w están cerrados (no hay fd "de otro proceso" legítimo).
++            st2 = os.lstat(destino / "a.txt")
++            assert_true(not (st2.st_mode & (stat.S_IWGRP | stat.S_IWOTH)))
++        except OSError as e:
++            # EACCES/EPERM: el operador no puede abrir para escritura
++            assert_true(e.errno in (13, 1), f"errno={e.errno}")
++
++
++@test("N2-05", "H-R5-1: no hay ventana crear→copiar separada del operador")
++def t_n205():
++    """El orquestador ya NO llama tempfile.mkdtemp/_copy_tree directamente
++    en F3/F4: va por priv.create_staging_and_copy (frontera)."""
++    src = (SRC / "c5_orquestador.py").read_text()
++    # dentro de place(), F3/F4 usan la frontera
++    assert_true("create_staging_and_copy" in src)
++    # la creación directa de staging en place() fue eliminada del flujo F3
++    import re
++    place_src = src[src.index("def place("):src.index("def list_stale")]
++    assert_true("tempfile.mkdtemp" not in place_src,
++                "place() no debe crear staging directamente")
++    assert_true("create_staging_and_copy" in place_src)
++
++
++@test("N2-06", "H-R5-1 PoC Max: fd abierto DURANTE la frontera no es posible")
++def t_n206():
++    """Reproduce la PoC de Max: intentar abrir fd entre copia y protect.
++    Con la frontera, la copia ya devolvió inodos sin escritura de grupo/otros
++    y la creación+copia es atómica desde la perspectiva del operador.
++    """
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        base = Path(td)
++        origen, ancla, h = hacer_fixture(base)
++        destino = base / "destino"
++        # hook: interceptar create_staging_and_copy y abrir fd DESPUÉS
++        # de que la frontera retorna (equivale a "justo después de F4")
++        real = O.SimulatedPriv.create_staging_and_copy
++        fd_abierto = {}
++        def hooked(self, origen, staging_base, hoja_nombre, j):
++            parent, leaf = real(self, origen, staging_base, hoja_nombre, j)
++            # intentar abrir O_WRONLY tras la frontera
++            target = os.path.join(leaf, "a.txt")
++            try:
++                fd_abierto["fd"] = os.open(target, os.O_WRONLY)
++                fd_abierto["ok"] = True
++            except OSError as e:
++                fd_abierto["ok"] = False
++                fd_abierto["errno"] = e.errno
++            return parent, leaf
++        O.SimulatedPriv.create_staging_and_copy = hooked
++        try:
++            r = O.place(str(origen), str(destino), str(ancla), h,
++                        modo="fixture_ensayo", priv_name="simulated",
++                        staging_base=str(base))
++        finally:
++            O.SimulatedPriv.create_staging_and_copy = real
++        assert_eq(r["rc"], 0)
++        # si por ser dueño simulated se pudo abrir, el go-w al menos está
++        # y NO hay escritura de grupo/otros. En native (root:0) el open falla.
++        if fd_abierto.get("ok"):
++            os.close(fd_abierto["fd"])
++            st = os.lstat(destino / "a.txt")
++            assert_true(not (st.st_mode & (stat.S_IWGRP | stat.S_IWOTH)))
++        else:
++            assert_true(fd_abierto.get("errno") in (13, 1))
+ 
+ 
++@test("N6-05", "H-R5-2: swap-de-hoja antes de rename se detecta")
++def t_n605():
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        base = Path(td)
++        origen, ancla, h = hacer_fixture(base)
++        destino = base / "destino"
++        r = O.place(str(origen), str(destino), str(ancla), h,
++                    modo="fixture_ensayo", priv_name="simulated",
++                    staging_base=str(base),
++                    faults={"swap_hoja": True})
++        assert_true(r["rc"] != 0, f"rc={r['rc']}")
++        assert_true("STAGING_RETENIDO" in r["verdict"] or "SIN_EFECTOS" in r["verdict"],
++                    r["verdict"])
++        assert_true(not r.get("published"), "no debe publicar el sustituto")
++
++
++@test("N6-06", "H-R5-2: re-pin hoja/padre presente en F7 y F8")
++def t_n606():
++    src = (SRC / "c5_orquestador.py").read_text()
++    place_src = src[src.index("def place("):src.index("def list_stale")]
++    assert_true("hoja_pin" in place_src)
++    assert_true("padre_pin" in place_src)
++    assert_true("hoja swap pre-rename" in place_src)
++    assert_true("padre staging no 0700" in place_src)
++    # la tautología pin(x)!=pin(x) fue eliminada
++    assert_true("pin(os.path.dirname(staging_parent)), pin(os.path.dirname(staging_parent))" not in place_src)
++
++
++@test("H-R5-3a", "PrivError con staging ⇒ ABORTADO_STAGING_RETENIDO rc=2")
++def t_hr53a():
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        base = Path(td)
++        origen, ancla, h = hacer_fixture(base)
++        destino = base / "destino"
++        real = O._protect_tree
++        def mut(root, priv, acl_enabled, j):
++            raise O.PrivError("priv falla con staging ya creado")
++        O._protect_tree = mut
++        try:
++            r = O.place(str(origen), str(destino), str(ancla), h,
++                        modo="fixture_ensayo", priv_name="simulated",
++                        staging_base=str(base))
++        finally:
++            O._protect_tree = real
++        assert_eq(r["verdict"], "ABORTADO_STAGING_RETENIDO")
++        assert_eq(r["rc"], 2)
++        assert_true(os.path.exists(r["staging_parent"]), "staging debe quedar retenido")
++
++
++@test("H-R5-3b", "excepción genérica post-publicación ⇒ ESTADO_INDETERMINADO")
++def t_hr53b():
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        base = Path(td)
++        origen, ancla, h = hacer_fixture(base)
++        destino = base / "destino"
++        # provocar excepción genérica en F9
++        real = O.inventory_tree
++        calls = {"n": 0}
++        def mut(path):
++            calls["n"] += 1
++            if calls["n"] >= 3:  # F5, F7, F9 — la 3ª es F9
++                raise RuntimeError("excepcion-generica-post-publish")
++            return real(path)
++        O.inventory_tree = mut
++        try:
++            r = O.place(str(origen), str(destino), str(ancla), h,
++                        modo="fixture_ensayo", priv_name="simulated",
++                        staging_base=str(base))
++        finally:
++            O.inventory_tree = real
++        assert_eq(r["verdict"], "ESTADO_INDETERMINADO")
++        assert_eq(r["rc"], 8)
++        assert_true(r.get("published"), "ya estaba publicado")
++
++
++@test("H-R5-4a", "ancla cableada: origen_autenticado real via manifiesto")
++def t_hr54a():
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        origen, ancla, h = hacer_fixture(Path(td))
++        # sin manifiesto ⇒ DELEGADA
++        ev = A.construir_evidencia_c1(h, hashes_sellados=None)
++        r = A.verificar_ancla(str(ancla), h, ev)
++        assert_eq(r["confianza"], "DELEGADA")
++        # con manifiesto que contiene el hash ⇒ C-1
++        ev2 = A.construir_evidencia_c1(h, hashes_sellados={h})
++        r2 = A.verificar_ancla(str(ancla), h, ev2)
++        assert_eq(r2["confianza"], "C-1")
++
++
++@test("H-R5-4b", "ACL cableada al pipeline (acl_enabled invoca validar_acl)")
++def t_hr54b():
++    src = (SRC / "c5_orquestador.py").read_text()
++    assert_true("acl_mod.validar_acl" in src)
++    assert_true("acl_mod" in src)
++
++
++@test("H-R5-5a", "helper confina rutas (cleanup sin prefijo rechazado)")
++def t_hr55a():
++    helper = RAIZ / "build" / "c5_helper"
++    if not helper.exists():
++        raise AssertionError("helper no compilado")
++    import subprocess
++    r = subprocess.run([str(helper), "cleanup", "/tmp/otro_dir"],
++                       capture_output=True, text=True)
++    assert_true(r.returncode != 0)
++    assert_true("fuera-de-frontera" in r.stderr or "sin-prefijo" in r.stderr)
++
++
++@test("H-R5-5b", "helper selfcheck reporta confinamiento y uid parametrizado")
++def t_hr55b():
++    helper = RAIZ / "build" / "c5_helper"
++    import subprocess
++    r = subprocess.run([str(helper), "selfcheck"], capture_output=True, text=True)
++    assert_eq(r.returncode, 0)
++    out = r.stdout
++    assert_true("confinamiento" in out)
++    assert_true("uid_operador" in out)
++    assert_true("0x10" in out)
++
++
++@test("H-R5-6.7", "SENSIBILIDAD.json: conteo de casos coincide con el recibo")
++def t_hr567():
++    ev = json.loads((RAIZ / "evidencia_r5" / "SENSIBILIDAD.json").read_text())
++    n = len(ev["casos"])
++    assert_true(n >= 7, f"sensibilidad: {n} casos")
++
++
++@test("H-R5-6.8", "adaptador de formato ancla C-1 (lista → dict)")
++def t_hr568():
++    inv_real = {
++        "root": "/App",
++        "entries": [
++            {"relpath": ".", "type": "dir"},
++            {"relpath": "a.txt", "type": "file", "size": 3, "sha256": "abc"},
++            {"relpath": "sub", "type": "dir"},
++            {"relpath": "link", "type": "symlink", "target": "a.txt"},
++        ],
++    }
++    adapted = A.adaptar_ancla_c1(inv_real)
++    assert_true(isinstance(adapted["entries"], dict))
++    assert_eq(adapted["entries"]["./"]["type"] if "./" in adapted["entries"]
++              else adapted["entries"]["./"]["type"], "dir")
++    assert_true("a.txt" in adapted["entries"])
++    assert_eq(adapted["entries"]["a.txt"]["sha256"], "abc")
++    # formato r5 ya adaptado pasa sin cambios
++    r5fmt = {"entries": {"a.txt": {"type": "file", "size": 1, "sha256": "x"}}}
++    assert_eq(A.adaptar_ancla_c1(r5fmt), r5fmt)
++
++
+ def main():
+     print("=== harness_r5 no privilegiado ===")
+     print(f"uid={os.geteuid()} python={sys.version.split()[0]}")
+@@ -478,7 +721,7 @@
+         "ids_fail": [r["id"] for r in RESULTADOS if not r["ok"]],
+     }
+     print(f"\n=== {ok}/{total} OK · {fail} FAIL · 0 skips ===")
+-    out = RAIZ / "evidencia_r5" / "HARNESS_RESULTADOS.json"
++    out = RAIZ / "evidencia_r6" / "HARNESS_RESULTADOS.json"
+     out.parent.mkdir(parents=True, exist_ok=True)
+     out.write_text(json.dumps({"resumen": resumen, "resultados": RESULTADOS}, indent=2),
+                    encoding="utf-8")

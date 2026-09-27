@@ -1,0 +1,52 @@
+{
+  "revision": "r6b",
+  "utc": "2026-09-27T15:10:00Z",
+  "casos": [
+    {
+      "id": "F-R6-N3-1/allow write",
+      "comando": "chmod +a 'user:OPERADOR allow write' && c5_acl.validar_acl",
+      "chmod_rc": 0,
+      "ls_le": "0: user:OPERADOR allow write",
+      "detectada": true,
+      "esperado": true,
+      "ok": true
+    },
+    {
+      "id": "F-R6-N3-1/allow append",
+      "comando": "chmod +a 'user:OPERADOR allow append' && c5_acl.validar_acl",
+      "chmod_rc": 0,
+      "ls_le": "0: user:OPERADOR allow append",
+      "detectada": true,
+      "esperado": true,
+      "ok": true
+    },
+    {
+      "id": "F-R6-N3-1/allow delete",
+      "comando": "chmod +a 'user:OPERADOR allow delete' && c5_acl.validar_acl",
+      "chmod_rc": 0,
+      "ls_le": "0: user:OPERADOR allow delete",
+      "detectada": true,
+      "esperado": true,
+      "ok": true
+    },
+    {
+      "id": "F-R6-N3-1/allow read",
+      "comando": "chmod +a 'user:OPERADOR allow read' && c5_acl.validar_acl",
+      "chmod_rc": 0,
+      "ls_le": "0: user:OPERADOR allow read",
+      "detectada": false,
+      "esperado": false,
+      "ok": true
+    },
+    {
+      "id": "R6-1/fail-closed",
+      "comando": "ACL.validar_acl lanza AclPolicyError; place(..., acl_enabled=True)",
+      "verdict": "ABORTADO_STAGING_RETENIDO",
+      "rc": 2,
+      "published": false,
+      "esperado": "ABORTADO_STAGING_RETENIDO rc!=0 published=False",
+      "ok": true
+    }
+  ],
+  "todos_ok": true
+}

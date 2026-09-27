@@ -1,0 +1,10 @@
+{
+  "common": 1007,
+  "differ": [],
+  "identical": false,
+  "only_in_a": [],
+  "only_in_b": [
+    "Contents/SharedSupport",
+    "Contents/SharedSupport/SharedSupport.dmg"
+  ]
+}

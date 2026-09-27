@@ -1,0 +1,246 @@
+{
+  "ot": "OT07-I-C5-NATIVO",
+  "revision_id": "v10r2r5",
+  "estado_propio": "CANDIDATO_R5_PENDIENTE_REVISION",
+  "autoaprobacion_H1": false,
+  "utc_cierre": "2026-09-27T13:33:15Z",
+  "rol": "MIMO",
+  "canal_entrega": "RUN.20260927T131419Z.C5IMAC1/entregas/MIMO/",
+  "producto": "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r5_MIMO",
+
+  "proveedor_observado": {
+    "rol": "MIMO",
+    "requerido": "Xiaomi Token Plan, desde OpenCode o MiMo Desktop",
+    "aplicacion": "MiMo Desktop",
+    "proveedor": "Xiaomi Token Plan",
+    "modelo_efectivo": "MiMo (mimo) — identificador de sesión de este desktop",
+    "modalidad": "Token Plan (plan contratado; no API de consumo separado)",
+    "evidencia": "sesión activa en MiMo Desktop; sin cambio de proveedor durante la ejecución; sin fallback a Qwen/Opus/OpenRouter",
+    "estado": "CONFIRMADO_POR_USUARIO (arranque manual desde PARA_PEGAR_MIMO; sin telemetría de billing en esta sesión)",
+    "secretos": "no se registran claves/tokens/headers/variables secretas"
+  },
+
+  "host": {
+    "hostname": "HOST_PREPARACION.local",
+    "sw_vers": "macOS 26.6.2 (25G83)",
+    "arch": "arm64",
+    "uid": 501,
+    "gid": 20,
+    "verificado_en_sesion": true
+  },
+
+  "herramientas": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk",
+    "sdk_nota": "MacOSX27.0.sdk del CLT falla linker (libSystem.B.tbd malformado / arm64e.x1)",
+    "python": "3.9.6",
+    "umask": "077",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "chown_binario": "/usr/sbin/chown (presente)",
+    "lchown_binario": "NO EXISTE (es syscall lchown(2); 04_AJUSTES §1)"
+  },
+
+  "hashes_entrada": {
+    "RUN_json": "7c9de39c3edf199b17d59c024b4039fa2e550fc5c3d152a90520f4fd27a2f126",
+    "paquete_R2_SHA256SUMS": "b17c54de0b45b363421283f42acc609b158324dab274f5477640bbb278c8ba59",
+    "r4_SHA256SUMS": "17dafa9390342cc857f5721be8e1604f6c5df7434267b0c5d3f611a1f7cc2b41",
+    "r4_zip": "f14930179545ad532f038e6d879dff2aeedfa07d432e526d2e6c04d637ec920c",
+    "r4_recibo": "0f24b685621b1376997298749575a42e57f35739bdd287971a86bb190bdeddf7",
+    "P5r_manifiesto": "b3cad24827737e8ff6573482ecea6b42ae08dc597dc7ebc1864488b0cee1b7f5",
+    "P5r_recibo": "c9b42d69b223be13ca777ba1267e3e00a96175157885fd170cbc4040baa5ca0b",
+    "P6_manifiesto": "b7ef385e625de2879330b8ae24175325f0b58fc7bcc1e9ea051f9dea9b1f5ab0",
+    "P6_recibo": "82540a95e3dcd3d7f2794bca60af4abf304eec61e39981c119d85524f410ddfe",
+    "dictamen_max_A": "4f41181ea479674752d18b240bc26f5939affe5c15f9ab676094d1c591ae08b6",
+    "dictamen_max_B": "c1244b042330136193ddba08b74ee2851284a3bb41313fb3cd43af4bbc736b21"
+  },
+
+  "alcance_por_ruta": {
+    "escritura": [
+      "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r5_MIMO/**",
+      "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/entregas/MIMO/**"
+    ],
+    "solo_lectura": [
+      "/Users/OPERADOR/Documents/Codex/2026-09-25/hi/outputs/OT07_REVISION_v10r2r4/**",
+      "/Users/OPERADOR/Documents/Codex/2026-09-25/hi/outputs/OT07_APOYO_GLM_FLASH_P5R.OI7YL7/**",
+      "/Users/OPERADOR/Documents/Codex/2026-09-25/hi/outputs/OT07_APOYO_MUSE_P6/**",
+      "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_AVANCE_C5_IMAC_R2_PROVEEDORES/**",
+      "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/** (excepto entregas/MIMO)"
+    ],
+    "prohibido_no_tocado": [
+      "sudo/root",
+      "USB/dispositivos",
+      "arranque",
+      "OCLP real",
+      "señales a procesos ajenos",
+      "Qwen / Opus / GitHub / OpenRouter",
+      "sudoers / LaunchDaemons / setuid instalado"
+    ]
+  },
+
+  "comandos_RC_errno": [
+    {
+      "comando": "shasum -a 256 RUN.json",
+      "rc": 0,
+      "salida": "7c9de39c3edf199b17d59c024b4039fa2e550fc5c3d152a90520f4fd27a2f126",
+      "nota": "coincide con lo declarado"
+    },
+    {
+      "comando": "shasum -a 256 OT07_AVANCE_C5_IMAC_R2_PROVEEDORES/SHA256SUMS.txt",
+      "rc": 0,
+      "salida": "b17c54de0b45b363421283f42acc609b158324dab274f5477640bbb278c8ba59",
+      "nota": "manifiesto R2 OK"
+    },
+    {
+      "comando": "shasum -a 256 OT07_REVISION_v10r2r4/SHA256SUMS.txt",
+      "rc": 0,
+      "salida": "17dafa9390342cc857f5721be8e1604f6c5df7434267b0c5d3f611a1f7cc2b41",
+      "nota": "coincide con RUN insumos"
+    },
+    {
+      "comando": "command -v lchown",
+      "rc": 1,
+      "errno": 127,
+      "nota": "lchown no es binario (esperado; 04_AJUSTES §1)"
+    },
+    {
+      "comando": "rg AT_UNIQUE sys/fcntl.h",
+      "rc": 0,
+      "salida": "sys/fcntl.h:187 #define AT_UNIQUE 0x8000",
+      "nota": "primitiva presente en SDK del host"
+    },
+    {
+      "comando": "clang -O2 -Wall -Wextra -std=c11 -mmacosx-version-min=14.0 -isysroot .../MacOSX26.5.sdk -o build/c5_helper src/c5_helper.c",
+      "rc": 0,
+      "nota": "build reproducible; ver docs/BUILD.md. Intento con MacOSX27.0.sdk falló linker (tapi malformed / arm64e.x1)"
+    },
+    {
+      "comando": "./build/c5_helper selfcheck",
+      "rc": 0,
+      "salida": "{\"ok\":true,\"op\":\"selfcheck\",\"euid\":501,...,\"AT_UNIQUE\":true,\"RENAME_EXCL\":true,\"RENAME_NOFOLLOW_ANY\":true,\"lchown\":\"syscall\"}"
+    },
+    {
+      "comando": "./build/c5_helper probe-at src/c5_helper.c",
+      "rc": 0,
+      "salida": "AT_UNIQUE=true dev=16777232 ino=238440239 mode=100644 nlink=1 uid=501 gid=20"
+    },
+    {
+      "comando": "python3 -B src/c5_bootstrap.py .",
+      "rc": 0,
+      "salida": "listo_para_pedir_H1=true; faltantes=[]; interprete_sistema=true",
+      "nota": "prepara H1; NO ejecuta privilegios"
+    },
+    {
+      "comando": "python3 -B tests/harness_r5.py",
+      "rc": 0,
+      "salida": "35/35 OK · 0 FAIL · 0 skips",
+      "nota": "primera corrida falló 5 casos por RENAME_NOFOLLOW_ANY=0x80 (EINVAL); corregido a 0x10 según sys/stdio.h; ver docs/BUILD.md"
+    }
+  ],
+
+  "tests": {
+    "harness": "tests/harness_r5.py",
+    "total": 35,
+    "ok": 35,
+    "fail": 0,
+    "skips": 0,
+    "conteos_dinamicos": true,
+    "ids_ok": [
+      "N0-01", "N0-02", "N0-03",
+      "N1-01", "N1-02", "N1-03",
+      "N2-01", "N2-02", "N2-03",
+      "N3-01", "N3-02",
+      "N4-01", "N4-02", "N4-03", "N4-04", "N4-05",
+      "N5-01", "N5-02", "N5-03", "N5-04",
+      "N6-01", "N6-02", "N6-03", "N6-04",
+      "N7-01", "N7-02",
+      "N8-01", "N8-02",
+      "N9-01", "N9-02", "N9-03",
+      "ERRATA-01", "ERRATA-02",
+      "IFZ-01", "IFZ-02"
+    ],
+    "cobertura_por_criterio": "docs/MAPA_N0_N9.md",
+    "evidencia": "evidencia_r5/HARNESS_RESULTADOS.json",
+    "sensibilidad": "evidencia_r5/SENSIBILIDAD.json"
+  },
+
+  "simulado_vs_nativo": {
+    "simulado": [
+      "chown root:wheel — ledger por (dev,ino) en SimulatedPriv (chown(2) exige superuser)",
+      "ACL deny-write — ledger por (dev,ino); no se instala ACL real sin H1",
+      "modo native del helper — rechaza hasta H1"
+    ],
+    "nativo_no_privilegiado": [
+      "chmod go-w real sobre fixtures propios",
+      "renamex_np(RENAME_EXCL|RENAME_NOFOLLOW_ANY=0x10) real",
+      "fstatat + AT_UNIQUE (probe)",
+      "mkdtemp 0700, copia estricta, inventario sha256",
+      "pins dev/ino",
+      "umask 077, python3 -B"
+    ],
+    "nativo_privilegiado": "NO EJECUTADO — bloqueado hasta H1 explícita",
+    "E1_E2_mecanismo": "EJECUTADO (fd O_RDWR sobrevive a chmod 000; fd sobre origen mutado es detectado por ancla)"
+  },
+
+  "erratas_r4_corregidas": [
+    {
+      "id": "codesign_cim",
+      "correccion": "docs/INDICE_HISTORICO_R5.md puntúa el puntero vacío: e3b0c442…b855 = 0 bytes = no acreditado (no «sin hallazgos»)",
+      "sin_reescribir_sellados": true
+    },
+    {
+      "id": "sensibilidad_durable",
+      "correccion": "evidencia_r5/SENSIBILIDAD.json con esquema obligatorio base/mutante/comando/RC/asercion (8 casos)",
+      "sin_reescribir_sellados": true
+    }
+  ],
+
+  "hitos_entregados": [
+    "INTERFAZ_C5.json (temprano) — 6 acciones, esquema estado/efectos/errno, límites rutas/bytes, comportamiento fallo",
+    "candidato r5 con diff r4→r5 (docs/DIFF_r4_a_r5.md)",
+    "mapa archivo/función N0–N9 (docs/MAPA_N0_N9.md)",
+    "source helper C + binario compilado (build/c5_helper)",
+    "build reproducible (docs/BUILD.md)",
+    "harness no privilegiado 35/35",
+    "procedimiento H1 exacto NO activado (docs/PROCEDIMIENTO_H1.md)"
+  ],
+
+  "direcciones_y_decisiones": {
+    "implementacion": "B — protección antes de publicar (no aceptar_usuario como atajo)",
+    "primitivas": "lchown(2)/fchmodat/openat/fstatat+AT_UNIQUE/renamex_np/acl_* — sin RESOLVE_BENEATH, sin lchown binario",
+    "ancla": "C-1 snapshot único + hash externo + evidencia autenticada; DELEGADA si solo archivo+hash",
+    "bootstrap": "sin sudo de código mutable del uid; helper C único binario H1"
+  },
+
+  "operaciones_reales": [
+    "lectura de insumos sellados (solo lectura)",
+    "creación de carpeta propia OT07_REVISION_v10r2r5_MIMO (umask 077)",
+    "escritura de código/docs/evidencia en esa carpeta",
+    "compilación de build/c5_helper",
+    "ejecución de harness no privilegiado sobre fixtures propios <1 MiB",
+    "copia de recibos + hash del manifiesto a entregas/MIMO/"
+  ],
+
+  "residuos_propios": [],
+  "residuos_nota": "list-stale de fixtures temporales limpiados por TemporaryDirectory del harness; sin staging huérfano persistente fuera de fixtures/",
+
+  "pendientes": [
+    "H1 explícita de OPERADOR para trabajo privilegiado sobre fixtures",
+    "Revisión Max del delta r5 (productivos cambiados, helper, bootstrap)",
+    "Ensayos FLASH independientes contra INTERFAZ_C5.json",
+    "Revalidación de ancla C-1 con MUSE (binds de cadena)",
+    "N0–N8 nativos tras H1",
+    "Sección separada de H1: preparación instalador real (condicionada a éxito nativo)"
+  ],
+
+  "transicion_solicitada": "PREPARACION → CANDIDATO_REVISADO (pendiente revisión Max). NO se solicita H1 en este recibo.",
+
+  "prohibido_confirmado": [
+    "sin sudo/root",
+    "sin USB/dispositivos",
+    "sin arranque",
+    "sin OCLP real",
+    "sin señales a procesos ajenos",
+    "sin Qwen/Opus/GitHub/OpenRouter",
+    "sin autoaprobación de H1"
+  ]
+}

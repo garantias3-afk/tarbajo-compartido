@@ -1,0 +1,18 @@
+{
+  "utc": "2026-09-27T22:29:39.409209+00:00",
+  "status": "PASS_LOCAL_DELIVERY",
+  "privacy_pattern_names": [
+    "personal_name_or_home",
+    "github_token",
+    "private_key",
+    "provider_key",
+    "original_usb_uuid",
+    "original_apfs_partition_uuid"
+  ],
+  "privacy_hits": [],
+  "top_level_markdown_links_missing": [],
+  "copied_source_records_verified": 156,
+  "scope": "Pattern scan plus curated source selection; not a formal guarantee of absence of all sensitive data.",
+  "historical_source_files_unchanged_by_tests": true,
+  "binaries_installer_disk_images_recovered_files_in_public_package": false
+}

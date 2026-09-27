@@ -1,0 +1,187 @@
+{
+  "id": "SENSIBILIDAD",
+  "revision": "R6",
+  "utc": "2026-09-27T13:25:00Z",
+  "politica": "Cada caso registra base, mutante, comando, RC y aserción. Conteos dinámicos. Ampliado tras revisión Max H-R5-1/2/3.",
+  "host": {
+    "os": "macOS 26.6.2 (25G83)",
+    "arch": "arm64",
+    "uid": 501,
+    "python": "3.9.6"
+  },
+  "casos": [
+    {
+      "id": "SENS-HB1-RAIZ-GW",
+      "criterio": "N1",
+      "base": "place() con _protect_tree correcto ⇒ F7 metadata_ok=true ⇒ PUBLICADO_VERIFICADO rc=0",
+      "mutante": "tras _protect_tree real, os.chmod(raiz_staging, 0o777) reintroduce g+w en la RAÍZ",
+      "comando": "python3 -B tests/harness_r5.py  # caso N1-02",
+      "rc_base": 0,
+      "rc_mutante": 2,
+      "rc": {
+        "esperado_en_base": 0,
+        "esperado_en_mutante": 2,
+        "observado_en_harness": "N1-02 falla el flujo como se espera"
+      },
+      "asercion": "N1-02 exige r['rc'] != 0 cuando la raíz queda con g+w. Sin la corrección HB-1 (check_expected_metadata incluye la raíz), el mutante publicaría rc=0 y el test fallaría.",
+      "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-E1-FD-ESCRITURA",
+      "criterio": "N2",
+      "base": "archivo regular, fd O_RDWR abierto, chmod 000 aplicado",
+      "mutante": "ninguno (mecanismo E1/E2 de P6): se mide que el fd YA ABIERTO conserva escritura",
+      "comando": "python3 -B tests/harness_r5.py  # caso N2-03",
+      "rc": {
+        "esperado_en_base": 0,
+        "observado_en_harness": "N2-03: os.write(fd,b'Z') devuelve 1 byte tras chmod 000"
+      },
+      "asercion": "chmod/chown NO revocan descriptores abiertos (04_AJUSTES §3). Por eso la dirección B crea los inodos finales dentro de frontera: un fd O_WRONLY/O_RDWR del uid operador no llega al objeto consumido.",
+      "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-E2-ORIGEN-MUTADO",
+      "criterio": "N5",
+      "base": "place() con ancla fijada sobre snapshot único",
+      "mutante": "fd O_WRONLY|APPEND sobre origen + write 'INJECTED' ANTES de place()",
+      "comando": "python3 -B tests/harness_r5.py  # caso N2-02",
+      "rc_base": 0,
+      "rc_mutante": 2,
+      "rc": {
+        "esperado_en_base": 0,
+        "esperado_en_mutante": 2
+      },
+      "asercion": "N2-02 exige r['rc'] != 0: el ancla (contenido) detecta la mutación y aborta sin publicar.",
+      "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-ANCLA-DELEGADA",
+      "criterio": "N5",
+      "base": "ancla con evidencia C-1 autenticada ⇒ confianza C-1",
+      "mutante": "mismo archivo+hash pero origen_autenticado=false (archivo+hash del operador)",
+      "comando": "python3 -B tests/harness_r5.py  # casos N5-02 y N5-04",
+      "rc_base": 0,
+      "rc_mutante": 0,
+      "rc": {
+        "esperado_en_base": "confianza==C-1",
+        "esperado_en_mutante": "confianza==DELEGADA"
+      },
+      "asercion": "N5-04 exige DELEGADA cuando el origen no está autenticado; archivo+hash suministrados NO acreditan procedencia (OT punto 4).",
+      "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-LIMPIEZA-RC3",
+      "criterio": "N6",
+      "base": "place() exitoso con rmdir de staging OK ⇒ rc=0",
+      "mutante": "os.rmdir interceptado para staging ⇒ OSError 66",
+      "comando": "python3 -B tests/harness_r5.py  # caso N6-03",
+      "rc_base": 0,
+      "rc_mutante": 3,
+      "rc": {
+        "esperado_en_base": 0,
+        "esperado_en_mutante": 3
+      },
+      "asercion": "N6-03 exige rc==3 y verdict OK_CON_LIMPIEZA_INCOMPLETA; jamás éxito silencioso (cierra G-2/G-3).",
+      "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-PIN-SUSTITUTO",
+      "criterio": "N7",
+      "base": "pin dev/ino del objeto v1",
+      "mutante": "unlink + write v2-sustituto en la misma ruta",
+      "comando": "python3 -B tests/harness_r5.py  # caso N7-02",
+      "rc": {
+        "esperado_en_base": "pin_equal(pin1,pin1)=true",
+        "esperado_en_mutante": "pin_equal(pin1,pin2)=false"
+      },
+      "asercion": "N7-02 exige que el sustituto rompa el pin; rehash de ruta no vincula objeto verificado con consumido.",
+      "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-EEXIST-GANADOR",
+      "criterio": "N6",
+      "base": "destino ausente ⇒ publica OK",
+      "mutante": "destino preexistente con archivo ganador",
+      "comando": "python3 -B tests/harness_r5.py  # caso N6-01",
+      "rc_base": 0,
+      "rc_mutante": 2,
+      "rc": {
+        "esperado_en_base": 0,
+        "esperado_en_mutante": 2
+      },
+      "asercion": "N6-01 exige rc!=0 y que ganador.txt siga existiendo (EEXIST no anida ni borra).",
+      "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-AMBITO-PRIV",
+      "criterio": "N8",
+      "base": "chmod_tighten dentro del ámbito registrado",
+      "mutante": "chmod_tighten('/etc/passwd') fuera de ámbito",
+      "comando": "python3 -B tests/harness_r5.py  # caso N8-02",
+      "rc": {
+        "esperado_en_base": "sin excepción dentro de ámbito",
+        "esperado_en_mutante": "PrivError"
+      },
+      "asercion": "N8-02 exige PrivError; el confinamiento del helper rechaza rutas fuera de los ámbitos registrados.",
+      "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-HR5-1-FD-STAGING",
+      "criterio": "N2",
+      "base": "create_staging_and_copy crea inodos y retira escritura ANTES de retornar",
+      "mutante": "abrir O_WRONLY sobre staging justo después de que la frontera retorna (equivale al PoC de Max entre F4 y F6)",
+      "comando": "python3 -B tests/harness_r5.py  # N2-04, N2-06",
+      "rc": {
+        "esperado_en_base": "0 con go-w aplicado",
+        "esperado_en_mutante": "EACCES en native (root:0) o go-w residual false"
+      },
+      "asercion": "N2-04/06 exigen que no quede escritura de grupo/otros y que la ventana crear→copiar no sea del operador. En native el open O_WRONLY falla (root:0).",
+      "durable": "evidencia_r6/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-HR5-2-SWAP-HOJA",
+      "criterio": "N6",
+      "base": "hoja con pin F3/F7; re-pin inmediato antes de renamex_np",
+      "mutante": "faults['swap_hoja'] renombra la hoja y crea sustituto antes del rename",
+      "comando": "python3 -B tests/harness_r5.py  # N6-05",
+      "rc_base": 0,
+      "rc_mutante": 2,
+      "rc": {
+        "esperado_en_base": 0,
+        "esperado_en_mutante": 2
+      },
+      "asercion": "N6-05 exige rc!=2 con verdict STAGING_RETENIDO y published=false: el sustituto no se publica.",
+      "durable": "evidencia_r6/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-HR5-3-PRIVERROR-CON-STAGING",
+      "criterio": "N6",
+      "base": "veredicto por estado: staging propio restante ⇒ STAGING_RETENIDO",
+      "mutante": "PrivError durante F6 con staging ya creado",
+      "comando": "python3 -B tests/harness_r5.py  # H-R5-3a",
+      "rc_base": 2,
+      "rc_mutante": 2,
+      "rc": {
+        "esperado_en_base": "ABORTADO_STAGING_RETENIDO rc=2",
+        "esperado_en_mutante": "NO incondicional NO_AUTORIZADO rc=5"
+      },
+      "asercion": "H-R5-3a exige STAGING_RETENIDO rc=2; PrivError no puede etiquetar NO_AUTORIZADO si queda staging propio.",
+      "durable": "evidencia_r6/HARNESS_RESULTADOS.json"
+    },
+    {
+      "id": "SENS-HR5-3-EXCEPCION-GENERICA-POST-PUBLISH",
+      "criterio": "N6",
+      "base": "publicación completa → veredicto por estado",
+      "mutante": "RuntimeError en F9 tras publicar",
+      "comando": "python3 -B tests/harness_r5.py  # H-R5-3b",
+      "rc": {
+        "esperado_en_base": "PUBLICADO_VERIFICADO rc=0",
+        "esperado_en_mutante": "ESTADO_INDETERMINADO rc=8"
+      },
+      "asercion": "H-R5-3b exige ESTADO_INDETERMINADO rc=8: excepción genérica no escapa sin veredicto.",
+      "durable": "evidencia_r6/HARNESS_RESULTADOS.json"
+    }
+  ],
+  "nota_contadores": "Total real de casos: 12. Conteos dinámicos. rc6→rc2 unificado (H-R5-6.1): los abortos van a rc=2; rc=6 no se usa.",
+  "conteo_casos": 12
+}

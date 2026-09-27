@@ -1,0 +1,15 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6c_MIMO/src/c5_helper.c	2026-09-27 14:41:03
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6d_MIMO/src/c5_helper.c	2026-09-27 14:56:11
+@@ -261,6 +261,12 @@
+             if (copy_walk(s, t) != C5_OK) { closedir(d); rc = C5_ERR_POLICY; break; }
+         }
+         closedir(d);
++        /* R6C-1: aplicar a la HOJA el modo del origen menos g+w/o+w
++           (paridad con el orquestador simulated). dst ya es root:0. */
++        if (rc == C5_OK) {
++            mode_t hmode = st.st_mode & 0777 & ~(S_IWGRP | S_IWOTH);
++            if (chmod(dst, hmode) != 0) die_errno(C5_ERR_IO, "chmod-hoja", dst);
++        }
+     } else {
+         /* origen no-dir: copiar como dst/basename(src) */
+         const char *base = strrchr(src, '/');

@@ -1,0 +1,526 @@
+{
+  "utc": "2026-09-27T22:27:11.709279+00:00",
+  "checks": [
+    {
+      "path": "PROCEDENCIA.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/INTERFAZ_C5.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/RECIBO_CANDIDATO_R5.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/RECIBO_CANDIDATO_R6.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/RECIBO_CANDIDATO_R6B.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/RECIBO_CANDIDATO_R6C.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/RECIBO_CANDIDATO_R6D.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/docs/H1_A_REEJECUCION.sh",
+      "check": "bash_n",
+      "ok": true,
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/evidencia_r5/SENSIBILIDAD.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/evidencia_r6b/REPRODUCCION_R6B.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/evidencia_r6c/HARNESS_RESULTADOS.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/evidencia_r6d/HARNESS_RESULTADOS.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/src/c5_acl.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/src/c5_ancla.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/src/c5_bootstrap.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/src/c5_orquestador.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/src/legacy/ot07_guard.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/src/legacy/ot07_process.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/src/legacy/place_helper.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/src/legacy/verificar_instalador.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/c5_v10r2r6d/tests/harness_r5.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/CREAR_PEN_BOOTEO.sh",
+      "check": "bash_n",
+      "ok": true,
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/apoyo_muse_p1/adaptador_mimo.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/apoyo_muse_p1/comparador.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/apoyo_muse_p1/inventario.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/apoyo_muse_p1/test_comparador.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/colocacion_v2/colocar_candidato.sh",
+      "check": "bash_n",
+      "ok": true,
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/construir_efi.sh",
+      "check": "bash_n",
+      "ok": true,
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/descargar_sonoma.sh",
+      "check": "bash_n",
+      "ok": true,
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/evidencia_impl/CHAIN_REPORT.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/evidencia_impl/cmp_payload_vs_extracted.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/evidencia_impl/dmg_sha256_compare.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/evidencia_impl/inv_extracted_app.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/evidencia_impl/inv_payload_app.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/evidencia_impl/offline_positive.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/evidencia_r4/sensibilidad_espacio.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/evidencia_r4/sensibilidad_fallback_tmpdir.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/identificar_pen.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/ot07_guard.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/ot07_process.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/place_helper.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/sim_tool.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_colocacion_v2.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_correcciones_b_i.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_f1_arnes.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_f5_tmpdir.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_flow.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_guards.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_installer.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_native_probe.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_place_v10r2r1.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_probe.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_process.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_shell_cleanup.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tests/test_verifier_v10r2.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/tree_inventory.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "codigo/ot07_v10r2r4/verificar_instalador.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "evidencia/ENTORNO_LOCAL_20260927.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/OT06_RESUMEN_DESIDENTIFICADO.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/apfs/evidencia_apfs.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/apfs/evidencia_tier2_parcial.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/apfs/fuentes_codigo.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/apfs/prueba_inspector.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/h1_r6b/RECIBO_H1_NATIVO_A.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/instalador/RECIBO_MUSE_PREFLIGHT.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/revisiones/ESTADO_R6.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/revisiones/RECIBO_MAX_REV_R6D.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/verificacion_entrega/c5_compilado.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "evidencia/verificacion_entrega/c5_sin_binario.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/RECIBO_FLASH_PRUEBAS_C5_R2.json",
+      "check": "json_parse",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/fixtures/make_fixtures_c5.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/casos_c5.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/casos_r6.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/comparador.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/harness_common.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/lector_independiente.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/mutadores.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/probe_primitivas.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/runner.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/runner_r6.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/sut_adapters.py",
+      "check": "python_ast",
+      "ok": true
+    },
+    {
+      "path": "pruebas/flash_r2/harness/sut_r6.py",
+      "check": "python_ast",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "python_ast": 45,
+    "bash_n": 5,
+    "json_parse": 32
+  },
+  "provenance_records_verified": 156,
+  "c5_initial": {
+    "rc": 1,
+    "passed": 57,
+    "failed": 2,
+    "reason": "Native helper intentionally not shipped; tests H-R5-5a/b need a compiled helper."
+  },
+  "c5_after_build": {
+    "rc": 0,
+    "results": {
+      "total": 59,
+      "ok": 59,
+      "fail": 0,
+      "skips": 0,
+      "ids_ok": [
+        "N0-01",
+        "N0-02",
+        "N0-03",
+        "N1-01",
+        "N1-02",
+        "N1-03",
+        "N2-01",
+        "N2-02",
+        "N2-03",
+        "N3-01",
+        "N3-02",
+        "N4-01",
+        "N4-02",
+        "N4-03",
+        "N4-04",
+        "N4-05",
+        "N5-01",
+        "N5-02",
+        "N5-03",
+        "N5-04",
+        "N6-01",
+        "N6-02",
+        "N6-03",
+        "N6-04",
+        "N7-01",
+        "N7-02",
+        "N8-01",
+        "N8-02",
+        "N9-01",
+        "N9-02",
+        "N9-03",
+        "ERRATA-01",
+        "ERRATA-02",
+        "IFZ-01",
+        "IFZ-02",
+        "N2-04",
+        "N2-05",
+        "N2-06",
+        "N6-05",
+        "N6-06",
+        "H-R5-3a",
+        "H-R5-3b",
+        "H-R5-4a",
+        "H-R5-4b",
+        "H-R5-5a",
+        "H-R5-5b",
+        "H-R5-6.7",
+        "H-R5-6.8",
+        "c5-r6-09b",
+        "c5-r6-10b",
+        "c5-r6-10b-det",
+        "R6-4",
+        "D1-01",
+        "D1-02",
+        "D2-01",
+        "D2-02",
+        "PROTO-01",
+        "D3-01",
+        "CLEANUP-01"
+      ],
+      "ids_fail": []
+    },
+    "privileges": "ordinary user; no sudo",
+    "scope": "existing suite on isolated copy; simulated placement, local fixture ACL/rename and helper selfcheck/rejection; NOT privileged copy-tree/protect/publish",
+    "reported_skips_limit": "Suite prints zero skips; some test bodies have conditional fallback assertions, not full native coverage."
+  },
+  "build": {
+    "rc": 0,
+    "warnings": "",
+    "command": "clang -O2 -Wall -Wextra -std=c11 -mmacosx-version-min=14.0 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk -o build/c5_helper src/c5_helper.c",
+    "sha256": "11b37e79be847e3d280bed36b844d1e19e35481a800a35dc633f5167fdc9bfcc",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "binary_shipped": false
+  },
+  "usb_created": false,
+  "privileged_c5_run": false,
+  "boot_test": false,
+  "APFS_repair": false,
+  "original_disks_accessed": false,
+  "code_corrected": false,
+  "external_model_consulted": false
+}

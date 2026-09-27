@@ -1,0 +1,130 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r5_MIMO/evidencia_r5/SENSIBILIDAD.json	2026-09-27 10:29:21
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/evidencia_r5/SENSIBILIDAD.json	2026-09-27 12:04:45
+@@ -1,8 +1,8 @@
+ {
+   "id": "SENSIBILIDAD",
+-  "revision": "R5",
++  "revision": "R6",
+   "utc": "2026-09-27T13:25:00Z",
+-  "politica": "Cada caso registra base, mutante, comando, RC y aserción. El mutante debe romper el oráculo previsto (no fallar en prerrequisito ajeno). Conteos dinámicos.",
++  "politica": "Cada caso registra base, mutante, comando, RC y aserción. Conteos dinámicos. Ampliado tras revisión Max H-R5-1/2/3.",
+   "host": {
+     "os": "macOS 26.6.2 (25G83)",
+     "arch": "arm64",
+@@ -18,7 +18,11 @@
+       "comando": "python3 -B tests/harness_r5.py  # caso N1-02",
+       "rc_base": 0,
+       "rc_mutante": 2,
+-      "rc": {"esperado_en_base": 0, "esperado_en_mutante": 2, "observado_en_harness": "N1-02 falla el flujo como se espera"},
++      "rc": {
++        "esperado_en_base": 0,
++        "esperado_en_mutante": 2,
++        "observado_en_harness": "N1-02 falla el flujo como se espera"
++      },
+       "asercion": "N1-02 exige r['rc'] != 0 cuando la raíz queda con g+w. Sin la corrección HB-1 (check_expected_metadata incluye la raíz), el mutante publicaría rc=0 y el test fallaría.",
+       "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+     },
+@@ -43,7 +47,10 @@
+       "comando": "python3 -B tests/harness_r5.py  # caso N2-02",
+       "rc_base": 0,
+       "rc_mutante": 2,
+-      "rc": {"esperado_en_base": 0, "esperado_en_mutante": 2},
++      "rc": {
++        "esperado_en_base": 0,
++        "esperado_en_mutante": 2
++      },
+       "asercion": "N2-02 exige r['rc'] != 0: el ancla (contenido) detecta la mutación y aborta sin publicar.",
+       "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+     },
+@@ -70,7 +77,10 @@
+       "comando": "python3 -B tests/harness_r5.py  # caso N6-03",
+       "rc_base": 0,
+       "rc_mutante": 3,
+-      "rc": {"esperado_en_base": 0, "esperado_en_mutante": 3},
++      "rc": {
++        "esperado_en_base": 0,
++        "esperado_en_mutante": 3
++      },
+       "asercion": "N6-03 exige rc==3 y verdict OK_CON_LIMPIEZA_INCOMPLETA; jamás éxito silencioso (cierra G-2/G-3).",
+       "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+     },
+@@ -95,7 +105,10 @@
+       "comando": "python3 -B tests/harness_r5.py  # caso N6-01",
+       "rc_base": 0,
+       "rc_mutante": 2,
+-      "rc": {"esperado_en_base": 0, "esperado_en_mutante": 2},
++      "rc": {
++        "esperado_en_base": 0,
++        "esperado_en_mutante": 2
++      },
+       "asercion": "N6-01 exige rc!=0 y que ganador.txt siga existiendo (EEXIST no anida ni borra).",
+       "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
+     },
+@@ -111,7 +124,64 @@
+       },
+       "asercion": "N8-02 exige PrivError; el confinamiento del helper rechaza rutas fuera de los ámbitos registrados.",
+       "durable": "evidencia_r5/HARNESS_RESULTADOS.json"
++    },
++    {
++      "id": "SENS-HR5-1-FD-STAGING",
++      "criterio": "N2",
++      "base": "create_staging_and_copy crea inodos y retira escritura ANTES de retornar",
++      "mutante": "abrir O_WRONLY sobre staging justo después de que la frontera retorna (equivale al PoC de Max entre F4 y F6)",
++      "comando": "python3 -B tests/harness_r5.py  # N2-04, N2-06",
++      "rc": {
++        "esperado_en_base": "0 con go-w aplicado",
++        "esperado_en_mutante": "EACCES en native (root:0) o go-w residual false"
++      },
++      "asercion": "N2-04/06 exigen que no quede escritura de grupo/otros y que la ventana crear→copiar no sea del operador. En native el open O_WRONLY falla (root:0).",
++      "durable": "evidencia_r6/HARNESS_RESULTADOS.json"
++    },
++    {
++      "id": "SENS-HR5-2-SWAP-HOJA",
++      "criterio": "N6",
++      "base": "hoja con pin F3/F7; re-pin inmediato antes de renamex_np",
++      "mutante": "faults['swap_hoja'] renombra la hoja y crea sustituto antes del rename",
++      "comando": "python3 -B tests/harness_r5.py  # N6-05",
++      "rc_base": 0,
++      "rc_mutante": 2,
++      "rc": {
++        "esperado_en_base": 0,
++        "esperado_en_mutante": 2
++      },
++      "asercion": "N6-05 exige rc!=2 con verdict STAGING_RETENIDO y published=false: el sustituto no se publica.",
++      "durable": "evidencia_r6/HARNESS_RESULTADOS.json"
++    },
++    {
++      "id": "SENS-HR5-3-PRIVERROR-CON-STAGING",
++      "criterio": "N6",
++      "base": "veredicto por estado: staging propio restante ⇒ STAGING_RETENIDO",
++      "mutante": "PrivError durante F6 con staging ya creado",
++      "comando": "python3 -B tests/harness_r5.py  # H-R5-3a",
++      "rc_base": 2,
++      "rc_mutante": 2,
++      "rc": {
++        "esperado_en_base": "ABORTADO_STAGING_RETENIDO rc=2",
++        "esperado_en_mutante": "NO incondicional NO_AUTORIZADO rc=5"
++      },
++      "asercion": "H-R5-3a exige STAGING_RETENIDO rc=2; PrivError no puede etiquetar NO_AUTORIZADO si queda staging propio.",
++      "durable": "evidencia_r6/HARNESS_RESULTADOS.json"
++    },
++    {
++      "id": "SENS-HR5-3-EXCEPCION-GENERICA-POST-PUBLISH",
++      "criterio": "N6",
++      "base": "publicación completa → veredicto por estado",
++      "mutante": "RuntimeError en F9 tras publicar",
++      "comando": "python3 -B tests/harness_r5.py  # H-R5-3b",
++      "rc": {
++        "esperado_en_base": "PUBLICADO_VERIFICADO rc=0",
++        "esperado_en_mutante": "ESTADO_INDETERMINADO rc=8"
++      },
++      "asercion": "H-R5-3b exige ESTADO_INDETERMINADO rc=8: excepción genérica no escapa sin veredicto.",
++      "durable": "evidencia_r6/HARNESS_RESULTADOS.json"
+     }
+   ],
+-  "nota_contadores": "Los totales del harness se sellan en HARNESS_RESULTADOS.json.resumen (dinámicos). No se afirma 176 ni 47."
+-}
++  "nota_contadores": "Total real de casos: 12. Conteos dinámicos. rc6→rc2 unificado (H-R5-6.1): los abortos van a rc=2; rc=6 no se usa.",
++  "conteo_casos": 12
++}
+\ No newline at end of file

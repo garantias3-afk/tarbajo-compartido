@@ -1,0 +1,122 @@
+{
+  "ot": "OT07-I-C5-NATIVO",
+  "revision_id": "v10r2r6c",
+  "estado_propio": "CANDIDATO_R6C_PENDIENTE_REAUDITORIA_DELTA",
+  "autoaprobacion_H1": false,
+  "h1_bis_necesaria": true,
+  "h1_bis_motivo": "el hash del binario cambió; la aprobación H1 actual NO cubre el binario nuevo",
+  "utc_cierre": "2026-09-27T17:43:15Z",
+  "rol": "MIMO",
+  "canal_entrega": "RUN.20260927T131419Z.C5IMAC1/entregas/MIMO/",
+  "producto": "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6c_MIMO",
+  "sustituye_a": {
+    "revision": "v10r2r6b",
+    "manifiesto": "7e69177e9bb68706632e56dcd8e7c4fcbb21d39ffacea338e273209f5b114141",
+    "binario_anterior": "92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233",
+    "nota": "r6b sellado NO editado; r6c es revisión nueva"
+  },
+
+  "proveedor_observado": {
+    "rol": "MIMO",
+    "aplicacion": "MiMo Desktop",
+    "proveedor": "Xiaomi Token Plan",
+    "modelo_efectivo": "MiMo (mimo)",
+    "modalidad": "Token Plan",
+    "estado": "CONFIRMADO_POR_USUARIO"
+  },
+
+  "decisiones_D1_D2": {
+    "D1": {
+      "problema": "copy_walk hacía mkdir(dst) de la RAÍZ del origen, pero la hoja ya existía (mkdir-staging) ⇒ EEXIST errno=17",
+      "decision_MIMO": "copy-tree copia el CONTENIDO de src DENTRO de la hoja existente. cmd_copy_tree itera los hijos de src y los copia en dst; copy_walk hace mkdir solo si el subdirectorio destino no existe",
+      "alternativa_descartada": "que mkdir-staging no cree la hoja y la cree copy-tree (más cambios en el contrato de mkdir-staging)",
+      "test": "D1-01, D1-02 (harness); verificación de contrato en la re-ejecución: RC=0 y árbol completo"
+    },
+    "D2": {
+      "problema": "helper fijaba 0700/0600; INTERFAZ pedía r-x de otros si origen 0755",
+      "decision_MIMO": "copy-tree conserva los modos del origen menos g+w/o+w (conforme INTERFAZ). Dueño root + go-w + ACL deny dan la no-escritura; la lectura/recorrido queda para verificación",
+      "fixture_re_ejecucion": "dirs 0755 / archivos 0644 (umask 022 solo al crear el fixture)",
+      "verificacion": "verify/ls -le como uid 501 funcionan (no se declara root-side)",
+      "test": "D2-01, D2-02"
+    }
+  },
+
+  "binario_nuevo": {
+    "ruta": "build/c5_helper",
+    "sha256": "3bb1b3b5c38f57d25050b104f02d4494b11131b8bdd05986f78c0d091077a66d",
+    "reemplaza_a": "92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233",
+    "requiere": "H1-bis — confirmación puntual de OPERADOR (mismo alcance A, hash nuevo). La aprobación H1 actual NO cubre este objeto",
+    "build": "clang -O2 -Wall -Wextra -std=c11 -mmacosx-version-min=14.0 -isysroot .../MacOSX26.5.sdk"
+  },
+
+  "cambios": [
+    {"archivo": "src/c5_helper.c", "cambio": "D1 copy-tree copia contenido en hoja existente; D2 nmode=origen&~(g+w|o+w) en copy_reg/copy_walk; cleanup con rmdir_vacio_bottom_up (solo árboles vacíos confinados)"},
+    {"archivo": "src/c5_orquestador.py", "cambio": "D2 _copy_tree y mkdir de subdirs con modo del origen menos go-w"},
+    {"archivo": "docs/PROCEDIMIENTO_H1.md", "cambio": "protocolo abort RC≠0; fixture D2 0755/0644; C5_AUTH_BASE para re-ejecución"},
+    {"archivo": "docs/H1_A_REEJECUCION.sh", "cambio": "NUEVO: plantilla de re-ejecución con abort al primer RC≠0 y C5_AUTH_BASE exportado"},
+    {"archivo": "tests/harness_r5.py", "cambio": "+8 oráculos D1/D2/PROTO/D3/CLEANUP"}
+  ],
+
+  "protocolo_re_ejecucion": {
+    "abortar_al_primer_RC_no_cero": true,
+    "nota": "en la corrida A anterior se continuó tras copy-tree RC=2 — prohibido. La plantilla H1_A_REEJECUCION.sh lo implementa",
+    "C5_AUTH_BASE": "exportado a $H1 para lecturas del destino publicado (D3)",
+    "fixture": "dirs 0755 / archivos 0644",
+    "oraculos_completos": "N1/N2 (contenedor+archivo)/N3/N4-hardlink/N5-mutación/N6/N7-fd-origen/N8"
+  },
+
+  "cleanup_bottom_up": {
+    "implementado": "rmdir_vacio_bottom_up: solo rmdir de directorios vacíos, bottom-up, confinado al prefijo ot07_c5_staging.; sin rm genérico; cualquier archivo/symlink residual aborta",
+    "proposito": "retirar ot07_c5_staging.jCwt99 (residuo A) sin nuevos tipos de sudo",
+    "residuos_actuales": "NO se borran a ciegas. Se reportan y se retiran en la re-ejecución con este cleanup si están vacíos"
+  },
+
+  "tests": {
+    "total": 59,
+    "ok": 59,
+    "fail": 0,
+    "skips": 0,
+    "delta_vs_r6b": "+7 (D1-01, D1-02, D2-01, D2-02, PROTO-01, D3-01, CLEANUP-01)",
+    "evidencia": "evidencia_r6c/HARNESS_RESULTADOS.json"
+  },
+
+  "hashes": {
+    "manifiesto_r6c": "b307200dc6eaac496fa32657ae87713bf016f128a6fa252352997d92006d0375",
+    "manifiesto_r6b_no_editado": "7e69177e9bb68706632e56dcd8e7c4fcbb21d39ffacea338e273209f5b114141",
+    "binario_r6c": "3bb1b3b5c38f57d25050b104f02d4494b11131b8bdd05986f78c0d091077a66d"
+  },
+
+  "diff": {
+    "resumen": "diff_r6b_r6c/ (por archivo)",
+    "archivos": [
+      "diff_r6b_r6c/src_c5_helper.c.diff",
+      "diff_r6b_r6c/src_c5_orquestador.py.diff",
+      "diff_r6b_r6c/tests_harness_r5.py.diff",
+      "diff_r6b_r6c/docs_PROCEDIMIENTO_H1.md.diff"
+    ]
+  },
+
+  "simulado_vs_nativo": {
+    "simulado": "harness 59/59 no privilegiado (D1/D2 verificados a nivel de código y contrato)",
+    "nativo": "NO ejecutado en esta revisión — la re-ejecución A completa es posterior a H1-bis"
+  },
+
+  "pendientes": [
+    "Max: reauditar el delta del helper (el binario cambió)",
+    "OPERADOR: confirmación H1-bis (mismo alcance A, hash nuevo 3bb1b3b5…)",
+    "Re-ejecución A completa con la plantilla (todos los oráculos, abort RC≠0)",
+    "Sección B sigue congelada hasta GO completo de A"
+  ],
+
+  "residuos_previos_reportados_no_borrados": [
+    "h1_mimo/h1_destino (root:0 0700, vacío por D1 en corrida A)",
+    "h1_mimo/h1_destino_eexist (con ganador.txt del operador)",
+    "h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99 (root:0 0700, retenido)"
+  ],
+
+  "operaciones_declaradas": [
+    "solo código/docs/tests en r6c; sin sudo en esta revisión",
+    "sin USB/arranque/OCLP//Applications/sudoers/señales",
+    "residuos de la corrida A no tocados"
+  ]
+}

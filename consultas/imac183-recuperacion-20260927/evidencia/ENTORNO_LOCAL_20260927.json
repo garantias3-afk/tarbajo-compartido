@@ -1,0 +1,58 @@
+{
+  "utc": "2026-09-27T22:18:40.362743+00:00",
+  "scope": "metadata-only; no image hashing or raw device reads",
+  "model": "Mac17,9",
+  "arch": "arm64",
+  "os": "26.6.2",
+  "os_build": "25G83",
+  "python": "Python 3.9.6",
+  "apps": [
+    {
+      "bundle": "OpenCore-Patcher.app",
+      "plist_sha256": "574db2256b0aebe78f66355ccdf99300e218ab8a8fef6fee1015fcb18d307c14",
+      "CFBundleName": "OpenCore Legacy Patcher",
+      "CFBundleIdentifier": "com.dortania.opencore-legacy-patcher",
+      "CFBundleShortVersionString": "2.4.1",
+      "CFBundleVersion": "2.4.1"
+    },
+    {
+      "bundle": "UFS Explorer RAID Recovery.app",
+      "plist_sha256": "6dfd2559d820cdd327006481f430f6b045f814c4610565012a32b0b1eb924958",
+      "CFBundleName": "UFS Explorer RAID Recovery",
+      "CFBundleIdentifier": "com.sdl.exe.UFS-Explorer-RAID-Recovery",
+      "CFBundleShortVersionString": "10.22",
+      "CFBundleVersion": "10.22"
+    }
+  ],
+  "images": [
+    {
+      "label": "disk121_completo.img",
+      "bytes": 121332826112,
+      "uchg": true,
+      "mtime_epoch": 1789938450.0,
+      "whole_hash": "NOT_COMPUTED",
+      "content": "NOT_READ"
+    },
+    {
+      "label": "meta2TB_16G.img",
+      "bytes": 17179869184,
+      "uchg": true,
+      "mtime_epoch": 1789938535.0,
+      "whole_hash": "NOT_COMPUTED",
+      "content": "NOT_READ"
+    }
+  ],
+  "free_space": [
+    {
+      "label": "host",
+      "available_bytes": 139410173952
+    },
+    {
+      "label": "rescue_destination",
+      "available_bytes": 46203867136
+    }
+  ],
+  "installer_in_Applications_exists": false,
+  "historical_pids_observed": "3494     1 Ss   06-10:22:45 /Users/OPERADOR/src/rescate_zcode/apfs-fuse-read-errors/build/apfs-fuse",
+  "pid_limit": "absent PID does not prove successful completion; identity not revalidated for signalling; no signals sent"
+}

@@ -1,0 +1,76 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/tests/harness_r5.py	2026-09-27 14:06:22
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6c_MIMO/tests/harness_r5.py	2026-09-27 14:42:07
+@@ -762,8 +762,64 @@
+     txt = (SRC / "c5_helper.c").read_text()
+     assert_true("C5_AUTH_BASE" in txt)
+     assert_true("estricto" in txt.lower() or "ESTRICTO" in txt)
++
++
++# ============ r6c: D1 + D2 + protocolo abort ============
++
++@test("D1-01", "copy-tree no hace mkdir de la raíz si dst ya existe")
++def t_d101():
++    """D1: cmd_copy_tree copia CONTENIDO dentro de la hoja existente."""
++    src = (SRC / "c5_helper.c").read_text()
++    # la función que copia contenido no debe mkdir la raíz en cmd_copy_tree
++    idx = src.index("static int cmd_copy_tree")
++    chunk = src[idx:src.index("static int protect_one")]
++    assert_true("dst YA EXISTE" in chunk or "CONTENIDO" in chunk)
++    assert_true("readdir" in chunk, "debe iterar hijos del origen")
++
++
++@test("D1-02", "copy_walk hace mkdir solo si dst no existe (EEXIST tolerado en raíz)")
++def t_d102():
++    src = (SRC / "c5_helper.c").read_text()
++    idx = src.index("static int copy_walk")
++    chunk = src[idx:src.index("static int cmd_copy_tree")]
++    assert_true("ENOENT" in chunk, "debe distinguir dst ausente")
++    assert_true("dst-no-es-dir" in chunk or "S_ISDIR" in chunk)
++
++
++@test("D2-01", "copy-tree conserva modo del origen menos g+w/o+w")
++def t_d201():
++    src = (SRC / "c5_helper.c").read_text()
++    assert_true("IWGRP" in src and "IWOTH" in src)
++    # copy_reg y copy_walk aplican nmode
++    assert_true("nmode" in src)
+ 
+ 
++@test("D2-02", "_copy_tree del orquestador aplica D2")
++def t_d202():
++    src = (SRC / "c5_orquestador.py").read_text()
++    assert_true("S_IWGRP" in src or "stat.S_IWGRP" in src)
++
++
++@test("PROTO-01", "protocolo abort RC≠0 documentado en H1")
++def t_proto01():
++    txt = (RAIZ / "docs" / "PROCEDIMIENTO_H1.md").read_text()
++    assert_true("aborta" in txt.lower() or "ABORT" in txt)
++    assert_true("RC" in txt)
++
++
++@test("D3-01", "C5_AUTH_BASE documentado para re-ejecución")
++def t_d301():
++    txt = (RAIZ / "docs" / "PROCEDIMIENTO_H1.md").read_text()
++    assert_true("C5_AUTH_BASE" in txt)
++
++
++@test("CLEANUP-01", "cleanup con retiro bottom-up de árbol vacío")
++def t_clean01():
++    src = (SRC / "c5_helper.c").read_text()
++    assert_true("rmdir_vacio_bottom_up" in src)
++    assert_true("contenido-residual" in src)
++
++
+ def main():
+     print("=== harness_r5 no privilegiado ===")
+     print(f"uid={os.geteuid()} python={sys.version.split()[0]}")
+@@ -787,7 +843,7 @@
+         "ids_fail": [r["id"] for r in RESULTADOS if not r["ok"]],
+     }
+     print(f"\n=== {ok}/{total} OK · {fail} FAIL · 0 skips ===")
+-    out = RAIZ / "evidencia_r6b" / "HARNESS_RESULTADOS.json"
++    out = RAIZ / "evidencia_r6c" / "HARNESS_RESULTADOS.json"
+     out.parent.mkdir(parents=True, exist_ok=True)
+     out.write_text(json.dumps({"resumen": resumen, "resultados": RESULTADOS}, indent=2),
+                    encoding="utf-8")

@@ -1,0 +1,109 @@
+{
+  "recibo": "RECIBO_FLASH_PRUEBAS_C5_R2",
+  "ot": "02_OT_FLASH_PRUEBAS.md (OT07-P7, revisión 2)",
+  "revision_id": "FLASH_PRUEBAS_C5_R2",
+  "revisa_a": "FLASH_PRUEBAS_C5_R1 (sellada, sin cambios)",
+  "run_id": "RUN.20260927T131419Z.C5IMAC1",
+  "run_json_sha256": "7c9de39c3edf199b17d59c024b4039fa2e550fc5c3d152a90520f4fd27a2f126",
+  "utc_cierre": "2026-09-27T15:10:00Z",
+  "objeto": "batería FLASH (51 R1 + 15 r6) contra el orquestador REAL r6 en simulated/fixture_ensayo, tras CANDIDATO_R6_REVISADO_ACEPTADO",
+  "proveedor": {
+    "rol": "FLASH",
+    "proveedor_requerido": "ZCode, proveedor Z.ai, Token Plan",
+    "aplicacion": "ZCode",
+    "proveedor_observado": "Z.ai",
+    "modelo_efectivo": "GLM-5.3-Flash",
+    "modalidad_observada": "plan de sesión zai-start-plan (metadatos account:zai-start-plan/GLM-5.3-Flash)",
+    "estado": "VERIFICADO via metadatos de sesión; sin secretos",
+    "fallback": "desactivado; ninguna otra ruta usada"
+  },
+  "host": {
+    "hostname": "HOST_PREPARACION.local",
+    "macos": "26.6.2 (25G83)",
+    "arch": "arm64",
+    "uid_euid": 501
+  },
+  "hashes_entrada": {
+    "RUN.json": "7c9de39c…f126 (verificado al iniciar la sesión)",
+    "producto_r6_manifiesto": "4fa65e4fe69de4e5408b64e31c1ad65f283980e1569839397481deb268736b6d (verificado 27/27 con shasum -c)",
+    "orquestador_r6_sha256": "a44715604f95682206ceec6c8a936b23cd729e1a2d7daa4978b6a8b47fe908eb (copia privada = sellado)",
+    "INTERFAZ_C5.json": "c4dcf6631f4f52a3c9885c4e4da00700670344ec0b8610b43316aff497b1ffbc (SIN cambios; adaptador R1 válido)",
+    "REVISION_MAX_R6": "entregas/MAX/REVISION_MAX_R6.md (CANDIDATO_R6_REVISADO_ACEPTADO; R6-1..4)",
+    "R1_entrega": "SHA256SUMS R1 intacto (de3a6b17…53701)"
+  },
+  "alcance_por_ruta": {
+    "escritura": "solo entregas/FLASH/OT07_FLASH_PRUEBAS_C5_R2/ (umask 077) y copia del recibo+hash de manifiesto en la raíz del canal",
+    "ejecucion": "c5_orquestador r6 SOLO desde copias_privadas/r6 (importlib); mutantes MUT-R6-A/B/C/D/E/F+SCAN como copias privadas con anclaje único; jamás in-place",
+    "sin_ejecutar": "c5_helper.c (nativo H1), tests/harness_r5.py de MiMo (47/48 oráculos propios ya medidos por Max)"
+  },
+  "herramientas": {
+    "python": "/usr/bin/python3 3.9.6 -B",
+    "nativas": [
+      "renamex_np",
+      "chmod +a/-N ACL",
+      "ls -le/leO",
+      "lstat/pin",
+      "threading (instrumentación determinista)"
+    ]
+  },
+  "comandos_rc": {
+    "corrida_completa": "PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B harness/runner_r6.py → RC=0",
+    "errno_destacados": {
+      "fd_dueño_staging_simulated": "abierto (0o644) — referencia Max",
+      "chmod_write_data": "Invalid permission type (chmod no acepta el nombre NFSv4)"
+    }
+  },
+  "tests": {
+    "bateria": "66 casos = 51 R1 (regresión, mismos adaptadores) + 15 ×r6",
+    "conteos": {
+      "pasa_oraculo": 62,
+      "falla_producto": 2,
+      "skip_nativo_pendiente": 2,
+      "inconclusivo": 0,
+      "error_harness": 0
+    },
+    "skips": [
+      "c5-n1-01 (H1)",
+      "c5-r6-05 fd-staging post-frontera (oráculo conclusivo H1-N2; medición determinista registrada: fd abre 0o644 y la escritura post-publish muta el objeto — coincide con referencia Max)"
+    ],
+    "fallas_producto": [
+      "F-R6-N3-1 (c5-r6-09): c5_acl.DERECHOS_ESCRITURA omite los nombres que ls -le imprime ('write','append') ⇒ ACE 'allow write' NO detectada (medida con ACEs reales; 'delete' y 'write,delete' sí)",
+      "R6-1 (c5-r6-10): reproducida end-to-end — validar_acl lanzando AclPolicyError es engullida por 'except: pass' en F6 y el flujo PUBLICA (rc=0); con detección funcionando sí aborta (rc=2)"
+    ],
+    "regresion": "R1 50/51 PASA + SKIP H1 (idéntico a R1); suite P5r interna 47/47",
+    "mutantes_r6": "MUT-R6-A (g+w post-F6 ⇒ F7 aborta), B (caída post-F9 ⇒ rc=8 sin borrado), C (residuo ⇒ rc=3), D (micro-ventana ⇒ rc=4 backstop F9, coincide con Max), E (swap origen pre-frontera ⇒ aborto), F (nodo sin lchown ⇒ F7 aborta), SCAN (inyección subprocess detectada)",
+    "detalle": "resultados/resultados_harness_r6.json (esquema v1)"
+  },
+  "simulado_vs_nativo": {
+    "nativo_real_uid501": "toda la mecánica de fs/ACL/exec sobre fixtures propios; producto r6 ejecutado no privilegiado (simulated)",
+    "simulado_rotulado": "dueño 0:wheel (ledger del producto y del harness); frontera simulated no cierra fds del dueño (limitación declarada por MiMo/Max, oráculo conclusivo en H1-N2)",
+    "pendiente_h1": "c5-n1-01, c5-r6-05 conclusivo, sonda AT_UNIQUE privilegiada"
+  },
+  "resultados_y_pendientes": {
+    "para_mimo_r6b": [
+      "R6-1: except AclPolicyError ⇒ abort (una línea, obligatoria antes de H1)",
+      "F-R6-N3-1: añadir 'write'/'append' (o contención) a DERECHOS_ESCRITURA; par positivo/negativo ya escrito en c5-r6-09",
+      "re-ejecutar c5-r6-09/10 sobre la copia corregida (misma batería, sin cambios)"
+    ],
+    "para_max": [
+      "adjudicar F-R6-N3-1 y confirmar R6-1 con la evidencia medida (resultados_harness_r6.json)",
+      "con batería + R6-1 aplicada, el pedido H1 queda listo según su calendario"
+    ],
+    "no_aprobado": "nada; C5_NATIVO_VALIDADO sigue BLOQUEADO_HASTA_H1"
+  },
+  "operaciones_reales_y_residuos": {
+    "operaciones": "copia privada del src r6; creación/eliminación de fixtures/staging propios; compexec del orquestador en proceso propio; sin sudo/dispositivos/red",
+    "residuos_permanentes_registrados": [
+      "resultados/work/fixture_base",
+      "resultados/work/probe_primitivas"
+    ],
+    "limpieza": "resultados/limpieza.txt — 0 objetos retenidos"
+  },
+  "entrega": {
+    "ruta": "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/entregas/FLASH/OT07_FLASH_PRUEBAS_C5_R2",
+    "manifiesto": "SHA256SUMS.txt",
+    "manifiesto_sha256": "aead0fb4b841eb55bbf9bd51df800967122a94d721d47f3cb64b56dbb4489216",
+    "nota_integridad": "el recibo no contiene su propio hash y el manifiesto no lista el recibo: sin circularidad"
+  },
+  "sello": "MANIFESTACIÓN: lo descrito corresponde a lo ejecutado en esta sesión por GLM Flash (ZCode/Z.ai); evidencia durable en la carpeta; corrección = revisión nueva."
+}

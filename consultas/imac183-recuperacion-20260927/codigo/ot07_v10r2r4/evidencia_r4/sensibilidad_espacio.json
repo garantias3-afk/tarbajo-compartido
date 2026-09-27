@@ -1,0 +1,7 @@
+{
+  "mutation": "ok = avail >= need -> ok = True",
+  "point": "place_helper.py measure_space_need/avail comparison",
+  "baseline": "space-check rc!=0 when df avail < need",
+  "mutant": "rc==0 (test assertNotEqual would FAIL)",
+  "sensitivity": true
+}

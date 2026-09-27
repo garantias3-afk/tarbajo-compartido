@@ -1,0 +1,427 @@
+{
+  "resumen": {
+    "total": 59,
+    "ok": 57,
+    "fail": 2,
+    "skips": 0,
+    "ids_ok": [
+      "N0-01",
+      "N0-02",
+      "N0-03",
+      "N1-01",
+      "N1-02",
+      "N1-03",
+      "N2-01",
+      "N2-02",
+      "N2-03",
+      "N3-01",
+      "N3-02",
+      "N4-01",
+      "N4-02",
+      "N4-03",
+      "N4-04",
+      "N4-05",
+      "N5-01",
+      "N5-02",
+      "N5-03",
+      "N5-04",
+      "N6-01",
+      "N6-02",
+      "N6-03",
+      "N6-04",
+      "N7-01",
+      "N7-02",
+      "N8-01",
+      "N8-02",
+      "N9-01",
+      "N9-02",
+      "N9-03",
+      "ERRATA-01",
+      "ERRATA-02",
+      "IFZ-01",
+      "IFZ-02",
+      "N2-04",
+      "N2-05",
+      "N2-06",
+      "N6-05",
+      "N6-06",
+      "H-R5-3a",
+      "H-R5-3b",
+      "H-R5-4a",
+      "H-R5-4b",
+      "H-R5-6.7",
+      "H-R5-6.8",
+      "c5-r6-09b",
+      "c5-r6-10b",
+      "c5-r6-10b-det",
+      "R6-4",
+      "D1-01",
+      "D1-02",
+      "D2-01",
+      "D2-02",
+      "PROTO-01",
+      "D3-01",
+      "CLEANUP-01"
+    ],
+    "ids_fail": [
+      "H-R5-5a",
+      "H-R5-5b"
+    ]
+  },
+  "resultados": [
+    {
+      "id": "N0-01",
+      "nombre": "bootstrap rechaza euid==0 en simulated",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N0-02",
+      "nombre": "inventario bootstrap cubre fuentes y herramientas",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N0-03",
+      "nombre": "sin runner mutable: sin os.chown/seteuid en orquestador",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N1-01",
+      "nombre": "positivo: fixture copia + go-w aplicado",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N1-02",
+      "nombre": "negativo: ra\u00edz con g+w detectada (HB-1)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N1-03",
+      "nombre": "root-owned \u2260 ineliminable (padre/sticky)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N2-01",
+      "nombre": "dise\u00f1o: inodos finales en frontera del helper",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N2-02",
+      "nombre": "fd de escritura sobre origen \u21d2 ancla detecta mutaci\u00f3n",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N2-03",
+      "nombre": "E1: chmod no revoca fd O_RDWR ya abierto",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N3-01",
+      "nombre": "validar_acl no crashea y reporta estructura",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N3-02",
+      "nombre": "capacidades escritura vs eliminaci\u00f3n separadas",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N4-01",
+      "nombre": "symlink absoluto rechazado",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N4-02",
+      "nombre": "hardlink rechazado",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N4-03",
+      "nombre": "FIFO rechazado",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N4-04",
+      "nombre": "AT_UNIQUE en SDK o en helper",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N4-05",
+      "nombre": "RESOLVE_BENEATH solo como rechazo documentado",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N5-01",
+      "nombre": "ancla DELEGADA sin C-1",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N5-02",
+      "nombre": "ancla C-1 con evidencia autenticada",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N5-03",
+      "nombre": "hash externo divergente rechaza",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N5-04",
+      "nombre": "archivo+hash del operador no acredita procedencia",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N6-01",
+      "nombre": "destino preexistente: sin anidar ni borrar ganador",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N6-02",
+      "nombre": "retry crea staging NUEVO",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N6-03",
+      "nombre": "limpieza fallida \u21d2 RC=3",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N6-04",
+      "nombre": "post-publicaci\u00f3n mutada \u21d2 contenido_ok false",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N7-01",
+      "nombre": "tripleta dev/ino/sha256 estable",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N7-02",
+      "nombre": "sustituto rompe pin",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N8-01",
+      "nombre": "operaci\u00f3n confinada al fixture",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N8-02",
+      "nombre": "SimulatedPriv rechaza path fuera de \u00e1mbito",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N9-01",
+      "nombre": "sin diskutil/createinstallmedia en orquestador",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N9-02",
+      "nombre": "PYTHONDONTWRITEBYTECODE=1",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N9-03",
+      "nombre": "umask 077",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "ERRATA-01",
+      "nombre": "INDICE_HISTORICO_R5 documenta codesign_cim vac\u00edo",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "ERRATA-02",
+      "nombre": "SENSIBILIDAD.json con base/mutante/comando/RC/aserci\u00f3n",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "IFZ-01",
+      "nombre": "INTERFAZ_C5.json con 6 acciones + esquema + fallos",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "IFZ-02",
+      "nombre": "interfaz marca pseudocomandos P6 como no usados",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N2-04",
+      "nombre": "H-R5-1: fd-sobre-staging \u2014 O_WRONLY tras frontera (simulated: go-w; fuerte en H1-N2)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N2-05",
+      "nombre": "H-R5-1: no hay ventana crear\u2192copiar separada del operador",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N2-06",
+      "nombre": "H-R5-1 PoC Max: sin ventana crear\u2192copiar (or\u00e1culo simulated; fuerte en H1-N2)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N6-05",
+      "nombre": "H-R5-2: swap-de-hoja antes de rename se detecta",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "N6-06",
+      "nombre": "H-R5-2: re-pin hoja/padre presente en F7 y F8",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "H-R5-3a",
+      "nombre": "PrivError con staging \u21d2 ABORTADO_STAGING_RETENIDO rc=2",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "H-R5-3b",
+      "nombre": "excepci\u00f3n gen\u00e9rica post-publicaci\u00f3n \u21d2 ESTADO_INDETERMINADO",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "H-R5-4a",
+      "nombre": "ancla cableada: origen_autenticado real via manifiesto",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "H-R5-4b",
+      "nombre": "ACL cableada al pipeline (acl_enabled invoca validar_acl)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "H-R5-5a",
+      "nombre": "helper confina rutas (cleanup sin prefijo rechazado)",
+      "ok": false,
+      "error": "AssertionError: helper no compilado"
+    },
+    {
+      "id": "H-R5-5b",
+      "nombre": "helper selfcheck reporta confinamiento y uid parametrizado",
+      "ok": false,
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/Users/OPERADOR/Documents/Codex/2026-09-27/con/work/c5-verification/build/c5_helper'"
+    },
+    {
+      "id": "H-R5-6.7",
+      "nombre": "SENSIBILIDAD.json: conteo de casos coincide con el recibo",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "H-R5-6.8",
+      "nombre": "adaptador de formato ancla C-1 (lista \u2192 dict)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "c5-r6-09b",
+      "nombre": "F-R6-N3-1: ACE allow write/append de ls -le detectadas",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "c5-r6-10b",
+      "nombre": "R6-1: AclPolicyError \u21d2 ABORTADO_STAGING_RETENIDO (fail-closed)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "c5-r6-10b-det",
+      "nombre": "R6-1a: ACE allow-write detectada \u21d2 aborta sin publicar",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "R6-4",
+      "nombre": "C5_AUTH_BASE documentado como confinamiento estricto",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "D1-01",
+      "nombre": "copy-tree no hace mkdir de la ra\u00edz si dst ya existe",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "D1-02",
+      "nombre": "copy_walk hace mkdir solo si dst no existe (EEXIST tolerado en ra\u00edz)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "D2-01",
+      "nombre": "copy-tree conserva modo del origen menos g+w/o+w (incluye HOJA)",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "D2-02",
+      "nombre": "_copy_tree del orquestador aplica D2",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "PROTO-01",
+      "nombre": "protocolo abort RC\u22600 documentado en H1",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "D3-01",
+      "nombre": "C5_AUTH_BASE documentado para re-ejecuci\u00f3n",
+      "ok": true,
+      "error": null
+    },
+    {
+      "id": "CLEANUP-01",
+      "nombre": "cleanup con retiro bottom-up de \u00e1rbol vac\u00edo",
+      "ok": true,
+      "error": null
+    }
+  ]
+}
