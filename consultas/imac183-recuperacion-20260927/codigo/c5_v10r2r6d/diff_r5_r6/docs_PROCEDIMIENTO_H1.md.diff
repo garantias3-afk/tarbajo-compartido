@@ -1,0 +1,21 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r5_MIMO/docs/PROCEDIMIENTO_H1.md	2026-09-27 10:30:38
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/docs/PROCEDIMIENTO_H1.md	2026-09-27 12:05:29
+@@ -84,13 +84,14 @@
+ 
+ 5. **Oráculos nativos a registrar** (N1–N8):
+    - N1: `stat` dueño 0:0 y `go-w` en raíz e hijos; intento `open(O_WRONLY)` como uid 501 → errno esperado (EACCES/EPERM).
+-   - N2: abrir fd `O_WRONLY` sobre un archivo **del origen** antes de proteger; tras publicar, intentar escribir por ese fd hacia el objeto publicado → **no debe alterar el objeto consumido** (la frontera crea inodos nuevos).
++   - N2 (H-R5-1, oráculo real — no textual): **fd-sobre-staging**. Durante `mkdir-staging`+`copy-tree` el helper crea root:0 0700. Inmediatamente después de que el helper retorna, y ANTES de `protect`, intentar `open(staging_leaf/…, O_WRONLY|O_RDWR)` como uid 501 → **debe fallar** (EACCES/EPERM). También: abrir fd sobre un inodo del **origen** antes de la frontera y confirmar que no alcanza el objeto publicado (inodos nuevos). La PoC de Max (fd entre F4 y F6) queda cerrada porque F3+F4 son una sola operación de frontera.
++   - N2bis: entre `verify` y `publish`, intentar sustituir la hoja → el re-pin debe abortar (swap-de-hoja).
+    - N3: `ls -le` de cada entrada; ACE allow-write ajena ⇒ abortar; deny-write operador documentada.
+    - N4: `fstatat(AT_SYMLINK_NOFOLLOW|AT_UNIQUE)` sobre hardlink de prueba → rechazo (errno ENOTCAPABLE/EMLINK); symlink escapado → rechazo.
+-   - N5: ancla con evidencia C-1; mutar snapshot ⇒ abortar antes de efectos.
+-   - N6: forzar EEXIST (crear destino en la ventana) ⇒ sin anidar, sin borrar ganador, staging retenido.
++   - N5: ancla con evidencia C-1 (hash en manifiesto sellado); mutar snapshot ⇒ abortar antes de efectos.
++   - N6: forzar EEXIST (crear destino en la ventana) ⇒ sin anidar, sin borrar ganador, staging retenido; swap-de-hoja ⇒ abortar.
+    - N7: entre verify y exec del helper de prueba, mutar la ruta ⇒ debe abortar o ejecutar el triple verificado.
+-   - N8: `journal` + relectura; intento fuera de `fixtures/` ⇒ cero efectos.
++   - N8: `journal` + relectura; intento fuera de `fixtures/` o sin prefijo `ot07_c5_staging.` ⇒ cero efectos (confinamiento del helper).
+ 
+ ## UID / ACL esperados tras protect
+ 

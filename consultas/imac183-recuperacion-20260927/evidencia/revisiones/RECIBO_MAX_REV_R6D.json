@@ -1,0 +1,19 @@
+{
+  "ot": "OT07-AVANCE-C5-IMAC",
+  "fase": "CP3_revision_r6d_h1bis",
+  "revision_id": "MAX-R6D-H1BIS-1",
+  "autor_modelo_efectivo": "GLM Max (account:zai-individual-coding-plan/GLM-5.3, ZCode/Z.ai — VERIFICADO)",
+  "utc": "2026-09-27T20:12:11.860968+00:00",
+  "veredicto": "r6d ACEPTADO; H1-bis presentada a OPERADOR (binario 11b37e79…)",
+  "manifestacion": {
+    "archivo": "SHA256SUMS_MAX_R6D.txt",
+    "sha256": "d286bdc67b57ed325fdcf69087d5e7773bb9b2835541ef58f7dc6b795ea6d269",
+    "entradas": 2
+  },
+  "operaciones_ejecutadas": {
+    "sudo_root": false,
+    "usb": false,
+    "arranque": false,
+    "edicion_insumos_sellados": false
+  }
+}

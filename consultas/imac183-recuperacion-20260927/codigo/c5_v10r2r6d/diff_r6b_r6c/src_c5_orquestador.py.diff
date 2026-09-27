@@ -1,0 +1,24 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/src/c5_orquestador.py	2026-09-27 14:04:42
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6c_MIMO/src/c5_orquestador.py	2026-09-27 14:41:50
+@@ -426,7 +426,10 @@
+         rel = os.path.relpath(dirpath, src)
+         target_dir = dst if rel == "." else os.path.join(dst, rel)
+         if rel != ".":
+-            os.mkdir(target_dir, 0o700)
++            # D2: modo del origen menos g+w/o+w
++            src_dir = dirpath
++            smode = os.lstat(src_dir).st_mode & 0o777 & ~(stat.S_IWGRP | stat.S_IWOTH)
++            os.mkdir(target_dir, smode)
+             j.effect("mkdir", target_dir)
+         for name in filenames:
+             sp = os.path.join(dirpath, name)
+@@ -443,7 +446,8 @@
+                     raise Abort(f"hardlink: {rel}/{name}")
+                 with open(sp, "rb") as fsrc, open(dp, "wb") as fdst:
+                     shutil.copyfileobj(fsrc, fdst, 1 << 16)
+-                os.chmod(dp, st.st_mode & 0o777)
++                # D2: modo del origen menos g+w/o+w
++                os.chmod(dp, st.st_mode & 0o777 & ~(stat.S_IWGRP | stat.S_IWOTH))
+                 j.effect("copy", dp)
+             else:
+                 raise Abort(f"tipo-especial: {rel}/{name}")

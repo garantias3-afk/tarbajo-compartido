@@ -1,0 +1,43 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6c_MIMO/docs/H1_A_REEJECUCION.sh	2026-09-27 14:43:04
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6d_MIMO/docs/H1_A_REEJECUCION.sh	2026-09-27 14:56:32
+@@ -108,13 +108,19 @@
+ echo "--- paso 6 protect ---" | tee -a "$LOG"
+ msudo protect "$HOJA"
+ 
+-# --- paso 7: verify + ls -le (uid 501, D2: dirs 0755) ---
+-echo "--- paso 7 verify + ls -le uid 501 ---" | tee -a "$LOG"
++# --- paso 7: verify + ls -le ---
++# R6C-1: la hoja ya lleva el modo del origen menos go-w. El PADRE staging
++# sigue 0700 root:0 ⇒ verify del staging como uid 501 puede fallar por
++# denegación de recorrido. La verificación uid 501 del ÁRBOL PUBLICADO se
++# hace en el paso 8b con C5_AUTH_BASE. Aquí se registra verify root-side.
++echo "--- paso 7 verify staging (root-side por padre 0700) + ls -le ---" | tee -a "$LOG"
++set +e
++sudo -A "$HELPER" verify "$HOJA" 2>&1 | tee -a "$LOG"
++echo "verify_staging_root_RC=$?" | tee -a "$LOG"
+ "$HELPER" verify "$HOJA" 2>&1 | tee -a "$LOG"
+-echo "verify_RC=$?" | tee -a "$LOG"
+-ls -le "$HOJA" 2>&1 | tee -a "$LOG"
+-ls -le "$HOJA/a.txt" 2>&1 | tee -a "$LOG"
++echo "verify_staging_uid501_RC=$? (puede ser 13 por padre 0700)" | tee -a "$LOG"
+ ls -la "$HOJA" "$HOJA/sub" 2>&1 | tee -a "$LOG"
++set -e
+ 
+ # --- paso 8: publish ---
+ echo "--- paso 8 publish ---" | tee -a "$LOG"
+@@ -126,6 +132,15 @@
+     print(f"pin {p} dev={st.st_dev} ino={st.st_ino} mode={oct(st.st_mode)} uid={st.st_uid} gid={st.st_gid}")
+ PY
+ 
++# --- paso 8b: verify + ls -le del PUBLICADO como uid 501 (D2 + R6C-1) ---
++echo "--- paso 8b verify/ls publicado uid 501 (C5_AUTH_BASE) ---" | tee -a "$LOG"
++export C5_AUTH_BASE="$H1"
++"$HELPER" verify "$H1/h1_destino" 2>&1 | tee -a "$LOG"
++echo "verify_publicado_uid501_RC=$?" | tee -a "$LOG"
++ls -le "$H1/h1_destino" 2>&1 | tee -a "$LOG"
++ls -le "$H1/h1_destino/a.txt" 2>&1 | tee -a "$LOG"
++ls -la "$H1/h1_destino" "$H1/h1_destino/sub" 2>&1 | tee -a "$LOG"
++
+ # --- paso 9: fd origen + N7 + EEXIST ---
+ echo "--- paso 9 fd origen + open publicado ---" | tee -a "$LOG"
+ python3 -B - <<PY 2>&1 | tee -a "$LOG"

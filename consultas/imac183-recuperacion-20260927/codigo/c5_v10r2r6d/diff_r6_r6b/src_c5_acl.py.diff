@@ -1,0 +1,18 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/src/c5_acl.py	2026-09-27 11:55:11
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/src/c5_acl.py	2026-09-27 14:04:42
+@@ -20,10 +20,15 @@
+ 
+ # Derechos que, si aparecen en un ACE allow para un principal distinto de root,
+ # impiden declarar el nodo protegido.
++# F-R6-N3-1: incluir los nombres que ls -le imprime (write, append, …) además
++# de los NFSv4 (write_data, append_data, …). Medido con chmod +a.
+ DERECHOS_ESCRITURA = {
+     "write_data", "append_data", "write_attributes",
+     "write_extattributes", "delete", "delete_child",
+     "add_file", "add_subdirectory",
++    # aliases ls -le / chmod +a (F-R6-N3-1)
++    "write", "append", "writeattr", "writeextattr",
++    "add_file", "add_subdirectory", "delete_child",
+ }
+ 
+ 

@@ -1,0 +1,42 @@
+{
+  "basics": {
+    "cim": "/var/tmp/ot07_E2R1_candidato.gMdKSX/extraida/Install macOS Sonoma.app/Contents/Resources/createinstallmedia",
+    "dmg_bytes": 13643079050
+  },
+  "cim": {
+    "cim": "/var/tmp/ot07_E2R1_candidato.gMdKSX/extraida/Install macOS Sonoma.app/Contents/Resources/createinstallmedia",
+    "strict_anchor_apple": true
+  },
+  "dmg": {
+    "bytes": 13643079050,
+    "identical": true,
+    "sha256": "3e8c07f8d0e93fecdb3dcdc7f80b9de5b9ab93861991cc711ec3ff6b756c7b8d"
+  },
+  "envelope_codesign_app": "expected RC=1 obsolete omit rules; not required for GO",
+  "ok": true,
+  "payload_vs_app": {
+    "app_counts": {
+      "directory": 263,
+      "regular": 721,
+      "symlink": 25
+    },
+    "differ": [],
+    "identical_except_postinstall": true,
+    "only_in_app": [
+      "Contents/SharedSupport",
+      "Contents/SharedSupport/SharedSupport.dmg"
+    ],
+    "only_in_payload": [],
+    "payload_counts": {
+      "directory": 262,
+      "regular": 720,
+      "symlink": 25
+    }
+  },
+  "pkg": {
+    "bytes": 13654790295,
+    "sha256": "ecc36bf172105f8c3325ceeb4e5ab8cc297260be806eac10b21b784ff40d8173",
+    "signature": "Package \"InstallAssistant.pkg\":\n   Status: signed Apple Software\n   Certificate Chain:\n    1. Software Update\n       Expires: 2029-04-14 21:28:23 +0000\n       SHA256 Fingerprint:\n           E0 74 D2 04 AC 24 98 E9 DC 90 4A 7B C7 CE D8 46 41 19 B7 9D 05 66 \n           80 28 92 05 83 B1 E8 96 EB B4\n       ------------------------------------------------------------------------\n    2. Apple Software Update Certification Authority\n       Expires: 2031-10-15 00:00:00 +0000\n       SHA256 Fingerprint:\n           12 99 E9 BF E7 76 A2 9F F4 52 F8 C4 F5 E5 5F 3B 4D FD 29 34 34 9D \n           D1 85 0B 82 74 F3 5C 71 74 5C\n       ------------------------------------------------------------------------\n    3. Apple Root CA\n       Expires: 2035-02-09 21:40:36 +0000\n       SHA256 Fingerprint:\n           B0 B1 73 0E CB C7 FF 45 05 14 2C 49 F1 29 5E 6E DA 6B CA ED 7E 2C \n           68 C5 BE 91 B5 A1 10 01 F0 24\n\n",
+    "status": "signed Apple Software"
+  }
+}

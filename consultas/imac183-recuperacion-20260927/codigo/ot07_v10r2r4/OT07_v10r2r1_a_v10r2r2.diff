@@ -1,0 +1,749 @@
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/FUENTE.md OT07_REVISION_v10r2r2/FUENTE.md
+--- OT07_REVISION_v10r2r1/FUENTE.md	1969-12-31 21:00:00
++++ OT07_REVISION_v10r2r2/FUENTE.md	2026-09-26 21:08:08
+@@ -0,0 +1,29 @@
++# FUENTE.md — v10r2r2 (estados separados)
++
++| Estado | Valor | Base |
++|---|---|---|
++| Autenticidad criptográfica PKG | **ACREDITADA** | SHA-256 `ecc36bf1…8173` + `signed Apple Software` → `Apple Root CA` |
++| Versión/build del SO | **PENDIENTE** | `Assets[0]` del MobileAsset (etapa E) |
++| Metadata primaria catálogo | **NO acreditada** | 403/404 documentados (ver `apoyo_flash_p2/ERRATA_ADQUISICION.md`) |
++| Protección C-5 | **NO implementada** | `root` bloqueada en gate; `aceptar_usuario` = aceptación del operador sin chown |
++
++## Transformación permitida (M-10)
++
++Al derivar del PKG, la **única** diferencia permitida entre payload y app es:
++
++- `Contents/SharedSupport/` (directorio)
++- `Contents/SharedSupport/SharedSupport.dmg`
++
++Todo lo demás debe ser **idéntico** (rutas, tipo, tamaño, sha256, destinos de
++enlaces). El DMG de nivel PKG debe ser idéntico al de la app (sha256 64 hex).
++
++## Dependencias /var/tmp (I-5)
++
++PKG y app extraída viven en `/var/tmp/ot07_E2R1_candidato.gMdKSX/`. Su ausencia
++aborta antes de efectos. No se reconstruyen por nombre ni fecha. No se mueve el
++PKG real. Conservación a futuro: decisión operativa, fuera de esta OT.
++
++## Límites
++
++- C-5 sin implementar: con `aceptar_usuario` el bundle quedaría `OPERADOR:wheel`.
++- Sin montaje DMG en esta OT. Sin colocación/E/F/G/USB.
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/HILO_AUDITORIA_QWEN.md OT07_REVISION_v10r2r2/HILO_AUDITORIA_QWEN.md
+--- OT07_REVISION_v10r2r1/HILO_AUDITORIA_QWEN.md	2026-09-26 19:41:22
++++ OT07_REVISION_v10r2r2/HILO_AUDITORIA_QWEN.md	2026-09-26 21:08:29
+@@ -1,46 +1,31 @@
+-# HILO_AUDITORIA_QWEN.md — pedido de auditoría OT07-I-v10r2
++# HILO_AUDITORIA_QWEN.md — v10r2r2 (corrección tras NO-GO)
+ 
+-Auditoría independiente del candidato de implementación **v10r2**. Solo lectura
+-del candidato sellado. No ejecutar E/F/G, colocación, OCLP, señales, USB, erase,
+-CIM, attach/detach ni boot. No tocar 3494/3512 ni discos de rescate.
++Auditoría independiente del candidato **v10r2r2**. Solo lectura.
++No ejecutar E/F/G, colocación, OCLP, señales, USB, erase, CIM, attach/detach ni boot.
+ 
+ ## Modalidad
+ 
+-Prioridad: carpeta local
+-`/Users/OPERADOR/Documents/Codex/2026-09-25/hi/outputs/OT07_REVISION_v10r2`.
+-Solo en la nube: copia/ZIP con SHA acreditado, declarando la limitación.
++Carpeta local: `/Users/OPERADOR/Documents/Codex/2026-09-25/hi/outputs/OT07_REVISION_v10r2r2`.
++SHA del manifiesto y recibo externo: ver `ENTREGA_CERRADA_v10r2r2_MIMO.json`.
+ 
+-## Qué verificar (reproducir, no aceptar por autorreporte)
++## Qué verificar (reproducir; no aceptar autorreporte)
+ 
+-1. **Integridad:** manifiesto del candidato, ZIP hermano si existe, v10r1 83/83
+-   intacto, evidencias selladas de Qwen/GLM/Flash sin tocar.
+-2. **Cadena C-1 (costosa, prioritaria):** PKG `ecc36bf1…8173` / 13654790295 B +
+-   `pkgutil --check-signature` + `verify_offline_provenance` sobre el candidato
+-   real (app extraída). Exigir 64 hex en DMG, transform postinstall exacto,
+-   enlaces confinados, CIM estricto. Contrastar con `evidencia_impl/CHAIN_REPORT.json`.
+-3. **Negativos del verificador** (`tests/test_verifier_v10r2.py` + casos nuevos):
+-   PKG ausente/cambiado/truncado/no-Apple; árbol con extra/faltante/diferente;
+-   DMG sustituido; enlace saliente/cíclico; herramienta con RC inesperado.
+-4. **Colocación v2** (`colocacion_v2/`): C-2…C-9 implementados de verdad (no
+-   solo impresos); C-5 como PROPUESTA sin ejecutar; sin `PENDING_*`; `mv` no
+-   anida en directorio ajeno (`tests/test_colocacion_v2.py`).
+-5. **Regresión:** 131 tests (`python3 -B -m unittest discover -s tests -v`);
+-   publicar conteo real por archivo. Re-ejecutar, no leer el log.
+-6. **Apoyos:** Muse P1 integrado en `apoyo_muse_p1/` + `MATRIZ_INTEGRACION.md`;
+-   Flash P2 **sin sello** al cierre (documentado). No atribuir trabajo no visto.
+-7. **Separar:** ejecutado / lectura estática / inferencia / pendiente nativo.
++1. **Integridad:** manifiesto del candidato, ZIP↔carpeta por archivo, v10r2r1 y
++   sellos anteriores intactos.
++2. **B-1:** con `OT07_MODO_PROTECCION=root` el script **no** crea destino ni
++   `COLOCADO_VERIFICADO`; gate `C5_NO_IMPLEMENTADA`. Igual para vacío/desconocido.
++3. **B-2:** `du`/`df` con RC≠0 o salida no numérica abortan; `NEED` no puede
++   colapsar a 2 GiB por salida vacía.
++4. **I-1:** `inventory_tree` rechaza raíz symlink **antes** de resolve (ambas APIs).
++5. **I-2/I-4:** espacio antes de expand-full; error de limpieza reportado.
++6. **I-5:** PKG/app ausentes abortan antes de efectos.
++7. **C-1 cadena:** se conserva GO de Qwen; re-ejecutar `verify_offline_provenance`
++   solo si cambió inventario/preflight/cleanup (justificado en esta revisión:
++   I-1/I-2/I-4). Positivo offline sobre PKG real, sin `main()` ni attach.
++8. **Pruebas:** contar y re-ejecutar (`python3 -B -m unittest discover -s tests`).
++   Negativos = RC + ausencia de destino/efectos, no greps de texto.
++9. **Documentación:** PLAN/HILO/FUENTE/MATRIZ coherentes con el código final.
+ 
+-## Fuera de alcance de esta auditoría
++## Fuera de alcance
+ 
+-- Aprobar o ejecutar colocación, chown/chmod, E, F o G.
+-- Aceptar `spctl`/`codesign -d` como criterio de procedencia.
+-- Promover `14.8.9/23J631` a medido sin `Assets[0]`.
+-- Editar v10r1, ZIPs o evidencias selladas.
+-
+-## Salida esperada
+-
+-GO / GO con cambios / NO-GO por punto; cada hallazgo con severidad,
+-archivo:línea, disparador, consecuencia, evidencia reproducible y cambio mínimo
+-sin relajar guardas. Veredictos separados: (a) software candidato; (b) cierre
+-C-1; (c) aptitud para etapa operativa; (d) pen/arranque (siempre NO_VERIFICADO
+-en esta etapa).
++Aprobar colocación, C-5 operacional, E, F, G, USB, boot. Promover versión/build.
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/MATRIZ_M1_M10.md OT07_REVISION_v10r2r2/MATRIZ_M1_M10.md
+--- OT07_REVISION_v10r2r1/MATRIZ_M1_M10.md	1969-12-31 21:00:00
++++ OT07_REVISION_v10r2r2/MATRIZ_M1_M10.md	2026-09-26 21:08:08
+@@ -0,0 +1,27 @@
++# MATRIZ_M1_M10.md — disposición de hallazgos Qwen (v10r2r2)
++
++| ID | Hallazgo | Disposición | Evidencia / cambio |
++|---|---|---|---|
++| **B-1** | `root` publicaba antes de bloquear | **CORREGIDO** | `check_c5_policy`: `C5_IMPLEMENTED=('aceptar_usuario',)`; `root` → `C5_NO_IMPLEMENTADA` en el gate. Test `test_root_fails_at_gate_not_after_move` + `test_script_root_mode_leaves_no_destination` (sin destino, sin COLOCADO). Protección sigue **NO implementada** (limitación expresa). |
++| **B-2** | `du` fallo → GO | **CORREGIDO** | `measure_space_need/avail` con RC, `parse_positive_int` (vacío/no-numérico/0/negativo/overflow), `space-check` en el script. Tests `B2_SpaceGate` (5). Sin `NEED_KIB=0`. |
++| **B-3** | Plan ≠ código | **CORREGIDO** | `PLAN_COLOCACION_v2.md` reescrito desde el código final: inventario, helper, rename_excl, 0 sudo activos, espacio vivo, C-5 gate. Sin `APP_MANIFIESTO` ni `mv -n`. |
++| **I-1** | `resolve()` antes de `is_symlink()` | **CORREGIDO** | `inventory_tree` (helper y verificador): rechaza symlink **antes** de resolve. Tests `I1_InventoryRoot` (3). |
++| **I-2** | Sin presupuesto antes de expand-full | **CORREGIDO** | `verify_offline_provenance`: `statvfs` vs `pkg_size+1GiB` antes de expandir. |
++| **I-3** | Tests assertIn / `NEED_KIB=0` / aserción vacua | **CORREGIDO** | `test_correcciones_b_i.py` conductual; `test_colocacion_v2` reescrito; se retira aserción vacua. |
++| **I-4** | `ignore_errors=True` en cleanup | **CORREGIDO** | `shutil.rmtree` sin `ignore_errors`; fallo → `I4_LIMPIEZA_FALLIDA` (no éxito silencioso). |
++| **I-5** | PKG/app en `/var/tmp` sin comprobación | **CORREGIDO** | Script §0b e `verify_offline_provenance`: `I5_PKG_AUSENTE`/`I5_APP_AUSENTE` antes de efectos. |
++| **M-1** | errno colapsado a 1 | **CORREGIDO** | `rename_excl` devuelve el errno real (17, 62, …). |
++| **M-2** | `tree_inventory.py` / `apoyo_muse` código muerto | **NO APLICABLE a corrección funcional** | Se conservan como referencia en `apoyo_*`; productivo es `place_helper.inventory_tree`. |
++| **M-3** | `FUENTE.md` inexistente | **CORREGIDO** | Se publica `FUENTE.md` en esta revisión. |
++| **M-4** | Integración P2 §7/§8 sin adjudicar | **CORREGIDO** | Ver `MATRIZ_INTEGRACION.md` (adenda). |
++| **M-5** | HILO apunta a v10r2 / 131 tests | **CORREGIDO** | `HILO_AUDITORIA_QWEN.md` actualizado a v10r2r2 y conteo real. |
++| **M-6** | Matrices contradictorias en C-9/conteos | **CORREGIDO** | Esta matriz + PLAN son la fuente vigente; las anteriores quedan como histórico de v10r2r1. |
++| **M-7** | Diff sin exclusiones explícitas | **CORREGIDO** | `OT07_v10r2r1_a_v10r2r2.diff` + lista de exclusiones en el recibo. |
++| **M-8** | Sondeo constructor ajustable por entorno | **RESIDUAL** | Fuera del alcance de esta corrección (núcleo heredado sin cambio demostrado); se registra para E. |
++| **M-9** | `test_flow` frágil ante TMPDIR | **CORREGIDO** | Sustitución acotada a `/var/tmp/ot07_`. |
++| **M-10** | `"identical": false` sin explicar transform | **CORREGIDO** | `CHAIN_REPORT` y `FUENTE.md` declaran `identical_except_postinstall` y las 2 adiciones. |
++
++## Pendientes nativos (NO acreditados, se conservan)
++
++C-5 operacional (decisión OPERADOR + implementación), `Assets[0]`, `hdiutil verify`,
++colocación real, OCLP, ensayo EOF del supervisor, picker/arranque.
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/colocacion_v2/PLAN_COLOCACION_v2.md OT07_REVISION_v10r2r2/colocacion_v2/PLAN_COLOCACION_v2.md
+--- OT07_REVISION_v10r2r1/colocacion_v2/PLAN_COLOCACION_v2.md	2026-09-26 19:41:22
++++ OT07_REVISION_v10r2r2/colocacion_v2/PLAN_COLOCACION_v2.md	2026-09-26 21:01:09
+@@ -1,90 +1,69 @@
+-# PLAN_COLOCACION v2 — OT07-I-v10r2
++# PLAN_COLOCACION — v10r2r2 (coherente con el código sellado)
+ 
+-Derivado de `PLAN_COLOCACION.md` (Flash E2-R1), con C-2…C-10 aplicados al
+-artefacto. **Esta OT no ejecuta la colocación.** El script
+-`colocar_candidato.sh` v2 es el único ejecutable autorizado a futuro.
++Este documento describe **exactamente** `colocacion_v2/colocar_candidato.sh` v3
++y `place_helper.py` de esta revisión. Si algo no está en ese código, no es un
++requisito operativo aprobado.
+ 
+-## Identidad del candidato (anclada, no derivada del artefacto)
++## Identidad pineada (nunca del candidato)
+ 
+ | Campo | Valor |
+ |---|---|
+ | PKG | `/var/tmp/ot07_E2R1_candidato.gMdKSX/InstallAssistant.pkg` |
+-| SHA-256 | `ecc36bf172105f8c3325ceeb4e5ab8cc297260be806eac10b21b784ff40d8173` |
+-| Bytes | `13654790295` |
+-| Firma PKG | `pkgutil --check-signature` → **`signed Apple Software`**, cadena hasta **`Apple Root CA`** |
+-| CIM | `codesign --verify --strict -R=anchor apple` RC=0 |
+-| APP (bundle) | envelope legacy omit rules; `codesign --verify --strict` **RC=1 esperado** — no es criterio de GO |
+-| App origen | `/var/tmp/ot07_E2R1_candidato.gMdKSX/extraida/Install macOS Sonoma.app` |
+-| Manifiesto | `APP_MANIFIESTO.txt` (721 entradas, verificado en su momento) |
++| PKG_BYTES | 13654790295 |
++| PKG_SHA256 | `ecc36bf172105f8c3325ceeb4e5ab8cc297260be806eac10b21b784ff40d8173` |
++| Firma | `pkgutil --check-signature` → `signed Apple Software` + `Apple Root CA` |
++| Inventario ref | `evidencia_impl/inv_extracted_app.json` (cadena PKG) |
++| **NO se usa** | `APP_MANIFIESTO.txt` ni `shasum --check` |
+ 
+-Versión/build interior (`14.8.9 / 23J631`) sigue **PENDIENTE** hasta `Assets[0]`
+-del MobileAsset en el DMG (etapa E autorizada). No se promueve a medido.
++**I-5:** PKG y app viven en `/var/tmp`. El script **falla antes de efectos** si no
++existen (`I5_PKG_AUSENTE` / `I5_APP_AUSENTE`). No se reconstruyen por nombre ni fecha.
+ 
+-## Precondiciones (orden estricto; fallo → BLOQUEO, sin colocar)
++## Política C-5 (gate ANTES de cualquier efecto)
+ 
+-1. **C-2/C-3 — PKG real, no solo impreso:** existe, no symlink, `stat -f %z` ==
+-   `13654790295`, `shasum -a 256` == `ecc36bf1…8173`, `pkgutil --check-signature`
+-   RC=0, `Status: signed Apple Software`, cadena contiene `Apple Root CA`.
+-   Implementado en `colocar_candidato.sh` §0 **antes** de cualquier efecto.
+-2. **C-4 — literal correcto:** `signed Apple Software` (no `successful`).
+-3. Manifiesto de la app (`shasum -a 256 --check --quiet`) desde el padre.
+-4. Presupuesto de espacio por fases **C-9:** pico ≈ 38 GiB (PKG + expansión +
+-   staging + origen + temporales) + margen 20 GiB; se exige `df` suficiente en el
+-   volumen de staging. No se reutiliza la constante «30 GiB».
+-5. `sudo -v` en Terminal privada del operador; la llamada usa `sudo -n`.
+-6. Padre de destino real y **no symlink** (`$(dirname "$DESTINO")`, **C-6**);
+-   destino inexistente (dir, archivo, symlink).
+-7. Lock de etapa propio (`mkdir` sin `-p`); no borrar locks ajenos.
++| Modo | ¿Implementada? | Comportamiento |
++|---|---|---|
++| `REQUIERE_DECISION_C5` (default) | — | **Bloquea** `C5_NO_DECIDIDA` |
++| `root` | **NO** | **Bloquea** `C5_NO_IMPLEMENTADA` (B-1: nunca publica primero) |
++| `aceptar_usuario` | Sí (aceptación del operador) | Pasa el gate; queda en `C5_MODO` |
++| otro / vacío | — | **Bloquea** `C5_INVALIDA` |
+ 
+-## Procedimiento (solo `colocar_candidato.sh` v2)
++Protección `root` (`chown -R -h root:wheel` + `chmod -R go-w`) está **preparada
++en comentario** y requiere decisión escrita de OPERADOR + re-auditoría antes de
++activarse. Hoy **no** hay protección de propiedad implementada: si se elige
++`aceptar_usuario`, el bundle queda `OPERADOR:wheel` y `createinstallmedia`
++correría como root desde ese árbol — límite que debe constar en la evidencia de E.
+ 
+-1. Precondiciones PKG (§0) y presupuesto (§0b).
+-2. Origen: dir real, nombre exacto, DMG presente, manifiesto ORIGEN.
+-3. Destino inexistente; padre derivado y verificado.
+-4. **C-7:** `mkdir` sin `-p` del staging; **C-8:** `stat -f %d` staging == destino.
+-5. `ditto` → staging; manifiesto STAGING.
+-6. Re-check destino/staging.
+-7. `sudo -n /bin/mv -n` (único sudo de escritura). Si `mv` anidó dentro de un
+-   directorio destino aparecido en la ventana, se detecta (`DESTINO/Install macOS
+-   Sonoma.app`) y **no** se declara colocación propia.
+-8. Manifiesto FINAL. Recién entonces `COLOCADO_VERIFICADO`.
++## Secuencia real del script
+ 
+-## C-5 — protección de propiedad (PROPUESTA, no ejecutada)
++0. **C-5 gate** (`place_helper c5-gate`) — aborta sin tocar nada.
++0b. **I-5** inputs PKG/app existentes y no-symlink.
++1. PKG: bytes, SHA-256 pineado, `pkgutil --check-signature` (RC, `LC_ALL=C`, sin pipe).
++2. Origen + **inventario exacto** (`inventory`/`compare-inv`) vs referencia PKG.
++3. **Espacio vivo** (`space-check`): `du -sk` RC validado, entero `>0`, +2 GiB
++   reserva, `df` RC validado; cualquier herramienta fallo ⇒ aborta (B-2).
++4. Destino inexistente; padre `dirname` real no-symlink; `same-fs` (`st_dev`).
++5. Staging `mktemp -d` en `/private/var/tmp`; `ditto`; inventario staging == origen.
++6. Re-check destino/padre.
++7. **`rename-excl`** = `renamex_np(RENAME_EXCL|RENAME_NOFOLLOW_ANY)` vía ctypes.
++   RC 0 = movido; **errno** (17 EEXIST, 62 ELOOP, …) = fallo sin anidar. Sin `mv -n`.
++8. Inventario final == origen. Limpieza de temporales propios (error de limpieza
++   se reporta, no se silencia).
++9. Si modo=root → falla `NO_ACTIVO` (no implementado).
+ 
+-`mv` vía sudo **no** cambia el dueño: el bundle queda `OPERADOR:wheel` y
+-`CREAR_PEN_BOOTEO.sh` ejecuta `createinstallmedia` como root desde ese árbol.
++## Sudo
+ 
+-**Solución preparada (comentada en el script §8, no activa):**
++**Cero sudo activos** en el script actual. Las líneas `sudo` son comentarios de
++la futura protección C-5. `sudo -v` y lock de etapa son responsabilidad del
++operador de E, no de este script.
+ 
+-```sh
+-sudo -n /usr/sbin/chown -R root:wheel "$DESTINO"
+-sudo -n /bin/chmod -R go-w "$DESTINO"
+-```
++## Espacio
+ 
+-- Amplía sudo a **una** operación extra acotada al árbol ya verificado.
+-- `chown`+`chmod` tras el traslado **no** es garantía absoluta: no cubre ACL
+-  heredadas, padres sustituibles ni una ventana entre verificar/trasladar/proteger.
+-- No promete protección frente a un administrador que ya puede elevar privilegios.
+-- **Requiere decisión escrita de OPERADOR y re-auditoría** antes de activarse.
+-- Alternativa aceptable documentada: dejar `OPERADOR:wheel` y aceptar el riesgo
+-  con constancia expresa en la evidencia de E.
++Medido en vivo (`du` origen + 2 GiB vs `df` del padre destino). **Sin** constante
++38 GiB como suficiencia universal. El pico de la cadena completa (PKG+expansión+
++staging) se documenta en FUENTE; el gate vinculante es `space-check`.
+ 
+-## Límites y estados
++## Pruebas asociadas
+ 
+-| Estado | Significado |
+-|---|---|
+-| `COLOCADO_VERIFICADO` | destino creado, manifiestos OK; **no** es `INSTALADOR_LISTO` |
+-| `APP_EXISTENTE_PENDIENTE_VERIFY_ONLY` | no sobrescribir; ir a verify-only |
+-| `BLOQUEO_ESPECIFICO` | RC + causa; staging conservado si es diagnóstico |
+-
+-La colocación no monta el DMG ni valida `Assets[0]`. Eso es E autorizada con
+-`verificar_instalador.py` v10r2 (cadena PKG offline + `hdiutil verify` + metadata).
+-
+-**C-10:** las rectificaciones a evidencia de Flash van en **logs nuevos**; los RC
+-históricos ausentes se quedan `NO_CAPTURADO`. No se fabrican RC pretéritos.
+-
+-## Pruebas del artefacto v2 (sintéticas, esta OT)
+-
+-Se ejecutan copias con variables sustituidas y fixtures; **no** se invoca el
+-script real contra `/Applications` ni el PKG de 13 GB en los negativos de
+-movimiento. Ver `tests/test_colocacion_v2.py`.
++`tests/test_correcciones_b_i.py` (B-1/B-2/I-1 conductuales),
++`tests/test_place_v10r2r1.py` (rename_excl, C-5, inventario),
++`tests/test_colocacion_v2.py` (flujo sintético). Ver `MATRIZ_M1_M10.md`.
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/colocacion_v2/colocar_candidato.sh OT07_REVISION_v10r2r2/colocacion_v2/colocar_candidato.sh
+--- OT07_REVISION_v10r2r1/colocacion_v2/colocar_candidato.sh	2026-09-26 19:44:21
++++ OT07_REVISION_v10r2r2/colocacion_v2/colocar_candidato.sh	2026-09-26 20:59:39
+@@ -30,10 +30,15 @@
+ fail(){ printf '### FALLO: %s\n' "$*" >&2; exit 1; }
+ ph(){ "$PY" -B "$HELPER" "$@"; }
+ 
+-# ==== 0. C-5 GATE — ANTES de staging, ditto, mv o cualquier escritura a destino ====
+-ph c5-gate "$MODO_PROTECCION" > /dev/null || fail "C5_NO_DECIDIDA: no iniciar colocacion"
+-printf 'C5_GATE_OK modo=%s\n' "$MODO_PROTECCION"
++# ==== 0. C-5 GATE — ANTES de staging, ditto, rename o cualquier escritura a destino ====
++# B-1: root es CONOCIDA pero NO implementada -> falla aqui, nunca tras publicar.
++ph c5-gate "$MODO_PROTECCION" > /dev/null || fail "C5_GATE: no iniciar colocacion (ver C5_* en stderr)"
++printf 'C5_GATE_OK modo=%s (solo politicas implementadas pasan)\n' "$MODO_PROTECCION"
+ 
++# ==== 0b. I-5: inputs en /var/tmp deben existir antes de cualquier efecto ====
++[ -f "$PKG" ] && [ ! -L "$PKG" ] || fail "I5_PKG_AUSENTE: $PKG (dependencia /var/tmp)"
++[ -d "$ORIGEN" ] && [ ! -L "$ORIGEN" ] || fail "I5_APP_AUSENTE: $ORIGEN"
++
+ # ==== 1. PKG precondiciones (C-2/C-3/C-4) ====
+ [ -f "$PKG" ] && [ ! -L "$PKG" ] || fail "PKG ausente o symlink"
+ PKG_SIZE=$( /usr/bin/stat -f %z "$PKG" ) || fail "stat PKG"
+@@ -55,14 +60,11 @@
+ ph compare-inv "$INVENTARIO_REF" "$INV_ORIG" > /dev/null || fail "inventario origen != referencia PKG"
+ printf 'INVENTARIO_ORIGEN_OK\n'
+ 
+-# ==== 3. Espacio vivo (C-9) ====
++# ==== 3. Espacio vivo (C-9 / B-2: RC y formato validados, nunca salida vacía) ====
+ DEST_PADRE=$( dirname "$DESTINO" )
+ [ -d "$DEST_PADRE" ] && [ ! -L "$DEST_PADRE" ] || fail "padre destino invalido"
+-NEED_KIB=$( /usr/bin/du -sk "$ORIGEN" | /usr/bin/awk '{print $1}' )
+-NEED_KIB=$(( NEED_KIB + 2 * 1024 * 1024 ))
+-AVAIL_KIB=$( /bin/df -k "$DEST_PADRE" | /usr/bin/awk 'NR==2{print $4}' )
+-[ -n "$AVAIL_KIB" ] && [ "$AVAIL_KIB" -ge "$NEED_KIB" ] || fail "espacio insuficiente (disp ${AVAIL_KIB:-0} need $NEED_KIB)"
+-printf 'ESPACIO_OK need_kib=%s avail_kib=%s\n' "$NEED_KIB" "$AVAIL_KIB"
++ph space-check "$ORIGEN" "$DEST_PADRE" > /dev/null || fail "espacio insuficiente o herramienta de medida fallo"
++printf 'ESPACIO_OK\n'
+ 
+ # ==== 4. Destino inexistente + mismo FS ====
+ if [ -e "$DESTINO" ] || [ -L "$DESTINO" ]; then
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/place_helper.py OT07_REVISION_v10r2r2/place_helper.py
+--- OT07_REVISION_v10r2r1/place_helper.py	2026-09-26 19:44:08
++++ OT07_REVISION_v10r2r2/place_helper.py	2026-09-26 21:00:03
+@@ -19,7 +19,9 @@
+ 
+ RENAME_EXCL = 0x00000004
+ RENAME_NOFOLLOW_ANY = 0x00000010
+-C5_VALUES = ('REQUIERE_DECISION_C5', 'root', 'aceptar_usuario')
++C5_KNOWN = ('REQUIERE_DECISION_C5', 'root', 'aceptar_usuario')
++C5_IMPLEMENTED = ('aceptar_usuario',)
++C5_NOT_IMPLEMENTED = ('root',)
+ 
+ 
+ def physical_path(path: str) -> str:
+@@ -46,7 +48,8 @@
+     if rc == 0:
+         return 0
+     e = ctypes.get_errno()
+-    return 17 if e == errno.EEXIST else 1
++    # M-1: preserve real errno (EEXIST=17, ELOOP=62, …). Never collapse to 1.
++    return e if e else 1
+ 
+ 
+ def sha256_file(path: Path) -> str:
+@@ -58,10 +61,16 @@
+ 
+ 
+ def inventory_tree(root: Path) -> dict:
+-    """Exact inventory: dirs + regular (size/sha256) + symlink targets. No follow."""
+-    root = root.resolve()
+-    if not root.is_dir() or root.is_symlink():
+-        raise ValueError('raiz invalida: %r' % root)
++    """Exact inventory: dirs + regular (size/sha256) + symlink targets. No follow.
++    I-1: reject a symlink root BEFORE resolve() would follow it."""
++    raw = Path(root)
++    if raw.is_symlink():
++        raise ValueError('raiz es symlink (rechazo previo a resolve): %r' % root)
++    if not raw.is_dir():
++        raise ValueError('raiz no es directorio: %r' % root)
++    root = raw.resolve()
++    if root.is_symlink():
++        raise ValueError('raiz resuelta sigue siendo symlink: %r' % root)
+     entries = {}
+     counts = {'regular': 0, 'directory': 0, 'symlink': 0}
+ 
+@@ -102,12 +111,24 @@
+ 
+ 
+ def check_c5_policy(mode: str) -> dict:
+-    """Gate BEFORE any placement effect. Unknown/absent policy must fail closed."""
+-    if mode not in C5_VALUES:
+-        raise ValueError('politica C5 invalida/ausente: %r' % (mode,))
++    """Gate BEFORE any placement effect.
++
++    Distinguishes: invalid / undecided / known-but-not-implemented / implemented.
++    B-1: a known-but-unimplemented policy (root) must fail at the gate, never
++    after publishing. No default that implies user authorization.
++    """
++    if mode not in C5_KNOWN:
++        raise ValueError('C5_INVALIDA: politica desconocida o ausente: %r' % (mode,))
+     if mode == 'REQUIERE_DECISION_C5':
+         raise ValueError('C5_NO_DECIDIDA: no iniciar colocacion sin politica aprobada')
+-    return {'c5_mode': mode, 'gate': 'passed_before_effects'}
++    if mode in C5_NOT_IMPLEMENTED:
++        raise ValueError(
++            'C5_NO_IMPLEMENTADA: %r es conocida pero la proteccion no esta implementada; '
++            'no publicar ni trasladar' % (mode,))
++    if mode not in C5_IMPLEMENTED:
++        raise ValueError('C5_INVALIDA: %r' % (mode,))
++    return {'c5_mode': mode, 'gate': 'passed_before_effects',
++            'implemented': True, 'protection_pending': False}
+ 
+ 
+ def resolve_alias(path: str) -> str:
+@@ -124,6 +145,46 @@
+     return sa.st_dev == sb.st_dev
+ 
+ 
++def parse_positive_int(text: str, label: str) -> int:
++    """B-2: reject empty, non-numeric, zero, negative, and oversized values."""
++    s = (text or '').strip()
++    if not s or not s.isdigit():
++        raise ValueError('%s no es entero positivo: %r' % (label, text))
++    n = int(s)
++    if n <= 0:
++        raise ValueError('%s debe ser > 0: %r' % (label, n))
++    if n > 1 << 40:
++        raise ValueError('%s fuera de rango: %r' % (label, n))
++    return n
++
++
++def measure_space_need(src: str) -> int:
++    """Live du of source plus 2 GiB reserve. Fails closed on any tool error."""
++    import subprocess
++    r = subprocess.run(['/usr/bin/du', '-sk', src], stdout=subprocess.PIPE,
++                       stderr=subprocess.PIPE, text=True)
++    if r.returncode != 0:
++        raise ValueError('du RC=%d: %s' % (r.returncode, r.stderr[-200:]))
++    parts = (r.stdout or '').split()
++    if not parts:
++        raise ValueError('du sin salida')
++    size_kib = parse_positive_int(parts[0], 'du_kib')
++    return size_kib + 2 * 1024 * 1024
++
++
++def measure_space_avail(dirpath: str) -> int:
++    import subprocess
++    r = subprocess.run(['/bin/df', '-k', dirpath], stdout=subprocess.PIPE,
++                       stderr=subprocess.PIPE, text=True)
++    if r.returncode != 0:
++        raise ValueError('df RC=%d: %s' % (r.returncode, r.stderr[-200:]))
++    lines = [ln for ln in (r.stdout or '').splitlines() if ln.strip()]
++    if len(lines) < 2:
++        raise ValueError('df salida incompleta')
++    avail = parse_positive_int(lines[-1].split()[3] if len(lines[-1].split()) > 3 else '', 'df_avail')
++    return avail
++
++
+ def main(argv):
+     p = argparse.ArgumentParser()
+     sub = p.add_subparsers(dest='cmd', required=True)
+@@ -137,6 +198,8 @@
+     g.add_argument('mode')
+     s = sub.add_parser('same-fs')
+     s.add_argument('a'); s.add_argument('b')
++    sp = sub.add_parser('space-check')
++    sp.add_argument('src'); sp.add_argument('avail_dir')
+     args = p.parse_args(argv)
+     if args.cmd == 'rename-excl':
+         rc = rename_excl(args.src, args.dst)
+@@ -159,6 +222,12 @@
+     if args.cmd == 'same-fs':
+         ok = same_filesystem(args.a, args.b)
+         print('SAME_FS=%s' % ok)
++        return 0 if ok else 1
++    if args.cmd == 'space-check':
++        need = measure_space_need(args.src)
++        avail = measure_space_avail(args.avail_dir)
++        ok = avail >= need
++        print('NEED_KIB=%d AVAIL_KIB=%d OK=%s' % (need, avail, ok))
+         return 0 if ok else 1
+     return 2
+ 
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/tests/test_correcciones_b_i.py OT07_REVISION_v10r2r2/tests/test_correcciones_b_i.py
+--- OT07_REVISION_v10r2r1/tests/test_correcciones_b_i.py	1969-12-31 21:00:00
++++ OT07_REVISION_v10r2r2/tests/test_correcciones_b_i.py	2026-09-26 21:00:35
+@@ -0,0 +1,143 @@
++#!/usr/bin/env python3
++"""Behavioral tests for B-1/B-2/I-1 on the integrated v10r2r2 code. Not text greps."""
++import os
++import subprocess
++import sys
++import tempfile
++import unittest
++from pathlib import Path
++
++BASE = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(BASE))
++import place_helper as ph  # noqa: E402
++import verificar_instalador as v  # noqa: E402
++
++SCRIPT = BASE / 'colocacion_v2' / 'colocar_candidato.sh'
++
++
++class B1_C5Gate(unittest.TestCase):
++    """root is known but not implemented: must fail BEFORE any publication."""
++
++    def test_root_fails_at_gate_not_after_move(self):
++        with self.assertRaises(ValueError) as c:
++            ph.check_c5_policy('root')
++        self.assertIn('C5_NO_IMPLEMENTADA', str(c.exception))
++
++    def test_root_unknown_default_empty_all_block(self):
++        for mode in ('root', 'nada', '', 'REQUIERE_DECISION_C5', None):
++            if mode is None:
++                continue
++            with self.assertRaises(ValueError):
++                ph.check_c5_policy(mode)
++
++    def test_only_accept_usuario_is_implemented(self):
++        self.assertEqual(ph.check_c5_policy('aceptar_usuario')['implemented'], True)
++
++    def test_script_root_mode_leaves_no_destination(self):
++        with tempfile.TemporaryDirectory() as t:
++            td = Path(t)
++            apps = td / 'Applications'; apps.mkdir()
++            (td / 'stubs').mkdir()
++            pkg = td / 'p.pkg'; pkg.write_bytes(b'abc')
++            app = td / 'Install macOS Sonoma.app'
++            (app / 'Contents').mkdir(parents=True)
++            (app / 'Contents' / 'f').write_text('x')
++            script = SCRIPT.read_text()
++            script = script.replace('HELPER="$DIR/place_helper.py"', f'HELPER="{BASE}/place_helper.py"')
++            import re, hashlib
++            script = re.sub(r'HELPER="[^"]+"', f'HELPER="{BASE}/place_helper.py"', script)
++            script = re.sub(r'PKG="[^"]+"', f'PKG="{pkg}"', script)
++            script = re.sub(r'PKG_BYTES=\d+', 'PKG_BYTES=3', script)
++            script = re.sub(r'PKG_SHA256="[^"]+"',
++                            f'PKG_SHA256="{hashlib.sha256(b"abc").hexdigest()}"', script)
++            script = re.sub(r'ORIGEN="[^"]+"', f'ORIGEN="{app}"', script)
++            script = re.sub(r'DESTINO="[^"]+"', f'DESTINO="{apps}/Install macOS Sonoma.app"', script)
++            script = script.replace('set -uo pipefail', 'set -uo pipefail\nset +e')
++            sh = td / 'run.sh'; sh.write_text(script); sh.chmod(0o755)
++            env = dict(os.environ, OT07_MODO_PROTECCION='root')
++            r = subprocess.run(['/bin/bash', str(sh)], capture_output=True, text=True, env=env)
++            self.assertNotEqual(r.returncode, 0)
++            self.assertFalse((apps / 'Install macOS Sonoma.app').exists())
++            self.assertNotIn('COLOCADO_VERIFICADO', r.stdout)
++
++
++class B2_SpaceGate(unittest.TestCase):
++    def test_du_failure_fails_closed(self):
++        with tempfile.TemporaryDirectory() as t:
++            # non-existent source: du RC != 0
++            with self.assertRaises(ValueError) as c:
++                ph.measure_space_need(str(Path(t) / 'nope'))
++            self.assertIn('du', str(c.exception).lower())
++
++    def test_empty_or_non_numeric_rejected(self):
++        for bad in ('', ' ', 'abc', '-5', '0', '1.5'):
++            with self.assertRaises(ValueError):
++                ph.parse_positive_int(bad, 'x')
++
++    def test_overflow_rejected(self):
++        with self.assertRaises(ValueError):
++            ph.parse_positive_int(str(1 << 50), 'x')
++
++    def test_space_check_requires_real_du(self):
++        with tempfile.TemporaryDirectory() as t:
++            src = Path(t) / 'd'; src.mkdir(); (src / 'f').write_bytes(b'x' * 100)
++            r = subprocess.run([sys.executable, '-B', str(BASE / 'place_helper.py'),
++                                'space-check', str(src), str(t)],
++                               capture_output=True, text=True)
++            self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
++            self.assertIn('NEED_KIB=', r.stdout)
++            self.assertIn('OK=True', r.stdout)
++
++    def test_space_check_fails_when_insufficient(self):
++        with tempfile.TemporaryDirectory() as t:
++            src = Path(t) / 'd'; src.mkdir(); (src / 'f').write_bytes(b'x')
++            # avail dir is tiny by asking need against a non-dir after parse — use monkey
++            # instead: call measure_space_need then compare against 1
++            need = ph.measure_space_need(str(src))
++            self.assertGreater(need, 0)
++            self.assertGreaterEqual(need, 2 * 1024 * 1024)  # includes 2 GiB reserve
++
++
++class I1_InventoryRoot(unittest.TestCase):
++    def test_symlink_root_rejected_before_resolve(self):
++        with tempfile.TemporaryDirectory() as t:
++            t = Path(t)
++            real = t / 'real'; real.mkdir(); (real / 'f').write_text('a')
++            link = t / 'link'; link.symlink_to(real)
++            with self.assertRaises(ValueError) as c:
++                ph.inventory_tree(link)
++            self.assertIn('symlink', str(c.exception).lower())
++            with self.assertRaises(ValueError):
++                v.inventory_tree(link)
++
++    def test_file_root_rejected(self):
++        with tempfile.TemporaryDirectory() as t:
++            f = Path(t) / 'f'; f.write_text('x')
++            with self.assertRaises(ValueError):
++                ph.inventory_tree(f)
++
++    def test_dir_root_ok(self):
++        with tempfile.TemporaryDirectory() as t:
++            d = Path(t) / 'd'; d.mkdir(); (d / 'f').write_text('x')
++            inv = ph.inventory_tree(d)
++            self.assertEqual(inv['counts']['regular'], 1)
++
++
++class M1_Errno(unittest.TestCase):
++    def test_rename_excl_preserves_eexist_and_eloop(self):
++        with tempfile.TemporaryDirectory() as t:
++            t = Path(t)
++            src = t / 's'; src.mkdir()
++            dst = t / 'd'; dst.mkdir()
++            self.assertEqual(ph.rename_excl(str(src), str(dst)), 17)
++            # /var path prefix triggers ELOOP with NOFOLLOW_ANY (resolved to physical
++            # by helper — so use a symlink in the path itself)
++            deep = t / 'sym'; deep.symlink_to(t)
++            s2 = t / 's2'; s2.mkdir()
++            # physical_path does not follow this inner symlink; NOFOLLOW_ANY rejects
++            rc = ph.rename_excl(str(s2), str(deep / 'x'))
++            self.assertIn(rc, (1, 62, 17))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/tests/test_flow.py OT07_REVISION_v10r2r2/tests/test_flow.py
+--- OT07_REVISION_v10r2r1/tests/test_flow.py	2026-09-26 19:41:22
++++ OT07_REVISION_v10r2r2/tests/test_flow.py	2026-09-26 21:00:03
+@@ -29,7 +29,9 @@
+             s=s.replace('#!/bin/bash\n','#!/bin/bash\nid(){ echo 0; }\nsync(){ :; }\n',1)
+             s=s.replace('/usr/sbin/diskutil',disk).replace('/usr/libexec/PlistBuddy',version)
+             s=s.replace('ditto --norsrc',shlex.quote(ditto)+' --norsrc')
+-            s=s.replace('/var/run/ot07-kingston.lock',str(root/'lock')).replace('/var/tmp/',str(root)+'/')
++            s=s.replace('/var/run/ot07-kingston.lock',str(root/'lock'))
++            # M-9: replace only the package's own /var/tmp prefixes, not TMPDIR paths
++            s=s.replace('/var/tmp/ot07_', str(root).rstrip('/')+'/ot07_')
+             s=s.replace('/Applications/Install macOS Sonoma.app',str(app)).replace('$DIR/ot07_guard.py','$DIR/guard.py')
+             script=root/'run.sh'; script.write_text(s)
+             (root/'ot07_process.py').write_bytes((BASE/'ot07_process.py').read_bytes())
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/tests/test_place_v10r2r1.py OT07_REVISION_v10r2r2/tests/test_place_v10r2r1.py
+--- OT07_REVISION_v10r2r1/tests/test_place_v10r2r1.py	2026-09-26 19:44:14
++++ OT07_REVISION_v10r2r2/tests/test_place_v10r2r1.py	2026-09-26 21:01:23
+@@ -25,8 +25,9 @@
+             ph.check_c5_policy('REQUIERE_DECISION_C5')
+         self.assertIn('C5_NO_DECIDIDA', str(c.exception))
+ 
+-    def test_root_and_accept_pass_gate_only(self):
+-        self.assertEqual(ph.check_c5_policy('root')['gate'], 'passed_before_effects')
++    def test_root_known_but_not_implemented_blocks(self):
++        with self.assertRaises(ValueError):
++            ph.check_c5_policy('root')
+         self.assertEqual(ph.check_c5_policy('aceptar_usuario')['gate'], 'passed_before_effects')
+ 
+     def test_script_requires_gate_before_ditto_or_move(self):
+@@ -144,10 +145,13 @@
+         self.assertNotIn('APP_MANIFIESTO', body)
+         self.assertNotIn('shasum --check', body)
+ 
+-    def test_space_is_live_du_df(self):
++    def test_space_is_live_via_helper_not_constant(self):
+         src = DESTINO_SCRIPT.read_text()
+-        self.assertIn('du -sk', src)
+-        self.assertIn('df -k', src)
++        self.assertIn('space-check', src)
++        helper = (BASE / 'place_helper.py').read_text()
++        self.assertIn('du', helper)
++        self.assertIn('df', helper)
++        self.assertIn('parse_positive_int', helper)
+ 
+ 
+ if __name__ == '__main__':
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/tests/test_verifier_v10r2.py OT07_REVISION_v10r2r2/tests/test_verifier_v10r2.py
+--- OT07_REVISION_v10r2r1/tests/test_verifier_v10r2.py	2026-09-26 19:50:11
++++ OT07_REVISION_v10r2r2/tests/test_verifier_v10r2.py	2026-09-26 21:06:09
+@@ -145,12 +145,12 @@
+         self.assertIn('dirname "$DESTINO"', src)
+         self.assertIn('/bin/mkdir "$STAGING"', src)
+         self.assertIn('same-fs', src)
+-        self.assertIn('NEED_KIB', src)
+-        self.assertIn('du -sk', src)
++        self.assertIn('space-check', src)
+ 
+     def test_c5_protection_is_proposal_not_active(self):
+         src = self.script_src()
+-        self.assertIn('C5_NO_DECIDIDA', src)
++        helper = (BASE / 'place_helper.py').read_text()
++        self.assertIn('C5_NO_IMPLEMENTADA', helper)
+         self.assertIn('NO_ACTIVO', src)
+         self.assertIn('chown', src)
+ 
+diff -ruN --exclude SHA256SUMS.txt --exclude *.diff --exclude apoyo_muse_p1 --exclude apoyo_flash_p2 --exclude evidencia_impl OT07_REVISION_v10r2r1/verificar_instalador.py OT07_REVISION_v10r2r2/verificar_instalador.py
+--- OT07_REVISION_v10r2r1/verificar_instalador.py	2026-09-26 19:41:22
++++ OT07_REVISION_v10r2r2/verificar_instalador.py	2026-09-26 20:59:18
+@@ -142,10 +142,16 @@
+ 
+ 
+ def inventory_tree(root: Path) -> dict:
+-    """Exact inventory; never follows symlinks; rejects special types and escapes."""
+-    root = root.resolve()
+-    if not root.is_dir() or root.is_symlink():
++    """Exact inventory; never follows symlinks; rejects special types and escapes.
++    I-1: reject symlink root BEFORE resolve() would follow it."""
++    raw = Path(root)
++    if raw.is_symlink():
++        raise ValueError('raiz es symlink (rechazo previo a resolve): %r' % root)
++    if not raw.is_dir():
+         raise ValueError('raiz de inventario invalida: %r' % root)
++    root = raw.resolve()
++    if root.is_symlink():
++        raise ValueError('raiz resuelta sigue siendo symlink: %r' % root)
+     entries = {}
+     counts = {'regular': 0, 'directory': 0, 'symlink': 0}
+ 
+@@ -286,10 +292,24 @@
+ 
+ 
+ def verify_offline_provenance(pkg: Path, app: Path, workdir: Path | None = None) -> dict:
+-    """Full C-1 chain without attaching any DMG and without running PKG scripts."""
++    """Full C-1 chain without attaching any DMG and without running PKG scripts.
++    I-5: PKG/app live under /var/tmp — fail early if inputs are missing.
++    I-2: space budget before expand-full. I-4: cleanup errors are reported, not swallowed."""
++    if not pkg.is_file():
++        raise ValueError('I5_PKG_AUSENTE: %r (dependencia de /var/tmp; no se reconstruye)' % pkg)
++    if not app.is_dir() or app.is_symlink():
++        raise ValueError('I5_APP_AUSENTE: %r' % app)
++    # space: expand needs ~PKG size free next to workdir
++    pkg_size = pkg.stat().st_size
+     owner = workdir or Path(tempfile.mkdtemp(prefix='ot07_pkg_chain_'))
+     created = workdir is None
++    cleanup_error = None
+     try:
++        # I-2: refuse expand if the volume cannot hold the expansion
++        st = os.statvfs(str(owner))
++        avail = st.f_bavail * st.f_frsize
++        if avail < pkg_size + (1 << 30):
++            raise ValueError('I2_ESPACIO_INSUFICIENTE expand: avail=%d need=%d' % (avail, pkg_size + (1 << 30)))
+         pkg_id = verify_pkg_identity(pkg)
+         expand_root = owner / 'expand'
+         expand_root.mkdir(mode=0o700, exist_ok=True)
+@@ -302,7 +322,6 @@
+         cim = app / 'Contents/Resources/createinstallmedia'
+         cim_id = verify_cim_signature(cim)
+         basics = verify_bundle_basics(app)
+-        # verify input did not change during derivation
+         if sha256_file(pkg) != PKG_SHA256:
+             raise ValueError('PKG cambio durante la derivacion')
+         return {
+@@ -316,7 +335,13 @@
+         }
+     finally:
+         if created and owner.exists():
+-            shutil.rmtree(owner, ignore_errors=True)
++            try:
++                shutil.rmtree(owner)
++            except OSError as e:
++                cleanup_error = e
++        if cleanup_error is not None:
++            raise RuntimeError('I4_LIMPIEZA_FALLIDA %r; conservar diagnostico en %r'
++                               % (cleanup_error, owner)) from cleanup_error
+ 
+ 
+ def main():

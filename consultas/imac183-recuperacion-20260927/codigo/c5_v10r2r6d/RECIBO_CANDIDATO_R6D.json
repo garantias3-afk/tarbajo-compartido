@@ -1,0 +1,84 @@
+{
+  "ot": "OT07-I-C5-NATIVO",
+  "revision_id": "v10r2r6d",
+  "estado_propio": "CANDIDATO_R6D_PENDIENTE_SPOT_CHECK",
+  "autoaprobacion_H1": false,
+  "h1_bis_necesaria": true,
+  "h1_bis_motivo": "el hash del binario cambió de nuevo (R6C-1); se pide H1-bis con este hash definitivo",
+  "utc_cierre": "2026-09-27T17:57:09Z",
+  "rol": "MIMO",
+  "canal_entrega": "RUN.20260927T131419Z.C5IMAC1/entregas/MIMO/",
+  "producto": "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6d_MIMO",
+  "sustituye_a": {
+    "revision": "v10r2r6c",
+    "manifiesto": "b307200dc6eaac496fa32657ae87713bf016f128a6fa252352997d92006d0375",
+    "binario_r6c": "3bb1b3b5c38f57d25050b104f02d4494b11131b8bdd05986f78c0d091077a66d",
+    "nota": "r6c sellado NO editado; r6d es la línea de R6C-1"
+  },
+
+  "proveedor_observado": {
+    "rol": "MIMO",
+    "aplicacion": "MiMo Desktop",
+    "proveedor": "Xiaomi Token Plan",
+    "modelo_efectivo": "MiMo (mimo)",
+    "modalidad": "Token Plan",
+    "estado": "CONFIRMADO_POR_USUARIO"
+  },
+
+  "R6C-1": {
+    "problema": "cmd_copy_tree copiaba los hijos pero no aplicaba el modo del origen a la HOJA (quedaba 0700 de mkdir-staging) ⇒ raíz publicada intransitable para uid 501",
+    "efecto_en_plantilla": "pasos 8/9 (pines, sha256 del publicado, oráculo N7) y Flash ACL reader fallarían con EACCES",
+    "fix": "1) chmod(dst, st.st_mode & 0777 & ~(S_IWGRP|S_IWOTH)) sobre la hoja tras copiar los hijos (paridad con el orquestador simulated). 2) Plantilla: verify/ls como uid 501 sobre el ÁRBOL PUBLICADO en el paso 8b con C5_AUTH_BASE=$H1; verify del staging pre-publish root-side (el padre sigue 0700). 3) D2-01 del harness ahora exige el chmod de la hoja",
+    "archivos": ["src/c5_helper.c", "docs/H1_A_REEJECUCION.sh", "tests/harness_r5.py"]
+  },
+
+  "binario_nuevo": {
+    "ruta": "build/c5_helper",
+    "sha256": "11b37e79be847e3d280bed36b844d1e19e35481a800a35dc633f5167fdc9bfcc",
+    "reemplaza_a": "3bb1b3b5c38f57d25050b104f02d4494b11131b8bdd05986f78c0d091077a66d",
+    "requiere": "H1-bis — confirmación puntual de OPERADOR con este hash (el alcance A no cambia)",
+    "build": "clang -O2 -Wall -Wextra -std=c11 -mmacosx-version-min=14.0 -isysroot .../MacOSX26.5.sdk"
+  },
+
+  "tests": {
+    "total": 59,
+    "ok": 59,
+    "fail": 0,
+    "skips": 0,
+    "nota": "mismos IDs que r6c; D2-01 endurecido con la aserción del chmod de hoja",
+    "evidencia": "evidencia_r6d/HARNESS_RESULTADOS.json"
+  },
+
+  "hashes": {
+    "manifiesto_r6d": "ea55af7231a765d5201b09e1ad13c5956fb52b64db182a3aa1bd99aa23caa3db",
+    "binario_r6d": "11b37e79be847e3d280bed36b844d1e19e35481a800a35dc633f5167fdc9bfcc",
+    "manifiesto_r6c_no_editado": "b307200dc6eaac496fa32657ae87713bf016f128a6fa252352997d92006d0375"
+  },
+
+  "diff": {
+    "archivos": [
+      "diff_r6c_r6d/src_c5_helper.c.diff",
+      "diff_r6c_r6d/docs_H1_A_REEJECUCION.sh.diff",
+      "diff_r6c_r6d/tests_harness_r5.py.diff"
+    ]
+  },
+
+  "pendientes": [
+    "Max: spot-check del delta r6d (una línea en el helper + plantilla)",
+    "OPERADOR: H1-bis con hash 11b37e79… (mismo alcance A)",
+    "Re-ejecución A completa (todos los oráculos, abort RC≠0, retiro confinado de jCwt99)",
+    "Sección B congelada hasta GO completo de A"
+  ],
+
+  "residuos_previos_no_tocados": [
+    "h1_mimo/h1_destino (vacío, root:0 0700)",
+    "h1_mimo/h1_destino_eexist (con ganador.txt)",
+    "h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99 (root:0 0700)"
+  ],
+
+  "operaciones_declaradas": [
+    "solo código/docs/tests en r6d; sin sudo",
+    "sin USB/arranque/OCLP//Applications/sudoers/señales",
+    "residuos de la corrida A no tocados"
+  ]
+}

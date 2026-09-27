@@ -1,0 +1,14 @@
+{
+  "pkg_top_dmg": {
+    "path": "/var/tmp/ot07_I_v10r2_mimo.1790459294/expand/pkg/SharedSupport.dmg",
+    "bytes": 13643079050,
+    "sha256": "3e8c07f8d0e93fecdb3dcdc7f80b9de5b9ab93861991cc711ec3ff6b756c7b8d",
+    "read": 13643079050
+  },
+  "app_dmg": {
+    "path": "/var/tmp/ot07_E2R1_candidato.gMdKSX/extraida/Install macOS Sonoma.app/Contents/SharedSupport/SharedSupport.dmg",
+    "bytes": 13643079050,
+    "sha256": "3e8c07f8d0e93fecdb3dcdc7f80b9de5b9ab93861991cc711ec3ff6b756c7b8d",
+    "read": 13643079050
+  }
+}

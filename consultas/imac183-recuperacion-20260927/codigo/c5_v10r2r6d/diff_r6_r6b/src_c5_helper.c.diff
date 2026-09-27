@@ -1,0 +1,51 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/src/c5_helper.c	2026-09-27 11:58:55
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/src/c5_helper.c	2026-09-27 14:05:28
+@@ -1,6 +1,6 @@
+ /*
+  * c5_helper.c — helper limitado C5 (dirección B: proteger ANTES de publicar)
+- * OT07-C5-NATIVO r6 · MIMO · NO activado hasta H1 explícita.
++ * OT07-C5-NATIVO r6b · MIMO · NO activado hasta H1 explícita.
+  *
+  * NO es un runner de shell. Acciones cerradas:
+  *   selfcheck | probe-at | mkdir-staging | copy-tree |
+@@ -11,34 +11,20 @@
+  * puede abrir O_WRONLY/O_RDWR sobre ellos (no hay ventana entre crear y
+  * proteger en la que el operador obtenga un fd de escritura).
+  *
+- * H-R5-5 (N8): toda acción confina rutas al prefijo ot07_c5_staging. o a una
+- * base autorizada por variable C5_AUTH_BASE (solo lectura del helper).
++ * H-R5-5 (N8) / R6-4: toda acción confina rutas. El confinamiento ESTRICTO
++ * viene de C5_AUTH_BASE (fijarla al fixture base en H1 — NativePriv ya lo
++ * hace). El prefijo ot07_c5_staging. es una segunda condición; strstr sobre
++ * ese componente NO basta por sí solo (acepta cualquier ruta que lo contenga).
+  *
+  * Primitivas REALES macOS (verificadas en SDK del host):
+  *   lchown(2), fchmodat(2), openat(2), fstatat(2)+AT_UNIQUE,
+  *   renamex_np(2)+RENAME_EXCL|RENAME_NOFOLLOW_ANY, acl_* (libSystem).
+  * NO usa: RESOLVE_BENEATH (Linux), binario lchown (no existe), chown -R -h.
+- *
+- * Primitivas REALES macOS (verificadas en SDK del host):
+- *   lchown(2), fchmodat(2), openat(2), fstatat(2)+AT_UNIQUE,
+- *   renamex_np(2)+RENAME_EXCL|RENAME_NOFOLLOW_ANY, acl_* (libSystem).
+- * NO usa: RESOLVE_BENEATH (Linux), binario lchown (no existe), chown -R -h.
+- *
+- * Frontera: los inodos finales se CREAN dentro del staging controlado por el
+- * helper. Un fd O_WRONLY/O_RDWR abierto por el uid operador ANTES de la
+- * transición no puede alterar el objeto consumido (N2).
+  *
+  * Build (reproducible):
+- *   clang -O2 -Wall -Wextra -Werror -std=c11 \
+- *     -mmacosx-version-min=14.0 \
++ *   clang -O2 -Wall -Wextra -std=c11 -mmacosx-version-min=14.0 \
++ *     -isysroot .../MacOSX26.5.sdk \
+  *     -o build/c5_helper src/c5_helper.c
+- *
+- * Uso (solo tras H1; en esta entrega NO se ejecuta privilegiado):
+- *   c5_helper probe-at <path>
+- *   c5_helper protect <root>          # lchown 0:0 + go-w + ACL
+- *   c5_helper verify  <root> <inv.json>
+- *   c5_helper publish <staging_leaf> <dest>
+- *   c5_helper cleanup <staging_parent>
+  */
+ #define _DARWIN_C_SOURCE
+ #include <stdio.h>

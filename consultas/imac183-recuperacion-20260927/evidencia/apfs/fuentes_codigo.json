@@ -1,0 +1,10 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/sgan81/apfs-fuse/master/ApfsLib/ApfsContainer.cpp",
+    "download_sha256": "fab00f415ce643da3ce65581ff765fe5730f6c93696207a71d72d9d3b62fd563"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/linux-apfs/apfsprogs/master/apfsck/super.c",
+    "download_sha256": "4b7ad7f7f211127b7880563e24629cb3128f4f36fe3c12ce988999968c6034b7"
+  }
+]

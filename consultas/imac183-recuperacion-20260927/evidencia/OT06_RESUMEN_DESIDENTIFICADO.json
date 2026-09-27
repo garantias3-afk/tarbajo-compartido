@@ -1,0 +1,36 @@
+{
+  "source": "RETURN_RECORD_OT06.md (2026-09-24)",
+  "source_sha256": "5216c829777c2a383d955590bbb802de2379564e5baa9d0d4929c367d7b8cf8a",
+  "status": "HISTORICO_DOCUMENTAL_NO_RELECTURA_DE_DATOS",
+  "selected_priority_files": 32,
+  "selected_priority_bytes": 11636226,
+  "priority_validation": {
+    "ZIP_CRC_XML": 22,
+    "PDF_BASIC_ONLY": 10
+  },
+  "documents_manifest_subset": {
+    "files": 31298,
+    "bytes": 616721143,
+    "incidents": 0
+  },
+  "documents_enumerated": 400624,
+  "failure_events": {
+    "total": 8618,
+    "read_EIO": 8610,
+    "scandir_ENOENT": 6,
+    "stat_ENOENT": 2
+  },
+  "skipped": {
+    "pruned": 1283,
+    "symlinks": 222
+  },
+  "other_selected_tree_files": 17722,
+  "other_selected_tree_origin_failures": 8,
+  "limits": [
+    "Only manifest subset verified locally; not source identity or entire rescue.",
+    "Missing directory contents are not quantified by the event count.",
+    "EIO alone does not establish physical failure.",
+    "Recovered personal file names and paths excluded from public package.",
+    "No complete tier2 clone or native B2 validation certified by this record."
+  ]
+}

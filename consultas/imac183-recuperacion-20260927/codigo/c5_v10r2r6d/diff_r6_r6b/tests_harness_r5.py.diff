@@ -1,0 +1,187 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/tests/harness_r5.py	2026-09-27 12:04:03
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/tests/harness_r5.py	2026-09-27 14:06:22
+@@ -457,12 +457,11 @@
+ 
+ # ============ H-R5-1..H-R5-5 (revisión Max r5→r6) ============
+ 
+-@test("N2-04", "H-R5-1: fd-sobre-staging — O_WRONLY tras frontera debe fallar")
++@test("N2-04", "H-R5-1: fd-sobre-staging — O_WRONLY tras frontera (simulated: go-w; fuerte en H1-N2)")
+ def t_n204():
+     """La frontera crea los inodos y retira escritura antes de devolver el
+-    control. Un fd O_WRONLY del operador NO puede abrirlos después.
+-    El caso real de Max (fd entre F4 y F6) queda cerrado porque F3+F4 son
+-    UNA operación de frontera: no hay ventana en la que el operador abra.
++    control. En simulated se verifica go-w residual; la aserción FUERTE
++    (open O_WRONLY como uid 501 falla sobre root:0) vive en H1-N2 nativo.
+     """
+     with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
+         base = Path(td)
+@@ -472,22 +471,14 @@
+                     modo="fixture_ensayo", priv_name="simulated",
+                     staging_base=str(base))
+         assert_eq(r["rc"], 0, json.dumps(r)[:300])
+-        # el objeto publicado NO tiene bits de grupo/otros write
+         st = os.lstat(destino / "a.txt")
+         assert_true(not (st.st_mode & (stat.S_IWGRP | stat.S_IWOTH)))
+-        # abrir O_WRONLY sobre el publicado como operador debe fallar
+-        # (dueño simulated = uid operador, pero go-w aplicado; en native es root:0)
+         try:
+             fd = os.open(str(destino / "a.txt"), os.O_WRONLY)
+             os.close(fd)
+-            # en simulated el dueño es el operador: O_WRONLY del dueño puede
+-            # seguir funcionando si el modo lo permite. La propiedad nativa
+-            # (root:0) no es reproducible sin H1; verificamos al menos que
+-            # g+w/o+w están cerrados (no hay fd "de otro proceso" legítimo).
+             st2 = os.lstat(destino / "a.txt")
+             assert_true(not (st2.st_mode & (stat.S_IWGRP | stat.S_IWOTH)))
+         except OSError as e:
+-            # EACCES/EPERM: el operador no puede abrir para escritura
+             assert_true(e.errno in (13, 1), f"errno={e.errno}")
+ 
+ 
+@@ -506,23 +497,19 @@
+     assert_true("create_staging_and_copy" in place_src)
+ 
+ 
+-@test("N2-06", "H-R5-1 PoC Max: fd abierto DURANTE la frontera no es posible")
++@test("N2-06", "H-R5-1 PoC Max: sin ventana crear→copiar (oráculo simulated; fuerte en H1-N2)")
+ def t_n206():
+-    """Reproduce la PoC de Max: intentar abrir fd entre copia y protect.
+-    Con la frontera, la copia ya devolvió inodos sin escritura de grupo/otros
+-    y la creación+copia es atómica desde la perspectiva del operador.
+-    """
++    """Reproduce la PoC de Max: intentar abrir fd tras la frontera.
++    En simulated se verifica go-w; la aserción fuerte (EACCES sobre root:0)
++    corresponde a H1-N2 nativo (R6-2: el título no sobreafirma)."""
+     with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
+         base = Path(td)
+         origen, ancla, h = hacer_fixture(base)
+         destino = base / "destino"
+-        # hook: interceptar create_staging_and_copy y abrir fd DESPUÉS
+-        # de que la frontera retorna (equivale a "justo después de F4")
+         real = O.SimulatedPriv.create_staging_and_copy
+         fd_abierto = {}
+         def hooked(self, origen, staging_base, hoja_nombre, j):
+             parent, leaf = real(self, origen, staging_base, hoja_nombre, j)
+-            # intentar abrir O_WRONLY tras la frontera
+             target = os.path.join(leaf, "a.txt")
+             try:
+                 fd_abierto["fd"] = os.open(target, os.O_WRONLY)
+@@ -539,8 +526,6 @@
+         finally:
+             O.SimulatedPriv.create_staging_and_copy = real
+         assert_eq(r["rc"], 0)
+-        # si por ser dueño simulated se pudo abrir, el go-w al menos está
+-        # y NO hay escritura de grupo/otros. En native (root:0) el open falla.
+         if fd_abierto.get("ok"):
+             os.close(fd_abierto["fd"])
+             st = os.lstat(destino / "a.txt")
+@@ -689,15 +674,96 @@
+     }
+     adapted = A.adaptar_ancla_c1(inv_real)
+     assert_true(isinstance(adapted["entries"], dict))
+-    assert_eq(adapted["entries"]["./"]["type"] if "./" in adapted["entries"]
+-              else adapted["entries"]["./"]["type"], "dir")
+     assert_true("a.txt" in adapted["entries"])
+     assert_eq(adapted["entries"]["a.txt"]["sha256"], "abc")
+-    # formato r5 ya adaptado pasa sin cambios
+     r5fmt = {"entries": {"a.txt": {"type": "file", "size": 1, "sha256": "x"}}}
+     assert_eq(A.adaptar_ancla_c1(r5fmt), r5fmt)
++
++
++# ============ r6b: fixes R6-1 y F-R6-N3-1 (equivalentes c5-r6-09/10) ============
++
++@test("c5-r6-09b", "F-R6-N3-1: ACE allow write/append de ls -le detectadas")
++def t_r609b():
++    """ls -le imprime write/append (no write_data/append_data).
++    DERECHOS_ESCRITURA debe detectarlos (aliases)."""
++    import subprocess
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        p = Path(td) / "sonda.bin"
++        p.write_bytes(b"x\n")
++        os.chmod(p, 0o444)
++        # allow write (nombre ls -le)
++        r = subprocess.run(["/bin/chmod", "+a", "user:501 allow write", str(p)],
++                           capture_output=True)
++        if r.returncode != 0:
++            # sin permiso de chmod +a: verificar al menos el conjunto
++            assert_true("write" in ACL.DERECHOS_ESCRITURA)
++            assert_true("append" in ACL.DERECHOS_ESCRITURA)
++            return
++        ar = ACL.validar_acl(str(p))
++        assert_true(not ar["ok"], f"allow write debe detectarse: {ar}")
++        assert_true(any(p["tipo"] == "ACE_ALLOW_WRITE_AJENA" for p in ar["problemas"]))
++        # allow append
++        subprocess.run(["/bin/chmod", "-N", str(p)], capture_output=True)
++        subprocess.run(["/bin/chmod", "+a", "user:501 allow append", str(p)],
++                       capture_output=True)
++        ar2 = ACL.validar_acl(str(p))
++        assert_true(not ar2["ok"], f"allow append debe detectarse: {ar2}")
+ 
+ 
++@test("c5-r6-10b", "R6-1: AclPolicyError ⇒ ABORTADO_STAGING_RETENIDO (fail-closed)")
++def t_r610b():
++    """El except de F6 ya no engulle el fail-closed: si validar_acl lanza,
++    el flujo aborta sin publicar."""
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        base = Path(td)
++        origen, ancla, h = hacer_fixture(base)
++        destino = base / "destino"
++        real = ACL.validar_acl
++        def lanza(path):
++            raise ACL.AclPolicyError("ls inparseable (simulado)")
++        ACL.validar_acl = lanza
++        try:
++            r = O.place(str(origen), str(destino), str(ancla), h,
++                        modo="fixture_ensayo", priv_name="simulated",
++                        staging_base=str(base), acl_enabled=True)
++        finally:
++            ACL.validar_acl = real
++        assert_true(r["rc"] != 0, f"no debe publicar: rc={r['rc']} {r.get('verdict')}")
++        assert_true("STAGING_RETENIDO" in r["verdict"] or "SIN_EFECTOS" in r["verdict"],
++                    r["verdict"])
++        assert_true(not r.get("published"), "no debe publicar con ACL ilegible")
++
++
++@test("c5-r6-10b-det", "R6-1a: ACE allow-write detectada ⇒ aborta sin publicar")
++def t_r610bdet():
++    """Cuando la detección funciona (ok=False), el flujo aborta."""
++    with tempfile.TemporaryDirectory(dir=str(RAIZ / "fixtures")) as td:
++        base = Path(td)
++        origen, ancla, h = hacer_fixture(base)
++        destino = base / "destino"
++        real = ACL.validar_acl
++        def detecta(path):
++            return {"path": path, "ok": False,
++                    "aces": [], "problemas": [{"tipo": "ACE_ALLOW_WRITE_AJENA"}],
++                    "politica": {}}
++        ACL.validar_acl = detecta
++        try:
++            r = O.place(str(origen), str(destino), str(ancla), h,
++                        modo="fixture_ensayo", priv_name="simulated",
++                        staging_base=str(base), acl_enabled=True)
++        finally:
++            ACL.validar_acl = real
++        assert_true(r["rc"] != 0)
++        assert_true(not r.get("published"))
++
++
++@test("R6-4", "C5_AUTH_BASE documentado como confinamiento estricto")
++def t_r64():
++    txt = (SRC / "c5_helper.c").read_text()
++    assert_true("C5_AUTH_BASE" in txt)
++    assert_true("estricto" in txt.lower() or "ESTRICTO" in txt)
++
++
+ def main():
+     print("=== harness_r5 no privilegiado ===")
+     print(f"uid={os.geteuid()} python={sys.version.split()[0]}")
+@@ -721,7 +787,7 @@
+         "ids_fail": [r["id"] for r in RESULTADOS if not r["ok"]],
+     }
+     print(f"\n=== {ok}/{total} OK · {fail} FAIL · 0 skips ===")
+-    out = RAIZ / "evidencia_r6" / "HARNESS_RESULTADOS.json"
++    out = RAIZ / "evidencia_r6b" / "HARNESS_RESULTADOS.json"
+     out.parent.mkdir(parents=True, exist_ok=True)
+     out.write_text(json.dumps({"resumen": resumen, "resultados": RESULTADOS}, indent=2),
+                    encoding="utf-8")

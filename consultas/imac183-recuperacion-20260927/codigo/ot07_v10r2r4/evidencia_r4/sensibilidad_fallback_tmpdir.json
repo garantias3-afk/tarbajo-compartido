@@ -1,0 +1,6 @@
+{
+  "mutation": "valid = True (accept fallback as variant)",
+  "baseline": "nonexistent TMPDIR => valid=False",
+  "mutant": "valid=True => real test assertFalse(valid) FAILS",
+  "sensitivity": true
+}

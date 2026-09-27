@@ -1,0 +1,72 @@
+{
+  "chain": "PKG signed -> expand-full payload -> app (minus postinstall SharedSupport.dmg) -> top-level DMG",
+  "pkg": {
+    "path": "/var/tmp/ot07_E2R1_candidato.gMdKSX/InstallAssistant.pkg",
+    "bytes": 13654790295,
+    "sha256": "ecc36bf172105f8c3325ceeb4e5ab8cc297260be806eac10b21b784ff40d8173",
+    "pkgutil_status": "signed Apple Software",
+    "chain_leaf": "Software Update",
+    "chain_root": "Apple Root CA",
+    "root_fingerprint": "B0 B1 73 0E CB C7 FF 45 05 14 2C 49 F1 29 5E 6E DA 6B CA ED 7E 2C 68 C5 BE 91 B5 A1 10 01 F0 24",
+    "check_signature_rc": 0
+  },
+  "postinstall_transform": {
+    "script": "Scripts/postinstall_actions/link_shared_support.bash",
+    "action": "ln -fFh or cp top-level SharedSupport.dmg -> app Contents/SharedSupport/SharedSupport.dmg",
+    "modeled_not_executed": true,
+    "expected_additions": [
+      "Contents/SharedSupport",
+      "Contents/SharedSupport/SharedSupport.dmg"
+    ]
+  },
+  "payload_vs_extracted": {
+    "payload_counts": {
+      "directory": 262,
+      "regular": 720,
+      "symlink": 25
+    },
+    "extracted_counts": {
+      "directory": 263,
+      "regular": 721,
+      "symlink": 25
+    },
+    "only_in_payload": [],
+    "only_in_extracted": [
+      "Contents/SharedSupport",
+      "Contents/SharedSupport/SharedSupport.dmg"
+    ],
+    "differ": [],
+    "identical_except_postinstall": true
+  },
+  "dmg_sha256": {
+    "pkg_top_dmg": {
+      "path": "/var/tmp/ot07_I_v10r2_mimo.1790459294/expand/pkg/SharedSupport.dmg",
+      "bytes": 13643079050,
+      "sha256": "3e8c07f8d0e93fecdb3dcdc7f80b9de5b9ab93861991cc711ec3ff6b756c7b8d",
+      "read": 13643079050
+    },
+    "app_dmg": {
+      "path": "/var/tmp/ot07_E2R1_candidato.gMdKSX/extraida/Install macOS Sonoma.app/Contents/SharedSupport/SharedSupport.dmg",
+      "bytes": 13643079050,
+      "sha256": "3e8c07f8d0e93fecdb3dcdc7f80b9de5b9ab93861991cc711ec3ff6b756c7b8d",
+      "read": 13643079050
+    }
+  },
+  "symlinks": {
+    "total": 25,
+    "absolute": 0,
+    "dotdot": 0,
+    "escape": 0,
+    "cycles": 0
+  },
+  "codesign_cim_strict_anchor_apple": {
+    "rc": 0
+  },
+  "codesign_app_strict_anchor_apple": {
+    "rc": 1,
+    "error": "resource envelope is obsolete (custom omit rules)",
+    "expected": true,
+    "envelope_inside_signed_pkg": true
+  },
+  "spctl": "not used as success criterion (RC=3 expected; diagnostic only)"
+}

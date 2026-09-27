@@ -1,0 +1,64 @@
+=== harness_r5 no privilegiado ===
+uid=501 python=3.9.6
+  OK   N0-01  bootstrap rechaza euid==0 en simulated
+  OK   N0-02  inventario bootstrap cubre fuentes y herramientas
+  OK   N0-03  sin runner mutable: sin os.chown/seteuid en orquestador
+  OK   N1-01  positivo: fixture copia + go-w aplicado
+  OK   N1-02  negativo: raíz con g+w detectada (HB-1)
+  OK   N1-03  root-owned ≠ ineliminable (padre/sticky)
+  OK   N2-01  diseño: inodos finales en frontera del helper
+  OK   N2-02  fd de escritura sobre origen ⇒ ancla detecta mutación
+  OK   N2-03  E1: chmod no revoca fd O_RDWR ya abierto
+  OK   N3-01  validar_acl no crashea y reporta estructura
+  OK   N3-02  capacidades escritura vs eliminación separadas
+  OK   N4-01  symlink absoluto rechazado
+  OK   N4-02  hardlink rechazado
+  OK   N4-03  FIFO rechazado
+  OK   N4-04  AT_UNIQUE en SDK o en helper
+  OK   N4-05  RESOLVE_BENEATH solo como rechazo documentado
+  OK   N5-01  ancla DELEGADA sin C-1
+  OK   N5-02  ancla C-1 con evidencia autenticada
+  OK   N5-03  hash externo divergente rechaza
+  OK   N5-04  archivo+hash del operador no acredita procedencia
+  OK   N6-01  destino preexistente: sin anidar ni borrar ganador
+  OK   N6-02  retry crea staging NUEVO
+  OK   N6-03  limpieza fallida ⇒ RC=3
+  OK   N6-04  post-publicación mutada ⇒ contenido_ok false
+  OK   N7-01  tripleta dev/ino/sha256 estable
+  OK   N7-02  sustituto rompe pin
+  OK   N8-01  operación confinada al fixture
+  OK   N8-02  SimulatedPriv rechaza path fuera de ámbito
+  OK   N9-01  sin diskutil/createinstallmedia en orquestador
+  OK   N9-02  PYTHONDONTWRITEBYTECODE=1
+  OK   N9-03  umask 077
+  OK   ERRATA-01  INDICE_HISTORICO_R5 documenta codesign_cim vacío
+  OK   ERRATA-02  SENSIBILIDAD.json con base/mutante/comando/RC/aserción
+  OK   IFZ-01  INTERFAZ_C5.json con 6 acciones + esquema + fallos
+  OK   IFZ-02  interfaz marca pseudocomandos P6 como no usados
+  OK   N2-04  H-R5-1: fd-sobre-staging — O_WRONLY tras frontera (simulated: go-w; fuerte en H1-N2)
+  OK   N2-05  H-R5-1: no hay ventana crear→copiar separada del operador
+  OK   N2-06  H-R5-1 PoC Max: sin ventana crear→copiar (oráculo simulated; fuerte en H1-N2)
+  OK   N6-05  H-R5-2: swap-de-hoja antes de rename se detecta
+  OK   N6-06  H-R5-2: re-pin hoja/padre presente en F7 y F8
+  OK   H-R5-3a  PrivError con staging ⇒ ABORTADO_STAGING_RETENIDO rc=2
+  OK   H-R5-3b  excepción genérica post-publicación ⇒ ESTADO_INDETERMINADO
+  OK   H-R5-4a  ancla cableada: origen_autenticado real via manifiesto
+  OK   H-R5-4b  ACL cableada al pipeline (acl_enabled invoca validar_acl)
+  FAIL H-R5-5a  helper confina rutas (cleanup sin prefijo rechazado): helper no compilado
+  FAIL H-R5-5b  helper selfcheck reporta confinamiento y uid parametrizado: [Errno 2] No such file or directory: '/Users/OPERADOR/Documents/Codex/2026-09-27/con/work/c5-verification/build/c5_helper'
+  OK   H-R5-6.7  SENSIBILIDAD.json: conteo de casos coincide con el recibo
+  OK   H-R5-6.8  adaptador de formato ancla C-1 (lista → dict)
+  OK   c5-r6-09b  F-R6-N3-1: ACE allow write/append de ls -le detectadas
+  OK   c5-r6-10b  R6-1: AclPolicyError ⇒ ABORTADO_STAGING_RETENIDO (fail-closed)
+  OK   c5-r6-10b-det  R6-1a: ACE allow-write detectada ⇒ aborta sin publicar
+  OK   R6-4  C5_AUTH_BASE documentado como confinamiento estricto
+  OK   D1-01  copy-tree no hace mkdir de la raíz si dst ya existe
+  OK   D1-02  copy_walk hace mkdir solo si dst no existe (EEXIST tolerado en raíz)
+  OK   D2-01  copy-tree conserva modo del origen menos g+w/o+w (incluye HOJA)
+  OK   D2-02  _copy_tree del orquestador aplica D2
+  OK   PROTO-01  protocolo abort RC≠0 documentado en H1
+  OK   D3-01  C5_AUTH_BASE documentado para re-ejecución
+  OK   CLEANUP-01  cleanup con retiro bottom-up de árbol vacío
+
+=== 57/59 OK · 2 FAIL · 0 skips ===
+evidencia: /Users/OPERADOR/Documents/Codex/2026-09-27/con/work/c5-verification/evidencia_r6d/HARNESS_RESULTADOS.json

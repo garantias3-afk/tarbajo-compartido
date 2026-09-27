@@ -1,0 +1,128 @@
+{
+  "ot": "OT07-I-C5-NATIVO",
+  "revision_id": "v10r2r6b",
+  "estado_propio": "CANDIDATO_R6B_PENDIENTE_SPOT_CHECK",
+  "autoaprobacion_H1": false,
+  "h1_presentada": false,
+  "utc_cierre": "2026-09-27T17:08:04Z",
+  "rol": "MIMO",
+  "canal_entrega": "RUN.20260927T131419Z.C5IMAC1/entregas/MIMO/",
+  "producto": "/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO",
+  "sustituye_a": {
+    "revision": "v10r2r6",
+    "manifiesto": "4fa65e4fe69de4e5408b64e31c1ad65f283980e1569839397481deb268736b6d",
+    "nota": "r6 sellado NO editado; r6b es revisión menor nueva"
+  },
+
+  "proveedor_observado": {
+    "rol": "MIMO",
+    "aplicacion": "MiMo Desktop",
+    "proveedor": "Xiaomi Token Plan",
+    "modelo_efectivo": "MiMo (mimo)",
+    "modalidad": "Token Plan",
+    "evidencia": "arranque manual PARA_PEGAR_MIMO_R6B; sin cambio de proveedor; sin fallback",
+    "estado": "CONFIRMADO_POR_USUARIO"
+  },
+
+  "host": {
+    "hostname": "HOST_PREPARACION.local",
+    "sw_vers": "macOS 26.6.2 (25G83)",
+    "arch": "arm64",
+    "uid": 501
+  },
+
+  "fixes_obligatorios": [
+    {
+      "id": "R6-1",
+      "defecto": "except AclPolicyError: pass engulle fail-closed y publica rc=0 con ACE allow-write / ACL ilegible",
+      "fix": "except ahora aborta ABORTADO_STAGING_RETENIDO (rc=2), sin publicar",
+      "archivo": "src/c5_orquestador.py F6",
+      "oraculos": ["c5-r6-10b", "c5-r6-10b-det"],
+      "reproduccion_real": "evidencia_r6b/REPRODUCCION_R6B.json → R6-1/fail-closed ok=true (ABORTADO_STAGING_RETENIDO rc=2 published=False)"
+    },
+    {
+      "id": "F-R6-N3-1",
+      "defecto": "DERECHOS_ESCRITURA solo NFSv4 (write_data/append_data); ls -le imprime write/append ⇒ ACEs reales no detectadas",
+      "fix": "aliases write, append, writeattr, writeextattr añadidos al conjunto",
+      "archivo": "src/c5_acl.py DERECHOS_ESCRITURA",
+      "oraculos": ["c5-r6-09b"],
+      "reproduccion_real": "chmod +a 'user:OPERADOR allow write/append' → detectada=True; allow read → detectada=False (ok en los 4 casos)"
+    }
+  ],
+
+  "opcionales_incorporados": [
+    {"id": "R6-2", "detalle": "títulos N2-04/06: no sobreafirman en simulated; aserción fuerte en H1-N2"},
+    {"id": "R6-3", "detalle": "header c5_helper.c sin bloque 'Primitivas REALES' duplicado"},
+    {"id": "R6-4", "detalle": "documentado: confinamiento estricto = C5_AUTH_BASE; strstr del prefijo no basta"}
+  ],
+
+  "decision_casos_flash": {
+    "casos": ["c5-r6-09", "c5-r6-10"],
+    "decision": "RE-EJECUTADOS_DESDE_MIMO_CON_RUNNER_PROPIO",
+    "motivo": "la carpeta R2 de Flash es de solo lectura",
+    "equivalentes": ["c5-r6-09b", "c5-r6-10b", "c5-r6-10b-det"],
+    "evidencia_adicional": "evidencia_r6b/REPRODUCCION_R6B.json (chmod +a real + AclPolicyError)",
+    "alternativa_para_Max": "Flash puede re-correr su batería completa tras este sello si lo prefiere"
+  },
+
+  "tests": {
+    "harness": "tests/harness_r5.py",
+    "total": 52,
+    "ok": 52,
+    "fail": 0,
+    "skips": 0,
+    "conteos_dinamicos": true,
+    "delta_vs_r6": "+4 (c5-r6-09b, c5-r6-10b, c5-r6-10b-det, R6-4)",
+    "evidencia": "evidencia_r6b/HARNESS_RESULTADOS.json",
+    "reproduccion": "evidencia_r6b/REPRODUCCION_R6B.json (5/5 ok)"
+  },
+
+  "hashes": {
+    "manifiesto_r6b": "7e69177e9bb68706632e56dcd8e7c4fcbb21d39ffacea338e273209f5b114141",
+    "manifiesto_r6_no_editado": "4fa65e4fe69de4e5408b64e31c1ad65f283980e1569839397481deb268736b6d",
+    "manifiesto_r5_no_editado": "2afb2c93fc85d34027630d50f1a867f925ac55c190a47051657ecccf471a7840"
+  },
+
+  "diff": {
+    "resumen": "diff_r6_r6b/DIFF_r6_a_r6b.md",
+    "por_archivo": [
+      "diff_r6_r6b/src_c5_acl.py.diff",
+      "diff_r6_r6b/src_c5_orquestador.py.diff",
+      "diff_r6_r6b/src_c5_helper.c.diff",
+      "diff_r6_r6b/tests_harness_r5.py.diff"
+    ]
+  },
+
+  "comandos_RC": [
+    {"comando": "clang … -o build/c5_helper src/c5_helper.c", "rc": 0},
+    {"comando": "./build/c5_helper selfcheck", "rc": 0},
+    {"comando": "python3 -B tests/harness_r5.py", "rc": 0, "salida": "52/52 OK · 0 FAIL · 0 skips"},
+    {"comando": "chmod +a 'user:OPERADOR allow write' + validar_acl", "rc": 0, "salida": "detectada=True (ACE_ALLOW_WRITE_AJENA)"},
+    {"comando": "chmod +a 'user:OPERADOR allow append' + validar_acl", "rc": 0, "salida": "detectada=True"},
+    {"comando": "place(acl_enabled=True) con validar_acl lanzando AclPolicyError", "rc": 2, "salida": "ABORTADO_STAGING_RETENIDO published=False"}
+  ],
+
+  "operaciones_reales": [
+    "lectura de ADJUDICACION_MAX_FLASH_R2 y verif_flash_r2_max.log",
+    "copia r6→r6b (r6 sellado intacto)",
+    "fixes una-línea en c5_acl.py y c5_orquestador.py",
+    "opcionales R6-2/3/4",
+    "harness 52/52 + reproducción chmod +a real",
+    "entrega sellada en entregas/MIMO/"
+  ],
+
+  "residuos_propios": [],
+  "pendientes": [
+    "Max: spot-check del delta r6b (los dos fixes + regresiones afectadas)",
+    "Pedido H1 único por Max tras spot-check (fixture + sección instalador)",
+    "Flash: re-correr batería completa solo si Max lo pide tras este sello"
+  ],
+
+  "transicion_solicitada": "spot-check Max → pedido H1 (no solicitado aquí)",
+
+  "prohibido_confirmado": [
+    "sin sudo/root", "sin USB", "sin arranque", "sin OCLP",
+    "sin señales a procesos ajenos", "sin autoaprobación H1",
+    "r6 y r5 sellados no editados"
+  ]
+}

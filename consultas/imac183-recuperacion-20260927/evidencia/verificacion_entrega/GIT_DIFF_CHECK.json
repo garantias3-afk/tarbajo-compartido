@@ -1,0 +1,23 @@
+{
+  "rc": 2,
+  "affected_paths": [
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r5_r6/docs_PROCEDIMIENTO_H1.md.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r5_r6/src_c5_helper.c.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r5_r6/src_c5_orquestador.py.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r5_r6/tests_harness_r5.py.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r6_r6b/src_c5_acl.py.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r6_r6b/src_c5_orquestador.py.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r6_r6b/tests_harness_r5.py.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r6b_r6c/docs_PROCEDIMIENTO_H1.md.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r6b_r6c/src_c5_helper.c.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r6b_r6c/tests_harness_r5.py.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r6c_r6d/docs_H1_A_REEJECUCION.sh.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/c5_v10r2r6d/diff_r6c_r6d/tests_harness_r5.py.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/ot07_v10r2r4/MATRIZ_CIERRE_R4.md",
+    "consultas/imac183-recuperacion-20260927/codigo/ot07_v10r2r4/OT07_v10r1_a_v10r2.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/ot07_v10r2r4/OT07_v10r2r1_a_v10r2r2.diff",
+    "consultas/imac183-recuperacion-20260927/codigo/ot07_v10r2r4/evidencia_impl/pkgutil_signature.txt",
+    "consultas/imac183-recuperacion-20260927/codigo/ot07_v10r2r4/tests/sim_tool.py"
+  ],
+  "disposition": "Preserved historical source/diff/log whitespace to maintain provenance; no substantive edit made. Newly authored top-level documentation checked separately."
+}

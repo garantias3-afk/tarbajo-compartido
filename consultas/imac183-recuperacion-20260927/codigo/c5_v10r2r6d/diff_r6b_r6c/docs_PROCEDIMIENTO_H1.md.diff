@@ -1,0 +1,25 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/docs/PROCEDIMIENTO_H1.md	2026-09-27 14:04:30
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6c_MIMO/docs/PROCEDIMIENTO_H1.md	2026-09-27 14:42:23
+@@ -36,9 +36,22 @@
+ 
+ - Ruta propuesta: `fixtures/h1_fixture/` (crearlo vacío, umask 077).
+ - Contenido: 2 archivos regulares + 1 subdirectorio + 1 symlink interno. Máx 1 MiB.
++- **Modos del fixture (D2, re-ejecución):** `dirs 0755` / `archivos 0644`
++  (umask 022 solo al crear el fixture) para que `verify`/`ls -le` como uid 501
++  funcionen tras copiar con modos del origen menos `g+w/o+w`.
+ - Destino propio: `fixtures/h1_destino/` **ausente** al inicio.
+ - Staging base: `fixtures/h1_staging_base/` (solo nuestros `ot07_c5_staging.*`).
+ 
++## Protocolo de ejecución (OBLIGATORIO en la re-ejecución)
++
++- **Abortar al PRIMER RC≠0.** Registrar el RC/errno real y detener la secuencia.
++  Nada se publica tras un fallo. (En la corrida A anterior se continuó tras
++  `copy-tree` RC=2 — prohibido.)
++- **C5_AUTH_BASE=$H1** exportado antes de las lecturas del destino publicado
++  (D3): el helper lo soporta y habilita `verify`/`ls` del publicado.
++- Verificar `shasum -a 256 build/c5_helper` **antes de cada sudo**. Si difiere
++  del hash de la aprobación H1-bis, abortar.
++
+ ## Operaciones exactas (en orden)
+ 
+ 1. **selfcheck** (sin root aún):

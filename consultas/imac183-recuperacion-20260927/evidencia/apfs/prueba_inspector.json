@@ -1,0 +1,6 @@
+{
+  "fixture": "Copia local del bloque original con bit invertido sin recalcular checksum",
+  "returncode": 0,
+  "stdout": "archivo: work/fixture_checksum_invalido.bin\n  magic          : b'NXSB'  (NXSB = superbloque de contenedor)\n  checksum        : INVALIDO  (guardado=0x16242c968d5717cd)\n  xid (transaccion): 60773513\n  nx_fusion_uuid  : fdc66160-c568-56ef-9141-2c0bab71caf6\n  ultimo byte     : ...ce70   bit bajo = 0  ->  se declara PRINCIPAL (tier1)\n  nx_uuid (contenedor): 89f7c1ea-73d3-517d-bacc-cc81ed2d538a\n  nx_block_count  : 517872897  (bloques del contenedor Fusion completo)\n  checkpoint desc : index=27 len=3 base=29385401\n  omap=2108315 spaceman=48432719\n\n  INTERPRETACION:\n   - Checksum INVALIDO: este bloque NO debe escribirse.\n",
+  "stderr": ""
+}

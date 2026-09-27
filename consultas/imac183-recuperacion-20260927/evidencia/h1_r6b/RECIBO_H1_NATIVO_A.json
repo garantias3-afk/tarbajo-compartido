@@ -1,0 +1,192 @@
+{
+  "ot": "OT07-I-C5-NATIVO",
+  "fase": "H1_SECCION_A_ENSAYO_NATIVO",
+  "revision_id": "H1-A-MIMO-1",
+  "turno": {
+    "inicio": "TOMO EL TURNO",
+    "inicio_utc": "2026-09-27T17:17:12Z",
+    "fin": "LIBERO EL TURNO",
+    "fin_utc": "2026-09-27T17:26:08Z",
+    "operador_unico": "MIMO",
+    "observadores": ["FLASH (registros)", "MAX (registros)"]
+  },
+  "estado_propio": "ENSAYO_NATIVO_A_EJECUTADO_PENDIENTE_ADJUDICACION",
+  "autoaprobacion": false,
+  "seccion_B": "NO_EJECUTADA (gateada por GO nativo completo de A)",
+
+  "proveedor_observado": {
+    "rol": "MIMO",
+    "aplicacion": "MiMo Desktop",
+    "proveedor": "Xiaomi Token Plan",
+    "modelo_efectivo": "MiMo (mimo)",
+    "modalidad": "Token Plan",
+    "evidencia": "arranque manual; sin cambio de proveedor; sin fallback",
+    "estado": "CONFIRMADO_POR_USUARIO"
+  },
+
+  "host": {
+    "hostname": "HOST_PREPARACION.local",
+    "sw_vers": "macOS 26.6.2 (25G83)",
+    "arch": "arm64",
+    "uid": 501
+  },
+
+  "objeto_privilegiado_ejecutado": {
+    "binario": "OT07_REVISION_v10r2r6b_MIMO/build/c5_helper",
+    "sha256_esperado": "92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233",
+    "sha256_verificado_antes_de_cada_sudo": true,
+    "coincidencia": "SÍ — hash comprobado inmediatamente antes de cada una de las invocaciones sudo",
+    "aprobacion": "DECISIONES/H1_APROBACION_2026-09-27.json (sha256 09ce5358…2073)"
+  },
+
+  "hashes_entrada": {
+    "H1_APROBACION": "09ce53583ff6faf8c9dc4283a1fbb8224576b7960e60eaff9e29cf8fc91b2073",
+    "H1_SOLICITUD_GLM_MAX": "1829fcfc7c3578c008e5d9e26ad7b9640f204f36e4315d1c6fe29e0aab24201b",
+    "r6b_manifiesto": "7e69177e9bb68706632e56dcd8e7c4fcbb21d39ffacea338e273209f5b114141",
+    "r6_manifiesto_no_editado": "4fa65e4fe69de4e5408b64e31c1ad65f283980e1569839397481deb268736b6d",
+    "c5_helper": "92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233"
+  },
+
+  "fixture": {
+    "ruta": "h1_mimo/fixture/",
+    "bytes_regulares": 18,
+    "estructura": "a.txt + sub/b.bin + link->a.txt",
+    "limite": "<1 MiB",
+    "ancla_sha256": "3e3915cb977f07716c58f8504dc38b59e4e3e5cf43777ff5665401d5fcf152f8",
+    "pins_origen": {
+      "fixture": {"dev": 16777232, "ino": 238784682},
+      "a.txt": {"dev": 16777232, "ino": 238784684},
+      "sub": {"dev": 16777232, "ino": 238784683},
+      "b.bin": {"dev": 16777232, "ino": 238784685},
+      "link": {"dev": 16777232, "ino": 238784686}
+    }
+  },
+
+  "simulado_vs_nativo": {
+    "simulado": "NADA en la sección A",
+    "nativo": [
+      "mkdir-staging como root (root:0 0700)",
+      "copy-tree como root (INTENTADO — ver defecto D1)",
+      "protect como root (lchown 0:0 + go-w + ACL)",
+      "publish como root (renamex_np RECLAIM-safe)",
+      "oráculos N2 como uid 501 contra inodos root:0",
+      "EEXIST como root"
+    ]
+  },
+
+  "comandos_RC_errno": [
+    {"paso": "1", "comando": "shasum -a 256 build/c5_helper", "rc": 0, "salida": "92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233"},
+    {"paso": "1", "comando": "python3 -B src/c5_bootstrap.py .", "rc": 0, "salida": "listo_para_pedir_H1=true"},
+    {"paso": "1", "comando": "./build/c5_helper selfcheck", "rc": 0},
+    {"paso": "1", "comando": "./build/c5_helper probe-at h1_mimo", "rc": 0, "salida": "AT_UNIQUE=true"},
+    {"paso": "2", "comando": "crear fixture + ancla + pins", "rc": 0},
+    {"paso": "3", "comando": "sudo c5_helper mkdir-staging h1_mimo/ot07_c5_staging.h1base", "rc": 0, "salida": "parent=ot07_c5_staging.3fnCGr leaf=…/leaf uid=0 gid=0 mode=0700"},
+    {"paso": "4", "comando": "sudo c5_helper copy-tree fixture <hoja>", "rc": 2, "errno": 17, "salida": "{\"ok\":false,\"op\":\"mkdir\",\"path\":\"…/leaf\",\"errno\":17,\"msg\":\"File exists\"}", "nota": "DEFECTO D1 — ver hallazgos"},
+    {"paso": "5", "comando": "open(hoja/a.txt, O_WRONLY) uid 501", "rc": -1, "errno": 13, "esperado": "fallo", "resultado": "FALLA_OK"},
+    {"paso": "5", "comando": "open(hoja/a.txt, O_RDWR) uid 501", "rc": -1, "errno": 13, "resultado": "FALLA_OK"},
+    {"paso": "5", "comando": "rename(hoja) uid 501", "rc": -1, "errno": 13, "resultado": "FALLA_OK"},
+    {"paso": "5", "comando": "unlink(hoja) uid 501", "rc": -1, "errno": 13, "resultado": "FALLA_OK"},
+    {"paso": "5", "comando": "rmdir(hoja) uid 501", "rc": -1, "errno": 13, "resultado": "FALLA_OK"},
+    {"paso": "6", "comando": "sudo c5_helper protect <hoja>", "rc": 0, "nota": "sobre hoja vacía (copy-tree falló)"},
+    {"paso": "7", "comando": "./build/c5_helper verify <hoja> uid 501", "rc": 0, "errno": 13, "salida": "lstat Permission denied", "nota": "esperado si padre 0700 root:0 — ver D2"},
+    {"paso": "7", "comando": "ls -le <hoja> uid 501", "rc": 1, "errno": 13, "nota": "Permission denied — 0700 root:0"},
+    {"paso": "8", "comando": "sudo c5_helper publish <hoja> h1_mimo/h1_destino", "rc": 0, "salida": "dev=16777232 ino=238786699", "nota": "árbol vacío publicado (D1)"},
+    {"paso": "9", "comando": "write por fd O_WRONLY del ORIGEN", "rc": 0, "bytes": 21, "nota": "publicado no leíble por uid 501 (0700 root:0); sin a.txt por D1"},
+    {"paso": "9", "comando": "open(h1_destino/a.txt, O_WRONLY) uid 501", "rc": -1, "errno": 13, "resultado": "FALLA_OK"},
+    {"paso": "9", "comando": "open(h1_destino/a.txt, O_RDWR) uid 501", "rc": -1, "errno": 13, "resultado": "FALLA_OK"},
+    {"paso": "9b", "comando": "sudo c5_helper publish <hoja2> h1_destino_eexist (pre-creado)", "rc": 4, "errno": 17, "salida": "destino preexistente", "ganador_conservado": true},
+    {"paso": "10", "comando": "./build/c5_helper cleanup <staging_parent>", "rc": 0},
+    {"paso": "10", "comando": "list-stale", "rc": 0, "salida": "h1base=[] ; eexist=[ot07_c5_staging.jCwt99 retenido]"}
+  ],
+
+  "oraculos": {
+    "N2_OPEN_WRONLY": {"esperado": "falla", "errno": 13, "resultado": "OK"},
+    "N2_OPEN_RDWR": {"esperado": "falla", "errno": 13, "resultado": "OK"},
+    "N2_RENAME_HOJA": {"esperado": "falla", "errno": 13, "resultado": "OK"},
+    "N2_UNLINK_HOJA": {"esperado": "falla", "errno": 13, "resultado": "OK"},
+    "N2_RMDIR_HOJA": {"esperado": "falla", "errno": 13, "resultado": "OK"},
+    "N2_fd_origen_no_altera_publicado": {"resultado": "NO_DEMOSTRABLE_EN_ESTA_CORRIDA", "motivo": "D1 dejó el árbol vacío; el publicado no tiene a.txt. La propiedad de inodos distintos se re-correrá tras la corrección de D1"},
+    "N6_EEXIST": {"esperado": "rc!=0 sin anidar ni borrar ganador", "rc": 4, "errno": 17, "ganador_conservado": true, "resultado": "OK"},
+    "N6_staging_retenido_si_falla_publish": {"resultado": "OK", "staging": "ot07_c5_staging.jCwt99"},
+    "N1_metadata_root0_gow": {"resultado": "PARCIAL", "nota": "protect aplicado; verify como uid 501 bloqueado por 0700 (D2); verificación como root rechazada por confinamiento del destino publicado (D3)"},
+    "N3_acl_ls_le": {"resultado": "NO_MEDIDO", "motivo": "uid 501 no puede listar 0700 root:0; ls -le como root no arrojó ACEs en el árbol vacío"},
+    "N8_confinamiento": {"resultado": "OK_parcial", "nota": "staging bajo base propia; verify del destino publicado rechazado como fuera-de-frontera (D3)"}
+  },
+
+  "hallazgos_producto": [
+    {
+      "id": "D1",
+      "gravedad": "BLOQUEANTE_PARA_CONTENIDO",
+      "titulo": "copy-tree EEXIST sobre la hoja ya creada por mkdir-staging",
+      "evidencia": "{\"ok\":false,\"op\":\"mkdir\",\"path\":\"…/leaf\",\"errno\":17,\"msg\":\"File exists\"} RC=2",
+      "causa": "copy_walk hace mkdir(dst) en la raíz del árbol origen; dst (leaf) ya existe desde mkdir-staging",
+      "correccion_propuesta": "si dst existe y es directorio, copiar el CONTENIDO de src dentro de dst (no mkdir de la raíz); o que copy-tree cree la hoja si no existe",
+      "efecto": "el ensayo nativo A quedó sin contenido copiado; protect/publish operaron sobre hoja vacía"
+    },
+    {
+      "id": "D2",
+      "gravedad": "MENOR_DISEÑO",
+      "titulo": "verify/ls -le como uid 501 imposibles con dirs 0700 root:0",
+      "evidencia": "lstat errno=13 en hoja e hijos; ls -le Permission denied",
+      "nota": "la solicitud H1 pedía dirs 0700 (más estricto) Y verify como uid 501 — hay tensión. P5r §6.4 preveía dirs 0755 transitable. Decisión para Max: o verify va como root, o se documenta que 0700 impide verificación del operador"
+    },
+    {
+      "id": "D3",
+      "gravedad": "MENOR",
+      "titulo": "verify del destino publicado rechazado como fuera-de-frontera",
+      "evidencia": "sudo c5_helper verify h1_destino → {\"ok\":false,\"msg\":\"fuera-de-frontera\"}",
+      "causa": "exigir_confinada exige prefijo ot07_c5_staging. o C5_AUTH_BASE; el nombre del destino publicado no lo cumple",
+      "correccion_propuesta": "aceptar rutas de destino registradas en el journal de publish, o ampliar confinamiento al directorio padre del staging base"
+    }
+  ],
+
+  "residuos_propios": [
+    "h1_mimo/h1_destino (root:0 0700, vacío por D1) — publicado, NO se borra",
+    "h1_mimo/h1_destino_eexist (conservado con ganador.txt)",
+    "h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99 (root:0 0700, retenido por EEXIST) — list-stale lo registra, no se borra a ciegas"
+  ],
+
+  "limpieza_realizada": [
+    "staging principal ot07_c5_staging.3fnCGr eliminado con cleanup RC=0",
+    "corrida fallida previa (sudo sin terminal) limpiada solo con objetos propios de esa corrida"
+  ],
+
+  "operaciones_declaradas_conformes_a_decision": [
+    "solo build/c5_helper con hash 92a33c5b… ejecutado como root",
+    "sin USB/createinstallmedia/borrado",
+    "sin arranque/picker/Recovery",
+    "sin OCLP",
+    "sin /Applications",
+    "sin sudoers/LaunchDaemons/setuid",
+    "sin señales a procesos ajenos",
+    "sección B NO ejecutada (gateada)"
+  ],
+
+  "evidencia": {
+    "log": "h1_mimo/evidencia/H1_NATIVO_A.log",
+    "log_sha256": "7751279426c8cc5398c70b642a4e28485ebc03a343247fc547baa6b51e85262e",
+    "script": "h1_mimo/evidencia/H1_A_SECUENCIA.sh",
+    "script_sha256": "58f401b8b9dd0959c3df7a12229763a2586bdd2e8592c4f1350d881cb9b451a0",
+    "ubicacion": "RUN.20260927T131419Z.C5IMAC1/h1_mimo/"
+  },
+
+  "evaluacion_global": {
+    "N2_aislamiento": "OK (los 5 oráculos de fd/rename/unlink fallan con EACCES/EPERM sobre root:0 0700)",
+    "N6_EEXIST": "OK (rc=4, ganador conservado, staging retenido)",
+    "contenido_y_N1_completos": "NO — bloqueado por D1 (copy-tree)",
+    "conclusion": "El aislamiento N2 quedó demostrado nativamente. El ensayo de CONTENIDO está incompleto por D1. No se solicita GO. Corrección offline de D1 (y decisión sobre D2/D3) y re-auditoría del delta; re-ejecución de A sobre la corrección."
+  },
+
+  "pendientes": [
+    "Max: adjudicar N0–N9 con esta evidencia; decidir sobre D1/D2/D3",
+    "MiMo: corrección offline de D1 (copy-tree sobre hoja existente) en revisión nueva",
+    "Re-ejecución de sección A con contenido real tras la corrección",
+    "Sección B solo tras GO completo de A"
+  ],
+
+  "prohibido_confirmado": [
+    "sin USB", "sin arranque", "sin OCLP", "sin /Applications",
+    "sin sudoers/LaunchDaemons/setuid", "sin señales ajenos",
+    "sección B no anticipada"
+  ]
+}

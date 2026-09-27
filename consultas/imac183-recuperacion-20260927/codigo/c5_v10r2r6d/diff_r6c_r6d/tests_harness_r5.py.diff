@@ -1,0 +1,31 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6c_MIMO/tests/harness_r5.py	2026-09-27 14:42:07
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6d_MIMO/tests/harness_r5.py	2026-09-27 14:57:08
+@@ -786,12 +786,17 @@
+     assert_true("dst-no-es-dir" in chunk or "S_ISDIR" in chunk)
+ 
+ 
+-@test("D2-01", "copy-tree conserva modo del origen menos g+w/o+w")
++@test("D2-01", "copy-tree conserva modo del origen menos g+w/o+w (incluye HOJA)")
+ def t_d201():
+     src = (SRC / "c5_helper.c").read_text()
+     assert_true("IWGRP" in src and "IWOTH" in src)
+-    # copy_reg y copy_walk aplican nmode
+     assert_true("nmode" in src)
++    # R6C-1: chmod de la HOJA tras copiar hijos
++    assert_true("chmod-hoja" in src or "chmod(dst, hmode)" in src,
++                "la hoja debe recibir el modo del origen menos go-w")
++    idx = src.index("static int cmd_copy_tree")
++    chunk = src[idx:src.index("static int protect_one")]
++    assert_true("hmode" in chunk or "chmod-hoja" in chunk)
+ 
+ 
+ @test("D2-02", "_copy_tree del orquestador aplica D2")
+@@ -843,7 +848,7 @@
+         "ids_fail": [r["id"] for r in RESULTADOS if not r["ok"]],
+     }
+     print(f"\n=== {ok}/{total} OK · {fail} FAIL · 0 skips ===")
+-    out = RAIZ / "evidencia_r6c" / "HARNESS_RESULTADOS.json"
++    out = RAIZ / "evidencia_r6d" / "HARNESS_RESULTADOS.json"
+     out.parent.mkdir(parents=True, exist_ok=True)
+     out.write_text(json.dumps({"resumen": resumen, "resultados": RESULTADOS}, indent=2),
+                    encoding="utf-8")

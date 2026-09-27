@@ -1,0 +1,16 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/src/c5_orquestador.py	2026-09-27 12:02:35
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/src/c5_orquestador.py	2026-09-27 14:04:42
+@@ -645,8 +645,11 @@
+                             phase("F6", False, 1)
+                             raise Abort(f"ACL allow-write ajena: {name}",
+                                         "ABORTADO_STAGING_RETENIDO", 2)
+-                    except acl_mod.AclPolicyError:
+-                        pass  # fail-closed ya documentado; no bloquear si ls no parsea
++                    except acl_mod.AclPolicyError as e:
++                        # R6-1: fail-closed real — ACL ilegible NO se ignora
++                        phase("F6", False, 1)
++                        raise Abort(f"ACL ilegible (fail-closed): {name}: {e}",
++                                    "ABORTADO_STAGING_RETENIDO", 2)
+         phase("F6", True, 0)
+ 
+         if faults.get("after_protect"):

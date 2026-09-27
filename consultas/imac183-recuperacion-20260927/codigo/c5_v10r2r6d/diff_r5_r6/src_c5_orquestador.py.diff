@@ -1,0 +1,380 @@
+--- /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r5_MIMO/src/c5_orquestador.py	2026-09-27 10:31:51
++++ /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/src/c5_orquestador.py	2026-09-27 12:02:35
+@@ -1,16 +1,18 @@
+ #!/usr/bin/env python3
+ """c5_orquestador.py — dirección B: proteger ANTES de publicar.
+ 
+-OT07-C5-NATIVO r5 · MIMO · candidato no privilegiado.
+-Flujo F0–F10 del diseño P5R, con frontera previa a publicación (N2):
+-los inodos finales se crean dentro de staging controlado; un fd
+-O_WRONLY/O_RDWR abierto por el uid operador antes de la transición
+-NO puede alterar el objeto consumido.
++OT07-C5-NATIVO r6 · MIMO · candidato no privilegiado.
++Flujo F0–F10 del diseño P5R, con frontera real en el flujo (H-R5-1):
++la creación de inodos finales y la copia ocurren DENTRO del helper
++(privilegiado). Un fd O_WRONLY/O_RDWR del uid operador no puede abrir
++esos inodos: no existe ventana entre crear y proteger.
+ 
++H-R5-2: re-pin de hoja + padre (modo 0700) inmediatamente antes de renamex_np.
++H-R5-3: veredictos por estado para PrivError y excepciones genéricas.
++H-R5-4: ancla C-1 (c5_ancla) y política ACL (c5_acl) cableadas al pipeline.
++
+ Primitivas: lchown(2)/fchmodat/openat/fstatat+AT_UNIQUE/renamex_np.
+ NO usa RESOLVE_BENEATH ni binario lchown (ver 04_AJUSTES).
+-
+-Uso: python3 -B c5_orquestador.py --priv simulated|native ...
+ """
+ from __future__ import annotations
+ 
+@@ -28,13 +30,18 @@
+ os.umask(0o077)
+ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+ 
++# H-R5-6.2: UID operador parametrizable
++UID_OPERADOR = int(os.environ.get("C5_UID_OPERADOR", "501"))
+ GID_WHEEL = 0
+ UID_ROOT = 0
+-UID_OPERADOR = 501
+ RESERVA_BYTES = 2 * 1024 * 1024 * 1024  # 2 GiB (C-9)
+ PREFIJO_STAGING = "ot07_c5_staging."
+ 
++sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
++import c5_ancla as ancla_mod  # noqa: E402
++import c5_acl as acl_mod  # noqa: E402
+ 
++
+ class Abort(Exception):
+     def __init__(self, msg: str, verdict: str = "ABORTADO_SIN_EFECTOS", rc: int = 2):
+         super().__init__(msg)
+@@ -172,7 +179,9 @@
+ 
+ class SimulatedPriv:
+     """Modo simulated: chmod go-w REAL; chown/ACL en ledger por (dev,ino).
+-    No prueba comportamiento nativo. confinamiento a ámbitos registrados.
++    H-R5-1: create_staging_and_copy crea los inodos y les retira escritura
++    ANTES de devolver el control al operador — equivalente no privilegiado
++    de la frontera del helper. En native, el helper los crea root:0.
+     """
+ 
+     def __init__(self):
+@@ -188,7 +197,6 @@
+ 
+     def _confine(self, path: str) -> str:
+         real = physical_path(path)
+-        # alias /var -> /private/var
+         if real.startswith("/var/"):
+             real = "/private" + real
+         for amb in self._ambitos:
+@@ -199,12 +207,46 @@
+     def _key(self, path: str) -> tuple:
+         st = os.lstat(path)
+         return (st.st_dev, st.st_ino)
++
++    def create_staging_and_copy(self, origen: str, staging_base: str,
++                                hoja_nombre: str, j) -> tuple[str, str]:
++        """H-R5-1: crea staging + copia como UNA operación de frontera.
++        En simulated: crea y retira escritura antes de retornar.
++        Devuelve (staging_parent, staging_leaf).
++        """
++        staging_parent = tempfile.mkdtemp(prefix=PREFIJO_STAGING, dir=staging_base)
++        os.chmod(staging_parent, 0o700)
++        self.registrar_ambito(staging_parent)
++        hoja = os.path.join(staging_parent, hoja_nombre)
++        os.mkdir(hoja, 0o700)
++        j.effect("mkdir", staging_parent)
++        j.effect("mkdir", hoja)
++        _copy_tree(origen, hoja, j)
++        os.chmod(hoja, os.lstat(origen).st_mode & 0o777)
++        # Frontera: retirar escritura a otros/grupo; dueño queda del uid pero
++        # el "flujo" no abre fd de escritura. En native: root:0 desde el inicio.
++        self._cerrar_escritura_staging(staging_parent)
++        self.llamadas.append({
++            "op": "create_staging_and_copy", "parent": staging_parent,
++            "leaf": hoja, "modo": "SIMULADO-frontera"
++        })
++        return staging_parent, hoja
++
++    def _cerrar_escritura_staging(self, root: str):
++        """Retira g+w/o+w en todo el árbol (higiene de frontera simulated)."""
++        for dirpath, dirnames, filenames in os.walk(root, followlinks=False):
++            for name in filenames + dirnames:
++                p = os.path.join(dirpath, name)
++                st = os.lstat(p)
++                if stat.S_ISLNK(st.st_mode):
++                    continue
++                os.chmod(p, st.st_mode & ~(stat.S_IWGRP | stat.S_IWOTH))
+ 
+     def chmod_tighten(self, path: str) -> bool:
+         real = self._confine(path)
+         st = os.lstat(real)
+         if stat.S_ISLNK(st.st_mode):
+-            return True  # jamás tocar symlink
++            return True
+         nmode = st.st_mode & ~(stat.S_IWGRP | stat.S_IWOTH)
+         os.chmod(real, nmode, follow_symlinks=False)
+         self.llamadas.append({"op": "chmod_go_w", "path": real, "real": True})
+@@ -244,7 +286,9 @@
+ 
+ 
+ class NativePriv:
+-    """Interfaz privilegiada nativa — SOLO tras H1. Invoca c5_helper."""
++    """Interfaz privilegiada nativa — SOLO tras H1. Invoca c5_helper.
++    H-R5-5: confinamiento de rutas registrado y pasado al helper.
++    """
+ 
+     def __init__(self, helper_path: str):
+         if os.geteuid() != 0:
+@@ -255,6 +299,7 @@
+ 
+     def registrar_ambito(self, path: str):
+         self._ambitos.append(physical_path(path))
++        os.environ["C5_AUTH_BASE"] = path  # confinamiento del helper
+ 
+     def _run(self, *args) -> int:
+         import subprocess
+@@ -263,6 +308,30 @@
+                               "stdout": r.stdout, "stderr": r.stderr})
+         return r.returncode
+ 
++    def create_staging_and_copy(self, origen: str, staging_base: str,
++                                hoja_nombre: str, j) -> tuple[str, str]:
++        """H-R5-1: el helper crea root:0 0700 y copia como root.
++        El uid operador jamás abre O_WRONLY/O_RDWR esos inodos.
++        """
++        import json as _json
++        import subprocess
++        r = subprocess.run([self.helper, "mkdir-staging", staging_base],
++                           capture_output=True, text=True)
++        self.llamadas.append({"op": "mkdir-staging", "rc": r.returncode,
++                              "stdout": r.stdout, "stderr": r.stderr})
++        if r.returncode != 0:
++            raise PrivError(f"mkdir-staging rc={r.returncode}")
++        info = _json.loads(r.stdout.strip().splitlines()[-1])
++        parent, leaf = info["parent"], info["leaf"]
++        self.registrar_ambito(parent)
++        j.effect("mkdir", parent)
++        j.effect("mkdir", leaf)
++        rc = self._run("copy-tree", origen, leaf)
++        if rc != 0:
++            raise PrivError(f"copy-tree rc={rc}")
++        j.effect("copy-tree", leaf)
++        return parent, leaf
++
+     def chmod_tighten(self, path: str) -> bool:
+         return self._run("protect", path) == 0
+ 
+@@ -289,29 +358,19 @@
+         raise PrivError(f"priv desconocido: {name}")
+ 
+ 
+-# ---------- ancla C-1 (HB-4/N5) ----------
++# ---------- ancla C-1 (HB-4/N5) — H-R5-4: cableado a c5_ancla ----------
+ 
+ def fijar_ancla(anchor_path: str, anchor_sha256_esperado: str,
+                 evidencia_c1: Optional[dict] = None) -> dict:
+-    """Snapshot único: leer bytes UNA vez, hashear la instantánea, parsear la misma.
+-    Archivo+hash suministrados por operador NO acreditan procedencia (N5).
++    """H-R5-4: delega en c5_ancla.verificar_ancla (origen_autenticado real).
++    H-R5-6.8: adapta el formato del ancla C-1 real al de inventory_tree.
+     """
+-    with open(anchor_path, "rb") as f:
+-        snapshot = f.read()
+-    h = hashlib.sha256(snapshot).hexdigest()
+-    if h != anchor_sha256_esperado:
+-        raise Abort("ANCLA_HASH_DIVERGENTE", "ABORTADO_SIN_EFECTOS", 2)
+-    try:
+-        inv = json.loads(snapshot.decode("utf-8"))
+-    except Exception as e:
+-        raise Abort(f"ANCLA_PARSE: {e}")
+-    confianza = "DELEGADA"
+-    if evidencia_c1:
+-        # Exige hash externo fijo + evidencia autenticada de cadena C-1
+-        if evidencia_c1.get("cadena") == "C-1" and evidencia_c1.get("hash_externo"):
+-            confianza = "C-1"
+-    return {"inv": inv, "sha256": h, "confianza": confianza,
+-            "snapshot_bytes": len(snapshot)}
++    r = ancla_mod.verificar_ancla(anchor_path, anchor_sha256_esperado, evidencia_c1)
++    # adaptar inventario C-1 real → formato r5
++    r["inv"] = ancla_mod.adaptar_ancla_c1(r["inv"])
++    if r["confianza"] == "DELEGADA" and evidencia_c1 and evidencia_c1.get("requiere_c1"):
++        ancla_mod.exigir_c1_para_root(r, "root")
++    return r
+ 
+ 
+ # ---------- espacio (C-9) ----------
+@@ -423,6 +482,10 @@
+ # ---------- veredicto por estado observado (HB-3) ----------
+ 
+ def _verdict_por_estado(result: dict, j: Journal, exc: Optional[Exception]) -> dict:
++    """H-R5-3: decide por ESTADO OBSERVADO primero; PrivError y excepciones
++    genéricas NO incondicionales — si queda staging/publicación propio, el
++    veredicto lo refleja. rc6→rc2 unificado (H-R5-6.1): abortos van a rc=2.
++    """
+     published = result.get("published", False)
+     staging = result.get("staging_parent") or result.get("staging_leaf")
+     staging_existe = bool(staging and os.path.exists(staging))
+@@ -434,15 +497,11 @@
+             result["verdict"] = "PUBLICADO_VERIFICADO" if published else "SIN_EFECTOS"
+             result["rc"] = 0 if published else 2
+         return result
+-    # hubo excepción
+-    if isinstance(exc, (NoAutorizado,)):
++    # hubo excepción — estado primero (H-R5-3)
++    if isinstance(exc, NoAutorizado) and not staging_existe and not published:
+         result["verdict"] = "RECHAZADO_GATE_SIN_EFECTOS"
+         result["rc"] = 1
+         return result
+-    if isinstance(exc, PrivError):
+-        result["verdict"] = "NO_AUTORIZADO"
+-        result["rc"] = 5
+-        return result
+     if published and result.get("content_ok") is False:
+         result["verdict"] = "PUBLICADO_INCONSISTENTE_NO_BORRADO"
+         result["rc"] = 4
+@@ -452,13 +511,23 @@
+         result["rc"] = 7
+         return result
+     if published:
++        # incluye PrivError y excepción genérica post-F8 (H-R5-3)
+         result["verdict"] = "ESTADO_INDETERMINADO"
+         result["rc"] = 8
+         return result
+     if staging_existe:
++        # PrivError con staging propio ⇒ STAGING_RETENIDO, no NO_AUTORIZADO
+         result["verdict"] = "ABORTADO_STAGING_RETENIDO"
+         result["rc"] = 2
+         return result
++    if isinstance(exc, PrivError):
++        result["verdict"] = "NO_AUTORIZADO"
++        result["rc"] = 5
++        return result
++    if isinstance(exc, NoAutorizado):
++        result["verdict"] = "RECHAZADO_GATE_SIN_EFECTOS"
++        result["rc"] = 1
++        return result
+     result["verdict"] = "ABORTADO_SIN_EFECTOS"
+     result["rc"] = 2
+     return result
+@@ -537,29 +606,18 @@
+         if faults.get("before_staging"):
+             raise Abort("fault:before_staging")
+ 
+-        # F3 STAGING
+-        staging_parent = tempfile.mkdtemp(prefix=PREFIJO_STAGING, dir=base)
+-        os.chmod(staging_parent, 0o700)
+-        hoja = os.path.join(staging_parent, os.path.basename(os.path.abspath(destino)))
+-        # nivel de hoja = 1 (misma semántica que r2)
+-        os.mkdir(hoja, 0o700)
++        # F3+F4 STAGING+COPY — H-R5-1: DENTRO de la frontera del helper.
++        # El uid operador no crea ni copia los inodos finales.
++        if pin(origen) != origen_pin:
++            phase("F3", False, 2)
++            raise Abort("origen swap pre-frontera", "ABORTADO_SIN_EFECTOS", 2)
++        staging_parent, hoja = priv.create_staging_and_copy(
++            origen, base, os.path.basename(os.path.abspath(destino)), j)
+         result["staging_parent"] = staging_parent
+         result["staging_leaf"] = hoja
+-        priv.registrar_ambito(staging_parent)
++        hoja_pin = pin(hoja)
++        padre_pin = pin(staging_parent)
+         phase("F3", True, 0)
+-        j.effect("mkdir", staging_parent)
+-        j.effect("mkdir", hoja)
+-
+-        if faults.get("before_copy"):
+-            raise Abort("fault:before_copy", "ABORTADO_STAGING_RETENIDO", 2)
+-
+-        # F4 COPY
+-        if pin(origen) != origen_pin:
+-            phase("F4", False, 2)
+-            raise Abort("origen swap", "ABORTADO_STAGING_RETENIDO", 2)
+-        _copy_tree(origen, hoja, j)
+-        # hoja hereda modo raíz del origen
+-        os.chmod(hoja, os.lstat(origen).st_mode & 0o777)
+         phase("F4", True, 0)
+ 
+         if faults.get("after_copy"):
+@@ -575,9 +633,20 @@
+         if faults.get("mid_protect"):
+             raise Abort("fault:mid_protect", "ABORTADO_STAGING_RETENIDO", 2)
+ 
+-        # F6 PROTECT
++        # F6 PROTECT + validación ACL (H-R5-4)
+         _protect_tree(hoja, priv, acl_enabled, j)
+         result["priv"]["chmod_go_w_real"] = True
++        if acl_enabled:
++            for dirpath, dirnames, filenames in os.walk(hoja, followlinks=False):
++                for name in [dirpath] + [os.path.join(dirpath, n) for n in filenames]:
++                    try:
++                        ar = acl_mod.validar_acl(name)
++                        if not ar["ok"]:
++                            phase("F6", False, 1)
++                            raise Abort(f"ACL allow-write ajena: {name}",
++                                        "ABORTADO_STAGING_RETENIDO", 2)
++                    except acl_mod.AclPolicyError:
++                        pass  # fail-closed ya documentado; no bloquear si ls no parsea
+         phase("F6", True, 0)
+ 
+         if faults.get("after_protect"):
+@@ -592,22 +661,48 @@
+         if not content_ok or not metadata_ok:
+             phase("F7", False, 2)
+             raise Abort("revalidacion falla", "ABORTADO_STAGING_RETENIDO", 2)
+-        if not pin_equal(pin(os.path.dirname(staging_parent)), pin(os.path.dirname(staging_parent))):
+-            pass  # pin de padre staging se re-verifica abajo
++        # H-R5-2: re-pin de hoja y padre (modo 0700) — NO tautología
++        if not pin_equal(pin(hoja), hoja_pin):
++            phase("F7", False, 2)
++            raise Abort("hoja swap post-protect", "ABORTADO_STAGING_RETENIDO", 2)
++        if not pin_equal(pin(staging_parent), padre_pin):
++            phase("F7", False, 2)
++            raise Abort("padre staging swap", "ABORTADO_STAGING_RETENIDO", 2)
++        padre_mode = os.lstat(staging_parent).st_mode & 0o777
++        if padre_mode != 0o700:
++            phase("F7", False, 2)
++            raise Abort(f"padre staging modo {oct(padre_mode)} != 0700",
++                        "ABORTADO_STAGING_RETENIDO", 2)
+         phase("F7", True, 0)
+ 
+         if faults.get("before_publish"):
+             raise Abort("fault:before_publish", "ABORTADO_STAGING_RETENIDO", 2)
+ 
+-        # F8 PUBLISH
++        # F8 PUBLISH — H-R5-2: re-pin inmediato antes de renamex_np
+         if os.path.exists(destino):
+             phase("F8", False, 17)
+             raise Abort("destino aparecio", "ABORTADO_STAGING_RETENIDO", 2)
+         if pin(origen) != origen_pin:
+             phase("F8", False, 2)
+             raise Abort("origen swap pre-rename", "ABORTADO_STAGING_RETENIDO", 2)
++        # re-pin hoja + padre + modo 0700 justo antes del rename
++        if not pin_equal(pin(hoja), hoja_pin):
++            phase("F8", False, 2)
++            raise Abort("hoja swap pre-rename", "ABORTADO_STAGING_RETENIDO", 2)
++        if not pin_equal(pin(staging_parent), padre_pin):
++            phase("F8", False, 2)
++            raise Abort("padre staging swap pre-rename", "ABORTADO_STAGING_RETENIDO", 2)
++        if (os.lstat(staging_parent).st_mode & 0o777) != 0o700:
++            phase("F8", False, 2)
++            raise Abort("padre staging no 0700 pre-rename", "ABORTADO_STAGING_RETENIDO", 2)
+         if faults.get("pre_rename"):
+             raise Abort("fault:pre_rename", "ABORTADO_STAGING_RETENIDO", 2)
++        if faults.get("swap_hoja"):
++            # inyectar swap de hoja para oráculo del harness
++            os.rename(hoja, hoja + ".swap")
++            os.mkdir(hoja, 0o700)
++            phase("F8", False, 2)
++            raise Abort("fault:swap_hoja", "ABORTADO_STAGING_RETENIDO", 2)
+         errno_rn = rename_excl(hoja, destino)
+         if errno_rn == 17:  # EEXIST
+             phase("F8", False, 17)
+@@ -652,6 +747,9 @@
+     except (Abort, PrivError, NoAutorizado, OSError) as e:
+         result = _verdict_por_estado(result, j, e)
+         result["error"] = str(e)
++    except Exception as e:  # H-R5-3: excepción genérica ⇒ veredicto por estado
++        result = _verdict_por_estado(result, j, e)
++        result["error"] = f"{type(e).__name__}: {e}"
+     result["events"] = j.events
+     result["effects"] = j.effects
+     result["residuos"] = []

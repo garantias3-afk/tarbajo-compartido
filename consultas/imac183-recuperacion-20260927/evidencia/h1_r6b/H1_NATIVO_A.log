@@ -1,0 +1,227 @@
+=== TOMO EL TURNO — 2026-09-27T17:17:12Z ===
+operador=MIMO uid=501 host=HOST_PREPARACION.local sw=26.6.2
+--- paso 1a: hash del binario autorizado ---
+c5_helper=92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+BINARIO_OK coincide con H1_APROBACION
+--- paso 1b: sellos de entrada ---
+7e69177e9bb68706632e56dcd8e7c4fcbb21d39ffacea338e273209f5b114141  /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/SHA256SUMS.txt
+4fa65e4fe69de4e5408b64e31c1ad65f283980e1569839397481deb268736b6d  /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6_MIMO/SHA256SUMS.txt
+09ce53583ff6faf8c9dc4283a1fbb8224576b7960e60eaff9e29cf8fc91b2073  /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/DECISIONES/H1_APROBACION_2026-09-27.json
+1829fcfc7c3578c008e5d9e26ad7b9640f204f36e4315d1c6fe29e0aab24201b  /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/entregas/MAX/H1_SOLICITUD_GLM_MAX.md
+--- paso 1c: bootstrap + selfcheck + probe-at (uid 501) ---
+    "staging ot07_c5_staging.* retenido si publicaci\u00f3n aborta",
+    "destino publicado NO se borra jam\u00e1s en fallo"
+  ],
+  "listo_para_pedir_H1": true
+}
+bootstrap_RC=0
+{"ok":true,"op":"selfcheck","euid":501,"uid":501,"gid":20,"AT_UNIQUE":true,"RENAME_EXCL":true,"RENAME_NOFOLLOW_ANY":true,"RENAME_NOFOLLOW_ANY_val":"0x10","lchown":"syscall","uid_operador":501,"confinamiento":"ot07_c5_staging.+C5_AUTH_BASE"}
+selfcheck_RC=0
+--- paso 1d: probe-at fixture (aún vacío) ---
+{"ok":true,"op":"probe-at","AT_UNIQUE":true,"dev":16777232,"ino":238784612,"mode":40700,"nlink":4,"uid":501,"gid":20}
+probe_RC=0
+--- paso 2: crear fixture + ancla + fd origen ---
+ancla_sha256= d773a4b099d3ffff6846f560caa63395d4ea9720fc3ab05c81d255d11c5b6e94
+ancla_bytes= 496
+origen_bytes_regulares= 18
+fixture_bytes_total_aprox= 30
+fixture_RC=0
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture dev=16777232 ino=238784682 mode=0o40700 uid=501 gid=20 size=160
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture/a.txt dev=16777232 ino=238784684 mode=0o100600 uid=501 gid=20 size=12
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture/sub dev=16777232 ino=238784683 mode=0o40700 uid=501 gid=20 size=96
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture/sub/b.bin dev=16777232 ino=238784685 mode=0o100600 uid=501 gid=20 size=6
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture/link dev=16777232 ino=238784686 mode=0o120700 uid=501 gid=20 size=5
+fd_origen_abierto fd= 3 flags=O_WRONLY|O_APPEND
+nota: fd se reabre en paso 9 para la prueba de escritura por fd del origen
+/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture:
+total 8
+drwx------@ 5 OPERADOR  staff  160 Sep 27 14:17 .
+drwx------@ 6 OPERADOR  staff  192 Sep 27 14:17 ..
+-rw-------@ 1 OPERADOR  staff   12 Sep 27 14:17 a.txt
+lrwx------@ 1 OPERADOR  staff    5 Sep 27 14:17 link -> a.txt
+drwx------@ 3 OPERADOR  staff   96 Sep 27 14:17 sub
+
+/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture/sub:
+total 8
+drwx------@ 3 OPERADOR  staff   96 Sep 27 14:17 .
+drwx------@ 5 OPERADOR  staff  160 Sep 27 14:17 ..
+-rw-------@ 1 OPERADOR  staff    6 Sep 27 14:17 b.bin
+8	/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture
+=== H1_A_SECUENCIA 2026-09-27T17:22:13Z ===
+[hash] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+--- paso 3: sudo mkdir-staging /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base ---
+mkdir-staging_RC=0
+staging_parent=
+staging_leaf=/leaf
+[hash] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+--- paso 4: sudo copy-tree /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture /leaf ---
+copy-tree_RC=0
+--- paso 5: oráculo N2 real (uid 501) ---
+N2_OPEN_WRONLY=FALLA_OK errno=2 (No such file or directory)
+N2_OPEN_RDWR=FALLA_OK errno=2 (No such file or directory)
+N2_RENAME=FALLA_OK errno=2 (No such file or directory)
+N2_UNLINK=FALLA_OK errno=2 (No such file or directory)
+N2_RMDIR=FALLA_OK errno=2 (No such file or directory)
+[hash] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+--- paso 6: sudo protect /leaf ---
+protect_RC=0
+--- paso 7: verify + ls -le (uid 501) ---
+verify_RC=0
+[hash] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+--- paso 8: sudo publish /leaf /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino ---
+publish_RC=0
+pin /leaf ERROR errno=2
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino ERROR errno=2
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino/a.txt ERROR errno=2
+--- paso 9: fd origen + open publicado + variante EEXIST ---
+fd_origen_write_bytes=19
+--- paso 9b: variante EEXIST ---
+[hash] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+--- paso 3b: sudo mkdir-staging /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist (para variante) ---
+[hash] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+[hash] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+[hash] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+--- paso 9c: publish EEXIST ---
+publish_EEXIST_RC=0
+total 8
+drwx------@ 3 OPERADOR  staff   96 Sep 27 14:22 .
+drwx------@ 8 OPERADOR  staff  256 Sep 27 14:22 ..
+-rw-------@ 1 OPERADOR  staff    8 Sep 27 14:22 ganador.txt
+--- paso 10: cleanup + list-stale ---
+cleanup_RC=0
+staging_eexist_retenido=
+/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base:
+total 0
+drwx------@ 2 OPERADOR  staff   64 Sep 27 14:17 .
+drwx------@ 8 OPERADOR  staff  256 Sep 27 14:22 ..
+
+/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist:
+total 0
+drwx------@ 2 OPERADOR  staff   64 Sep 27 14:22 .
+drwx------@ 8 OPERADOR  staff  256 Sep 27 14:22 ..
+list-stale base: []
+list-stale base2: []
+=== FIN H1_A_SECUENCIA 2026-09-27T17:22:13Z ===
+=== REINTENTO con SUDO_ASKPASS — corrida anterior fallida (sudo sin terminal) ===
+=== H1_A_SECUENCIA 2026-09-27T17:23:46Z ===
+--- paso 3 mkdir-staging ---
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":true,"op":"mkdir-staging","parent":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr","leaf":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf","uid":0,"gid":0,"mode":"0700"}
+[sudo] /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/build/c5_helper mkdir-staging /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base => RC=0
+paso3_RC=0
+staging_parent=/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr
+staging_leaf=/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf
+ls: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr: Permission denied
+total 0
+--- paso 4 copy-tree ---
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":false,"op":"mkdir","path":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf","errno":17,"msg":"File exists"}
+[sudo] /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/build/c5_helper copy-tree /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf => RC=2
+paso4_RC=2
+ls: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf: Permission denied
+--- paso 5 oráculo N2 (uid 501) ---
+N2_OPEN_WRONLY=FALLA_OK errno=13 (Permission denied)
+N2_OPEN_RDWR=FALLA_OK errno=13 (Permission denied)
+N2_RENAME_HOJA=FALLA_OK errno=13 (Permission denied)
+N2_UNLINK_HOJA=FALLA_OK errno=13 (Permission denied)
+N2_RMDIR_HOJA=FALLA_OK errno=13 (Permission denied)
+Traceback (most recent call last):
+  File "<stdin>", line 16, in <module>
+PermissionError: [Errno 13] Permission denied: '/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf'
+--- paso 6 protect ---
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":true,"op":"protect","path":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf"}
+[sudo] /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/build/c5_helper protect /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf => RC=0
+paso6_RC=0
+--- paso 7 verify + ls -le (uid 501) ---
+{"ok":false,"op":"lstat","path":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf","errno":13,"msg":"Permission denied"}
+verify_RC=0
+ls: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf: Permission denied
+ls: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf/a.txt: Permission denied
+ls: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf: Permission denied
+ls: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf/sub: Permission denied
+--- paso 8 publish ---
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":true,"op":"publish","src":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf","dst":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino","dev":16777232,"ino":238786699}
+[sudo] /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/build/c5_helper publish /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino => RC=0
+paso8_RC=0
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr/leaf ERROR errno=13
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino dev=16777232 ino=238786699 mode=0o40700 uid=0 gid=0 size=64
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino/a.txt ERROR errno=13
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino/sub/b.bin ERROR errno=13
+pin /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino/link ERROR errno=13
+--- paso 9 fd origen + open publicado ---
+fd_origen_write_bytes=19
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+PermissionError: [Errno 13] Permission denied: '/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino/a.txt'
+--- paso 9b variante EEXIST ---
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":true,"op":"mkdir-staging","parent":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99","leaf":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99/leaf","uid":0,"gid":0,"mode":"0700"}
+[sudo] /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/build/c5_helper mkdir-staging /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist => RC=0
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":false,"op":"mkdir","path":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99/leaf","errno":17,"msg":"File exists"}
+[sudo] /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/build/c5_helper copy-tree /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/fixture /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99/leaf => RC=2
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":true,"op":"protect","path":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99/leaf"}
+[sudo] /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/build/c5_helper protect /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99/leaf => RC=0
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":false,"op":"publish","path":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino_eexist","errno":17,"msg":"destino preexistente"}
+[sudo] /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/OT07_REVISION_v10r2r6b_MIMO/build/c5_helper publish /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99/leaf /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino_eexist => RC=4
+publish_EEXIST_RC=4
+total 8
+drwx------@ 3 OPERADOR  staff   96 Sep 27 14:23 .
+drwx------@ 9 OPERADOR  staff  288 Sep 27 14:23 ..
+-rw-------@ 1 OPERADOR  staff    8 Sep 27 14:23 ganador.txt
+GANADOR_CONSERVADO=SI
+--- paso 10 cleanup + list-stale ---
+{"ok":true,"op":"cleanup","path":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base/ot07_c5_staging.3fnCGr"}
+cleanup_RC=0
+staging_eexist_retenido=/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99
+/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base:
+total 0
+drwx------@ 2 OPERADOR  staff   64 Sep 27 14:23 .
+drwx------@ 9 OPERADOR  staff  288 Sep 27 14:23 ..
+
+/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist:
+total 0
+drwx------@ 3 OPERADOR  staff   96 Sep 27 14:23 .
+drwx------@ 9 OPERADOR  staff  288 Sep 27 14:23 ..
+drwx------  3 root     wheel   96 Sep 27 14:23 ot07_c5_staging.jCwt99
+list-stale base: []
+list-stale base2: [{'path': '/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99', 'pin': {'dev': 16777232, 'ino': 238786711, 'mode': 16832}}]
+=== FIN H1_A_SECUENCIA 2026-09-27T17:23:53Z ===
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+--- observación complementaria (uid 501 no puede leer 0700 root:0) ---
+total 0
+drwx------@ 2 root     wheel   64 Sep 27 14:23 .
+drwx------@ 9 OPERADOR  staff  288 Sep 27 14:25 ..
+ls_destino_RC=0
+total 0
+shasum: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino: Is a directory
+shasum: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino/a.txt: No such file or directory
+fd_origen_write_bytes=21
+origen_sha256_despues=1988d4c9778c35677619198183eaaf33ca218b46fd9b64cdcff3559a14ca708a
+lectura_publicado_como_uid501=PERMISSION_DENIED errno=13 (esperado si 0700 root:0)
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+shasum: /Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino: Is a directory
+PUB_DIR_OPEN_O_WRONLY=FALLA_OK errno=21 (Is a directory)
+PUB_FILE_OPEN_O_WRONLY=FALLA_OK errno=13 (Permission denied)
+PUB_DIR_OPEN_O_RDWR=FALLA_OK errno=21 (Is a directory)
+PUB_FILE_OPEN_O_RDWR=FALLA_OK errno=13 (Permission denied)
+[hash-pre-sudo] 92a33c5bd3957e048bf7dd8fbbf6abcb5aa80876ce38a9536fca5ac07e120233
+{"ok":false,"op":"verify","path":"/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/h1_destino","errno":13,"msg":"fuera-de-frontera"}
+verify_root_RC=0
+--- estado final ---
+total 8
+drwx------@  9 OPERADOR  staff  288 Sep 27 14:25 .
+drwx------@ 14 OPERADOR  staff  448 Sep 27 14:25 ..
+-rw-------@  1 OPERADOR  staff  496 Sep 27 14:22 ancla.json
+drwx------@  5 OPERADOR  staff  160 Sep 27 14:25 evidencia
+drwx------@  5 OPERADOR  staff  160 Sep 27 14:23 fixture
+drwx------   2 root     wheel   64 Sep 27 14:23 h1_destino
+drwx------@  3 OPERADOR  staff   96 Sep 27 14:23 h1_destino_eexist
+drwx------@  2 OPERADOR  staff   64 Sep 27 14:23 ot07_c5_staging.h1base
+drwx------@  3 OPERADOR  staff   96 Sep 27 14:23 ot07_c5_staging.h1base_eexist
+list-stale h1base: []
+list-stale eexist: [{'path': '/Users/OPERADOR/Documents/Codex/2026-09-27/pe/outputs/RUN.20260927T131419Z.C5IMAC1/h1_mimo/ot07_c5_staging.h1base_eexist/ot07_c5_staging.jCwt99', 'pin': {'dev': 16777232, 'ino': 238786711, 'mode': 16832}}]
